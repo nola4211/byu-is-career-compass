@@ -1,0 +1,16 @@
+{
+  "folders": [
+    {
+      "name": "BYU IS Career Compass",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "files.exclude": {
+      ".vinext": true,
+      ".wrangler": true,
+      "dist": true
+    },
+    "editor.formatOnSave": true
+  }
+}

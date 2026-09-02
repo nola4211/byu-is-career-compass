@@ -107,6 +107,30 @@ export default function Home() {
   const currentQuestion = discoveryQuestions[questionIndex];
   const resultRanking = stage === 'result' ? [...CAREER_IDS].sort((a, b) => scores[b] - scores[a]) : ranking;
   const maxScore = Math.max(...resultRanking.map((id) => scores[id]), 1);
+  const journeyProgress = stage === 'result' ? 1 : answered / TARGET_ANSWERS;
+  const journeyStyle = {
+    '--journey-progress': journeyProgress,
+    '--sky-scale': 1 + journeyProgress * 0.18,
+    '--sky-opacity': 0.72 + journeyProgress * 0.28,
+    '--sun-shift': `${journeyProgress * 18}px`,
+    '--ridge-distant-y': `${journeyProgress * 9}px`,
+    '--ridge-distant-scale': 1 + journeyProgress * 0.02,
+    '--ridge-far-y': `${journeyProgress * 20}px`,
+    '--ridge-far-scale': 1 + journeyProgress * 0.045,
+    '--ridge-near-y': `${journeyProgress * 42}px`,
+    '--ridge-near-scale': 1 + journeyProgress * 0.08,
+    '--destination-opacity': journeyProgress,
+    '--destination-scale': 0.65 + journeyProgress * 0.35,
+    '--bank-shift': `${journeyProgress * 24}px`,
+    '--bank-left-shift': `${journeyProgress * -24}px`,
+    '--bank-scale': 1 + journeyProgress * 0.06,
+    '--river-width': `${53 + journeyProgress * 5}%`,
+    '--river-mouth-left': `${43 - journeyProgress * 7}%`,
+    '--river-mouth-right': `${57 + journeyProgress * 7}%`,
+    '--river-glow-scale': 1 + journeyProgress * 1.1,
+    '--boat-bottom': `${6 + journeyProgress * 5}%`,
+    '--boat-scale': 1 - journeyProgress * 0.09,
+  } as React.CSSProperties;
 
   return (
     <main className={`site-shell stage-${stage}`}>
@@ -120,12 +144,36 @@ export default function Home() {
         </nav>
       </header>
 
-      <section id="journey" className="river-stage" aria-label="Career discovery journey">
-        <div className="sky-glow" /><div className="ridge ridge-far" /><div className="ridge ridge-near" />
-        <div className="bank bank-left" /><div className="bank bank-right" />
-        <div className="river"><span className="current current-one" /><span className="current current-two" /><span className="current current-three" /></div>
-        <div className="waypoint waypoint-one" /><div className="waypoint waypoint-two" />
-        <div className="boat" aria-hidden="true"><span className="boat-seat" /><span className="paddle" /></div>
+      <section
+        id="journey"
+        className="river-stage"
+        data-stage={stage}
+        data-waypoint={answered}
+        style={journeyStyle}
+        aria-label="Career discovery journey"
+      >
+        <div className="scenic-world" aria-hidden="true">
+          <div className="sky-glow" /><div className="sun-disc" />
+          <div className="cloud cloud-one" /><div className="cloud cloud-two" />
+          <div className="ridge ridge-distant" /><div className="ridge ridge-far" /><div className="ridge ridge-near" />
+          <div className="mist mist-one" /><div className="mist mist-two" />
+          <div className="destination-light"><span /><span /><span /></div>
+          <div className="bank bank-left"><span className="pine pine-one" /><span className="pine pine-two" /><span className="rock rock-one" /></div>
+          <div className="bank bank-right"><span className="pine pine-three" /><span className="pine pine-four" /><span className="rock rock-two" /></div>
+          <div className="river">
+            <span className="river-glow" />
+            <span className="current current-one" /><span className="current current-two" /><span className="current current-three" />
+            <span className="current current-four" /><span className="current current-five" />
+            <span className="wake wake-left" /><span className="wake wake-right" /><span className="wake wake-center" />
+          </div>
+          <div className="waypoint waypoint-one" /><div className="waypoint waypoint-two" />
+          <div className="boat-track">
+            <div className="boat">
+              <span className="boat-rim" /><span className="boat-interior" /><span className="boat-seat boat-seat-front" /><span className="boat-seat boat-seat-back" />
+              <span className="paddle"><i /></span>
+            </div>
+          </div>
+        </div>
 
         {stage === 'intro' && (
           <div className="intro-panel">
