@@ -210,7 +210,7 @@ export default function Home() {
             <p className="why-match">You leaned toward work where {picks.slice(-3).map((pick) => pick.reason).join(', ')}.</p>
             <div className="result-actions">
               <Button asChild size="lg" className="primary-cta"><Link href={`/interview?career=${selectedCareer}`}>Practice for this path <ChevronRight /></Link></Button>
-              <Button variant="outline" size="lg" onClick={start}><RotateCcw /> Retake</Button>
+              <Button variant="outline" size="lg" onClick={start} className="retake-button"><RotateCcw /> Retake</Button>
             </div>
           </div>
         )}
