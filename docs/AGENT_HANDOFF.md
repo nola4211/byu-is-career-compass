@@ -4,62 +4,69 @@ Updated: 2026-09-02
 
 ## Objective
 
-Publish this project-specific coordination pack, establish the application
-verification baseline, and then connect the existing `/interview` experience to
-the user's deployed LiveKit interviewer before adding an optional avatar.
+Finish the hosted LiveKit voice-session setup and real-device validation for the
+new `/interview` integration, then evaluate an optional avatar provider.
 
 ## Authorized scope completed
 
-- Audited the public GitHub repository and replaced generic Live Share
-  placeholders with verified project details.
-- Documented the current career-discovery and text-only interview flows.
-- Documented Vinext/OpenAI Sites/Cloudflare build and hosting boundaries.
-- Added a phased voice and avatar plan with privacy, secret, fallback, and
-  acceptance-criteria guardrails.
-- No application code, deployment, account, billing setting, or secret changed.
+- Added the LiveKit client and server SDK dependencies.
+- Added a server-only token endpoint with fixed agent dispatch, short token
+  lifetime, randomized identifiers, origin validation, microphone-only publish
+  permission, and metadata allow-listing.
+- Added the live prejoin, explicit microphone start, interviewer state,
+  transcript, mute/end, error, disclosure, and optional video-track UI.
+- Preserved the written question and local self-review experience as a fallback.
+- Added `.env.example` without credentials and updated architecture, status,
+  tasks, verification, decision, and plan documentation.
+- Did not commit a credential, configure production secrets, change billing,
+  select an avatar vendor, or run a real student/provider session.
 
-## Files in this documentation change set
+## Main files in this change set
 
-- `AGENTS.md`
-- `docs/README.md`
-- `docs/PROJECT_CONTEXT.md`
-- `docs/STATUS.md`
-- `docs/TASKS.md`
-- `docs/ARCHITECTURE.md`
-- `docs/LIVE_INTERVIEW_PLAN.md`
-- `docs/WORKFLOW.md`
-- `docs/VERIFICATION.md`
-- `docs/DECISIONS.md`
-- `docs/AGENT_HANDOFF.md`
+- `app/api/livekit-token/route.ts`
+- `app/interview/page.tsx`
+- `components/interview/live-interview.tsx`
+- `lib/interview-session.ts`
+- `app/globals.css`
+- `.env.example`
+- `package.json` and `package-lock.json`
+- Current coordination files under `docs/`
 
 ## Checks and results
 
-- GitHub `main` tree and task-relevant source files: inspected successfully at
-  commit `7cc52e6e9aa6e89a00a08f823ecea68b4fd29327`.
-- Application lint/build/preview: not run because the source is not checked out
-  in the writable workspace.
-- Documentation relative-link check: see the current result in
-  `docs/VERIFICATION.md`.
-- GitHub branch/PR publication: see the current result in `docs/STATUS.md` and
-  `docs/VERIFICATION.md`.
+- Production build and focused lint: passed.
+- Local interview route: returned HTTP 200.
+- Token happy path with disposable credentials: returned a ten-minute,
+  microphone-only token for a randomized room and fixed `career-interviewer`
+  dispatch; server-normalized metadata was present.
+- Invalid career metadata and untrusted origin: rejected with HTTP 400 and 403.
+- Full lint/TypeScript: failed only on documented pre-existing files.
+- Exact commands and output summary: `docs/VERIFICATION.md`.
 
 ## Unverified or blocked
 
-- LiveKit agent name, URL, production authentication, and session-data policy
-  are not recorded in the repository.
+- Production LiveKit API key/secret are intentionally not in the repository or
+  local handoff.
+- The Sites connector returned `project_not_found` for the checked-in project ID
+  in the current workspace; `.openai/hosting.json` was left unchanged.
+- A real microphone/agent session, all eight careers, interruption, denial,
+  timeout, reconnect, mobile layout, and keyboard access remain unverified.
+- The token route still needs an approved authentication or durable abuse/rate
+  control before broad public release.
+- Provider-side transcript/recording retention policy is not confirmed.
 - Avatar provider, account, budget, disclosure, and fallback behavior remain
   undecided.
 
 ## Best next action
 
-Review and merge the documentation-only pull request. After merge, claim
-`QA-001`, run the baseline checks, and then claim `LK-001` before writing LiveKit
-integration code.
+Configure the server-only hosting variables from `.env.example`, confirm the
+`career-interviewer` deployment is ready, and run a real voice session. Inspect
+the token route and agent logs without copying secrets into issues or chat.
 
 ## Do not change without explicit agreement
 
 - The stable eight `CareerId` values and their source policy
 - Program-wide statistics into career-specific claims
-- Production deployment, billing, retention, or recording settings
+- Billing, retention, recording, or avatar-provider settings
 - Secrets or personally identifying student information
 

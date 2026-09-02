@@ -2,53 +2,80 @@
 
 Snapshot: 2026-09-02
 
-Checked against: GitHub repository `nola4211/byu-is-career-compass`, main commit
-`7cc52e6e9aa6e89a00a08f823ecea68b4fd29327`, and the project-specific
-documentation change set in the Codex workspace
+Checked against: local branch `feat/livekit-interview`, based on documentation
+branch `docs/agent-coordination-livekit`
 
 ## State
 
-**The career-discovery and text interview experience exists. Live voice and
-avatar interviewing are planned but not implemented.**
+**The interview page now contains a voice-first LiveKit client and keeps the
+existing written exercise as a fallback. The secure production credentials and
+a real provider session still need to be configured and verified. An avatar is
+supported by the UI when the agent publishes video, but no avatar provider is
+configured.**
 
 ## Verified
 
 - The main route implements a timed five-answer career journey across eight
   stable career IDs.
-- The interview route supports career selection, two question modes, typed
-  responses, and local rule-based feedback.
-- No LiveKit package, backend/API route, authentication, persistence, microphone
-  capture, transcript service, recording, or avatar integration exists in the
-  inspected repository tree.
+- The interview route supports career selection, two question modes, live voice
+  practice, and the original typed-response self-review.
+- `app/api/livekit-token/route.ts` issues ten-minute, microphone-only participant
+  tokens from server-only credentials, generates room and participant IDs on the
+  server, validates career/mode metadata, and fixes agent dispatch to
+  `career-interviewer`.
+- `components/interview/live-interview.tsx` requests microphone access only
+  after the student starts, renders agent states and ephemeral transcript
+  messages, supports mute/end actions, and displays an explicit AI/data-use
+  acknowledgement.
+- The page renders an agent video track when one exists and otherwise preserves
+  the voice-only presentation.
 - The project uses React 19, TypeScript, Vinext, Vite, Tailwind CSS, OpenAI Sites,
   and Cloudflare tooling.
 - `package.json` requires Node.js 22.13.0 or newer and declares `dev`, `build`,
   `start`, `lint`, and `format` scripts.
 - `CAREERS.md` governs career-content sourcing and known evidence gaps.
-- The GitHub connection has push access, and the documentation is published on
-  `docs/agent-coordination-livekit` for review against `main`.
+- The LiveKit project URL is
+  `wss://is-core-case-2026-zat9gox0.livekit.cloud`; the configured agent name is
+  `career-interviewer`.
 
-## Completed in this documentation update
+## Verification completed
 
-- Replaced the placeholder Live Share notes with an audit of the real GitHub
-  project.
-- Documented current routes, data flow, build tooling, source-of-truth rules,
-  risks, and known unknowns.
-- Added a phased LiveKit voice and virtual-avatar integration plan.
-- Kept this change documentation-only; no application code was modified.
+- Dependency installation and the production build pass locally.
+- Focused lint for every changed TypeScript/TSX integration file passes.
+- The local interview URL returns HTTP 200.
+- With disposable local credentials, the token endpoint returned HTTP 201,
+  normalized metadata, enforced a ten-minute lifetime, dispatched only
+  `career-interviewer`, and granted microphone-only publication.
+- Invalid metadata returned HTTP 400 and an untrusted origin returned HTTP 403.
+- Token requests for all eight supported career IDs returned HTTP 201 in the
+  disposable local verification.
+- The full repository lint and TypeScript checks still fail only on pre-existing
+  files; see `docs/VERIFICATION.md`.
 
 ## Remaining gaps
 
-- Application build, lint, and browser verification have not been run because
-  the source repository is not checked out in the writable workspace.
-- LiveKit project values, deployed agent name, product consent/retention choices,
-  and avatar-provider selection are not recorded in the repository.
+- A real microphone-to-agent session has not been run because production
+  `LIVEKIT_API_KEY` and `LIVEKIT_API_SECRET` values are intentionally absent.
+- The checked-in OpenAI Sites project ID returned `project_not_found` in the
+  current connected workspace, so a hosted version could not be saved or
+  deployed from this environment.
+- The token route does not yet have user authentication or durable abuse/rate
+  controls. Origin validation alone is not sufficient protection for an open
+  public release.
+- Browser visual, keyboard, microphone-denial, reconnect, interruption, and real
+  agent behavior across all eight careers remain unverified.
+- Transcript/recording retention policy and avatar provider selection remain
+  product decisions. The web application itself does not persist transcripts.
 
 ## Next actions
 
-1. Review and merge the documentation pull request.
-2. Run the baseline install, lint, build, and responsive browser checks.
-3. Confirm the deployed LiveKit agent name and production authentication policy.
-4. Implement the voice-only session slice before adding an avatar.
-5. Choose and test an avatar provider only after the voice flow is reliable.
+1. Add the LiveKit key and secret to the hosting environment without exposing
+   them to client code, then set the production allowed origin.
+2. Confirm that `career-interviewer` is fully deployed and accepts the documented
+   metadata fields.
+3. Run one real desktop and mobile voice session, including interruption, mute,
+   end, denial, timeout, and written fallback.
+4. Add authentication or an approved rate/abuse-control boundary before broad
+   public release.
+5. Choose an avatar provider only after the real voice flow is reliable.
 

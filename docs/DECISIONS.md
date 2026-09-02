@@ -46,19 +46,22 @@ Record only decisions that constrain future work. Status values are **Proposed**
 ## D-004: Deliver LiveKit in a voice-first sequence
 
 - Date: 2026-09-02
-- Status: Proposed
+- Status: Accepted
 - Context: The user has configured an Agent Builder voice agent and wants to
   connect it to the existing interview page, then add a talking avatar. The
   current page is text-only, and Agent Builder does not implement virtual
   avatars.
-- Decision: First add a protected token endpoint and reliable voice session UI.
-  Convert or extend the deployed agent with the Agents SDK for an avatar only
-  after the voice path passes failure-state and privacy checks.
+- Decision: Keep the written exercise as a fallback, add a server-issued LiveKit
+  voice session as the primary practice format, and render an agent video track
+  only when one is published. Convert or extend the deployed agent with the
+  Agents SDK for an avatar only after the voice path passes real-device,
+  failure-state, and privacy checks.
 - Alternatives considered: Ship voice and avatar together; embed a separate
   avatar outside the LiveKit room; retain only text practice.
-- Consequences: The project gets a testable milestone and voice-only fallback.
+- Consequences: The project has a testable voice milestone and written fallback.
   The avatar remains a separate provider, cost, latency, and disclosure decision.
-- Evidence or related files: `docs/LIVE_INTERVIEW_PLAN.md`
+- Evidence or related files: `docs/LIVE_INTERVIEW_PLAN.md`,
+  `components/interview/live-interview.tsx`, `app/api/livekit-token/route.ts`
 
 ## Entry template
 

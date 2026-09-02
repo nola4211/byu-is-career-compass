@@ -1,6 +1,6 @@
 # Live Interview and Avatar Plan
 
-Status: **Proposed; not implemented**
+Status: **Voice integration implemented locally; real provider session and avatar pending**
 
 Last reviewed: 2026-09-02
 
@@ -12,14 +12,21 @@ transcript or coaching summary when approved, and optionally see a synchronized
 talking avatar. Keep the existing text exercise or a voice-only mode available
 when media permissions or the avatar provider fail.
 
-## Current starting point
+## Current implementation
 
-- The route is a client component with no backend.
-- Career selection and interview topics already come from `data/careers.ts`.
-- The current response and feedback are local text state only.
-- The repository has no LiveKit packages, token route, microphone code, or
-  avatar-provider package.
-- The user reports that a LiveKit Agent Builder agent has been configured.
+- `app/interview/page.tsx` presents live conversation first and retains the
+  local written self-review fallback.
+- `components/interview/live-interview.tsx` handles prejoin acknowledgement,
+  explicit microphone start, agent states, transcript rendering, mute/end,
+  errors, and optional agent video.
+- `app/api/livekit-token/route.ts` generates short-lived microphone-only tokens,
+  randomizes room/participant identities, allow-lists metadata, validates
+  origin, and fixes dispatch to `career-interviewer`.
+- `lib/interview-session.ts` shares the stable career/mode contract and derives
+  job-title display text from `data/careers.ts`.
+- No credential is committed. A real LiveKit room session is blocked until the
+  hosting environment has its key and secret.
+- No avatar provider package or agent-side avatar worker is configured.
 
 ## Recommended sequence
 
@@ -38,13 +45,14 @@ Record without committing secrets:
 Use stable IDs such as `dataAnalytics`, not career display text, in metadata.
 Allow-list every client-controlled value on the server.
 
-### Phase 1: Voice-only vertical slice
+### Phase 1: Voice-only vertical slice — implemented, provider check pending
 
 1. Add the current LiveKit web client and React component dependencies.
-2. Add a server-only standardized token endpoint. It must validate caller
-   access and metadata, attach the selected agent dispatch configuration, return
-   only short-lived connection details, and read credentials from server
-   environment variables.
+2. Add a server-only standardized token endpoint. It must validate origin and
+   metadata, attach fixed agent dispatch configuration, return only short-lived
+   connection details, and read credentials from server environment variables.
+   Add approved user authentication or durable abuse controls before a broad
+   public release.
 3. Refactor `app/interview/page.tsx` so the existing career selection surrounds
    a live-session component rather than being coupled to the current textarea.
 4. Add explicit Start interview and End interview actions. Request microphone
@@ -62,8 +70,11 @@ Allow-list every client-controlled value on the server.
    coaching chat: one question at a time, short follow-ups, no invented BYU
    facts, calibrated feedback, and an explicit close.
 
-Phase 1 is complete only when all eight career routes dispatch the intended
-agent and microphone denial, disconnect, timeout, and normal end are usable.
+The code portion of Phase 1 is complete. Token construction and rejected input
+were verified with disposable values. Phase 1 remains operationally incomplete
+until all eight career routes dispatch the real agent and microphone denial,
+disconnect, timeout, interruption, and normal end are verified on supported
+devices.
 
 ### Phase 2: Transcript and coaching output
 
@@ -104,17 +115,13 @@ Implementation responsibilities:
 Phase 3 is complete only when the avatar, audio, interruption behavior, session
 end, disclosure, and fallback all work in supported browsers.
 
-## Proposed file boundaries
-
-Exact names may change after the runtime check, but responsibilities should stay
-separate:
+## Implemented file boundaries
 
 | Area | Proposed responsibility |
 | --- | --- |
-| `app/api/token/route.ts` | Authenticated, server-only LiveKit token response and agent dispatch |
+| `app/api/livekit-token/route.ts` | Server-only LiveKit token response, request validation, and fixed agent dispatch |
 | `app/interview/page.tsx` | Query parsing and page composition |
 | `components/interview/live-interview.tsx` | Session lifecycle and top-level state UI |
-| `components/interview/interview-stage.tsx` | Agent/avatar media, transcript, and controls |
 | `lib/interview-session.ts` | Career/mode allow-lists and metadata construction |
 | Separate agent project or directory | Agent prompt, session logic, evaluation, and avatar plugin |
 
@@ -124,17 +131,21 @@ acceptable if both repositories link to the same interface contract and owner.
 
 ## Required environment boundary
 
-Names should follow the current LiveKit SDK and hosting conventions selected
-during implementation. At minimum, the server/agent environments will need:
+The included `.env.example` records the web application's required names. The
+server/agent environments need:
 
 - `LIVEKIT_URL`
 - `LIVEKIT_API_KEY`
 - `LIVEKIT_API_SECRET`
+- `LIVEKIT_AGENT_NAME` (defaults to `career-interviewer`)
+- `LIVEKIT_ALLOWED_ORIGIN` for the deployed web origin
 - provider-specific model keys only if LiveKit Inference is not used
 - an avatar-provider key and avatar/persona ID for the avatar phase
 
-Only a connection URL explicitly intended for public use may reach client code.
-API keys and secrets must never use a public-client environment prefix.
+Only the connection URL may reach the browser. API keys and secrets must never
+use a public-client environment prefix. The current same-origin validation is a
+pilot boundary, not a replacement for authentication or production rate/abuse
+controls.
 
 ## Acceptance and safety checklist
 
