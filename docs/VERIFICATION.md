@@ -14,8 +14,10 @@ been run in this session.
 | Repository inventory | Read recursive `main` tree and task-relevant files through GitHub | Passed; routes, data, UI components, and build configuration were available | 2026-09-02 |
 | Install/setup | `npm ci` | Not run; no local source checkout | 2026-09-02 |
 | Lint | `npm run lint` | Not run; script resolves to `oxlint` | 2026-09-02 |
+| Formatter | `npm run format` | Not run; script resolves to `oxfmt` | 2026-09-02 |
 | Production build | `npm run build` | Not run; script resolves to `vinext build` | 2026-09-02 |
 | Local preview | `npm run dev` | Not run; script resolves to `vinext dev` | 2026-09-02 |
+| Production server | `npm run start` | Not run; script resolves to `wrangler dev --config dist/server/wrangler.json` | 2026-09-02 |
 | Automated tests | No test script found in `package.json` | Unavailable in inspected baseline | 2026-09-02 |
 | Visual/accessibility review | Desktop/mobile keyboard and interaction pass | Not run | 2026-09-02 |
 | LiveKit voice session | Start, speak, interrupt, reconnect, end | Not available; integration absent | 2026-09-02 |
