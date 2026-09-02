@@ -7,9 +7,15 @@ import { ArrowLeft, Check, ChevronRight, Clock3, Lightbulb, MessageSquareText, R
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Textarea } from '@/components/ui/textarea';
-import { CAREER_IDS, careers, type CareerId } from '@/data/careers';
+import { CAREER_IDS, careerPresentation, careers, type CareerId } from '@/data/careers';
 
 type Mode = 'behavioral' | 'technical';
+
+const behavioralQuestions = [
+  'Tell me about a time you solved a difficult problem.',
+  'Describe a time you worked through conflict on a team.',
+  'Why are you interested in this career direction?',
+];
 
 function InterviewPractice() {
   const params = useSearchParams();
@@ -21,7 +27,12 @@ function InterviewPractice() {
   const [response, setResponse] = useState('');
   const [reviewed, setReviewed] = useState(false);
   const career = careers[careerId];
-  const questions = mode === 'behavioral' ? career.behavioralQuestions : career.technicalQuestions;
+  const careerQuestions = [
+    `What interests you about ${career.name}, and how have you explored that interest?`,
+    `Choose one topic—${career.interviewTopics.join(', ')}—and explain what you already know and what you want to learn next.`,
+    `How has your BYU preparation helped you move toward ${career.name}?`,
+  ];
+  const questions = mode === 'behavioral' ? behavioralQuestions : careerQuestions;
   const question = questions[questionIndex % questions.length];
 
   const feedback = useMemo(() => {
@@ -49,7 +60,7 @@ function InterviewPractice() {
   };
 
   return (
-    <main className="interview-shell" style={{ '--career-accent': career.accent } as React.CSSProperties}>
+    <main className="interview-shell" style={{ '--career-accent': careerPresentation[careerId].accent } as React.CSSProperties}>
       <header className="interview-topbar">
         <Link href="/" className="back-link"><ArrowLeft /> Career Compass</Link>
         <div className="session-status"><span /> Practice session · not recorded</div>

@@ -2,10 +2,10 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
-import { BarChart3, ChevronRight, Code2, Compass, RotateCcw, ShieldCheck, Sparkles } from 'lucide-react';
+import { BarChart3, BriefcaseBusiness, ChevronRight, CloudCog, Code2, Compass, LayoutTemplate, Network, RotateCcw, ShieldCheck, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { CAREER_IDS, careers, type CareerId } from '@/data/careers';
+import { CAREER_IDS, careerPresentation, careers, programProfile, type CareerId } from '@/data/careers';
 import { discoveryQuestions } from '@/data/questions';
 
 const TARGET_ANSWERS = 5;
@@ -18,6 +18,10 @@ const iconFor = (id: CareerId, className = '') => {
   if (id === 'dataAnalytics') return <BarChart3 {...props} />;
   if (id === 'softwareEngineering') return <Code2 {...props} />;
   if (id === 'cybersecurity') return <ShieldCheck {...props} />;
+  if (id === 'businessSystemsAnalyst') return <Network {...props} />;
+  if (id === 'itProjectManager') return <BriefcaseBusiness {...props} />;
+  if (id === 'uxProductManager') return <LayoutTemplate {...props} />;
+  if (id === 'cloudInfrastructure') return <CloudCog {...props} />;
   return <Compass {...props} />;
 };
 
@@ -58,7 +62,7 @@ export default function Home() {
     void Promise.resolve(modelContext.registerTool({
       name: 'open_career_exploration',
       title: 'Open career exploration',
-      description: 'Open one of the four supported Information Systems career paths in the visible career explorer.',
+      description: 'Open one of the eight supported Information Systems career paths in the visible career explorer.',
       inputSchema: {
         type: 'object',
         properties: { careerId: { type: 'string', enum: CAREER_IDS } },
@@ -127,7 +131,7 @@ export default function Home() {
           <div className="intro-panel">
             <p className="overline"><Sparkles size={15} /> Your path starts here</p>
             <h1>Find where your<br />curiosity could lead.</h1>
-            <p className="intro-copy">Five quick choices. Four Information Systems paths. One clearer direction before your next career conversation.</p>
+            <p className="intro-copy">Five quick choices. Eight Information Systems paths. One clearer direction before your next career conversation.</p>
             <Button size="lg" onClick={start} className="primary-cta">Begin the river journey <ChevronRight /></Button>
             <p className="time-note">About 2 minutes · no sign-in required</p>
           </div>
@@ -153,7 +157,7 @@ export default function Home() {
         {stage === 'result' && (
           <div className="arrival-card">
             <p className="overline"><Sparkles size={15} /> You&apos;ve reached a destination</p>
-            <div className="result-title"><span className="career-icon" style={{ background: career.accent }}>{iconFor(selectedCareer)}</span><div><p>Your strongest match</p><h1>{career.name}</h1></div></div>
+            <div className="result-title"><span className="career-icon" style={{ background: careerPresentation[selectedCareer].accent }}>{iconFor(selectedCareer)}</span><div><p>Your strongest match</p><h1>{career.name}</h1></div></div>
             <p className="result-tagline">{career.tagline}</p>
             <p className="why-match">You leaned toward work where {picks.slice(-3).map((pick) => pick.reason).join(', ')}.</p>
             <div className="result-actions">
@@ -166,7 +170,7 @@ export default function Home() {
 
       <section id="careers" className="career-section">
         <div className="section-heading">
-          <div><p className="overline">Four routes into IS</p><h2>{stage === 'result' ? 'Explore your destination' : 'Every path blends business and technology.'}</h2></div>
+          <div><p className="overline">Eight BYU-connected destinations</p><h2>{stage === 'result' ? 'Explore your destination' : 'Every path blends business and technology.'}</h2></div>
           <p>{stage === 'result' ? 'Your result is a starting point, not a box. Compare the nearby paths and follow what energizes you.' : 'Discover how different strengths show up in the work—and where you may want to build experience next.'}</p>
         </div>
 
@@ -174,7 +178,7 @@ export default function Home() {
           <div className="score-strip" aria-label="Career match ranking">
             {resultRanking.map((id, index) => (
               <button key={id} onClick={() => setSelectedCareer(id)} className={selectedCareer === id ? 'active' : ''}>
-                <span>{index + 1}</span><div><strong>{careers[id].shortName}</strong><i><b style={{ width: `${Math.max(12, (scores[id] / maxScore) * 100)}%`, background: careers[id].accent }} /></i></div>
+                <span>{index + 1}</span><div><strong>{careerPresentation[id].shortName}</strong><i><b style={{ width: `${Math.max(12, (scores[id] / maxScore) * 100)}%`, background: careerPresentation[id].accent }} /></i></div>
               </button>
             ))}
           </div>
@@ -183,23 +187,24 @@ export default function Home() {
         <div className="career-layout">
           <div className="career-tabs" role="list" aria-label="Career paths">
             {CAREER_IDS.map((id) => (
-              <button key={id} onClick={() => setSelectedCareer(id)} className={selectedCareer === id ? 'active' : ''} style={{ '--career-accent': careers[id].accent } as React.CSSProperties}>
+              <button key={id} onClick={() => setSelectedCareer(id)} className={selectedCareer === id ? 'active' : ''} style={{ '--career-accent': careerPresentation[id].accent } as React.CSSProperties}>
                 <span>{iconFor(id)}</span><div><strong>{careers[id].name}</strong><small>{careers[id].tagline}</small></div><ChevronRight />
               </button>
             ))}
           </div>
-          <article className="career-detail" style={{ '--career-accent': career.accent } as React.CSSProperties}>
-            <div className="detail-lead"><span className="career-icon" style={{ background: career.accent }}>{iconFor(selectedCareer)}</span><div><p className="overline">Career overview</p><h3>{career.name}</h3></div></div>
-            <p className="overview">{career.overview}</p>
+          <article className="career-detail" style={{ '--career-accent': careerPresentation[selectedCareer].accent } as React.CSSProperties}>
+            <div className="detail-lead"><span className="career-icon" style={{ background: careerPresentation[selectedCareer].accent }}>{iconFor(selectedCareer)}</span><div><p className="overline">BYU career destination · {career.orientation} orientation</p><h3>{career.name}</h3></div></div>
+            <p className="overview">{career.description}</p>
             <div className="detail-grid">
-              <div><h4>What you&apos;ll do</h4><ul>{career.responsibilities.map((item) => <li key={item}>{item}</li>)}</ul></div>
-              <div><h4>How you&apos;ll work</h4><p>{career.workStyle}</p><h4 className="spaced">Common first titles</h4><div className="tag-list">{career.commonTitles.map((item) => <span key={item}>{item}</span>)}</div></div>
+              <div><h4>BYU-listed roles or areas</h4>{career.typicalWork.length ? <ul>{career.typicalWork.map((item) => <li key={item}>{item}</li>)}</ul> : <p>This destination needs additional BYU verification before role details are added.</p>}</div>
+              <div><h4>Verified skill foundations</h4>{career.skills.length ? <div className="tag-list">{career.skills.map((item) => <span key={item}>{item}</span>)}</div> : <p>No path-specific skill list is confirmed in the current BYU source set.</p>}<h4 className="spaced">Program orientation</h4><div className="tag-list"><span>{career.orientation === 'technical' ? 'Technical orientation' : 'Business orientation'}</span></div></div>
             </div>
-            <div className="skills-row"><h4>Skills to build</h4><div className="tag-list">{career.skills.map((item) => <span key={item}>{item}</span>)}</div></div>
             <div className="prep-box"><p className="overline">Prepare at BYU</p><ol>{career.byuPreparation.map((item, index) => <li key={item}><span>0{index + 1}</span>{item}</li>)}</ol></div>
-            <Button asChild size="lg" className="detail-cta"><Link href={`/interview?career=${selectedCareer}`}>Open {career.shortName} interview practice <ChevronRight /></Link></Button>
+            <div className="source-row"><span>Verified source{career.sources.length > 1 ? 's' : ''}</span>{career.sources.map((source, index) => <a key={source} href={source} target="_blank" rel="noreferrer">BYU source {index + 1}</a>)}</div>
+            <Button asChild size="lg" className="detail-cta"><Link href={`/interview?career=${selectedCareer}`}>Open {careerPresentation[selectedCareer].shortName} interview practice <ChevronRight /></Link></Button>
           </article>
         </div>
+        <div className="program-profile"><div><p className="overline">2025 BSIS placement profile</p><strong>{programProfile.placementWithinThreeMonths}%</strong><span>placed within three months</span></div><div><strong>${programProfile.medianSalary.toLocaleString()}</strong><span>median salary · program-wide</span></div><div><strong>{programProfile.graduates}</strong><span>BSIS graduates</span></div><a href={programProfile.source} target="_blank" rel="noreferrer">View BYU placement source <ChevronRight /></a></div>
       </section>
 
       <footer><span className="brand-mark">Y</span><p><strong>IS Career Compass</strong><br /><small>A student preparation tool for BYU Information Systems</small></p><a href="#journey">Back to the river ↑</a></footer>

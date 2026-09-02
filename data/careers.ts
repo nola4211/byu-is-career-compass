@@ -1,70 +1,166 @@
-export type CareerId = 'dataAnalytics' | 'softwareEngineering' | 'cybersecurity' | 'technologyConsulting';
+export type CareerId =
+  | 'softwareEngineering'
+  | 'businessSystemsAnalyst'
+  | 'dataAnalytics'
+  | 'cybersecurity'
+  | 'itProjectManager'
+  | 'uxProductManager'
+  | 'erpConsultant'
+  | 'cloudInfrastructure';
 
 export type Career = {
-  id: CareerId; name: string; shortName: string; tagline: string; overview: string;
-  personality: string; responsibilities: string[]; skills: string[]; workStyle: string;
-  commonTitles: string[]; byuPreparation: string[]; accent: string;
-  behavioralQuestions: string[]; technicalQuestions: string[]; interviewTopics: string[];
+  id: CareerId;
+  name: string;
+  tagline: string;
+  description: string;
+  orientation: 'technical' | 'business';
+  typicalWork: string[];
+  skills: string[];
+  technologies: string[];
+  traits: { technical: number; analytical: number; people: number; building: number };
+  byuPreparation: string[];
+  interviewTopics: string[];
+  sources: string[];
 };
 
-export const CAREER_IDS: CareerId[] = ['dataAnalytics', 'softwareEngineering', 'cybersecurity', 'technologyConsulting'];
+export const CAREER_IDS: CareerId[] = [
+  'softwareEngineering', 'businessSystemsAnalyst', 'dataAnalytics', 'cybersecurity',
+  'itProjectManager', 'uxProductManager', 'erpConsultant', 'cloudInfrastructure',
+];
+
+export const programProfile = {
+  classYear: 2025,
+  graduates: 123,
+  seekingFullTime: 100,
+  placementWithinThreeMonths: 90,
+  averageSalary: 72820,
+  medianSalary: 74000,
+  bonusReporting: 22,
+  averageBonus: 13306,
+  medianBonus: 6750,
+  topEmployers: ['Qualtrics', 'EY', 'Eide Bailly'],
+  source: 'https://marriott.byu.edu/infosys/careers/placement-profile/bsis/',
+};
+
+export const careerPresentation: Record<CareerId, { shortName: string; accent: string }> = {
+  softwareEngineering: { shortName: 'Development', accent: '#f0ad4e' },
+  businessSystemsAnalyst: { shortName: 'Systems Analysis', accent: '#52a3d8' },
+  dataAnalytics: { shortName: 'Analytics', accent: '#16b5a3' },
+  cybersecurity: { shortName: 'Security', accent: '#f36f5a' },
+  itProjectManager: { shortName: 'Project Management', accent: '#ca7759' },
+  uxProductManager: { shortName: 'UX & Product', accent: '#be6ea8' },
+  erpConsultant: { shortName: 'ERP Consulting', accent: '#7f78d2' },
+  cloudInfrastructure: { shortName: 'Cloud', accent: '#4e8f99' },
+};
+
+const atAGlance = 'https://marriott.byu.edu/infosys/about/what-is-information-systems/at-a-glance/';
+const is201 = 'https://catalog.byu.edu/courses/08962-004';
+const programOverview = 'https://marriott.byu.edu/infosys/bsis/what-will-i-study/program-overview/';
 
 export const careers: Record<CareerId, Career> = {
-  dataAnalytics: {
-    id: 'dataAnalytics', name: 'Data & Analytics', shortName: 'Analytics', tagline: 'Turn evidence into better decisions.',
-    overview: 'Data and analytics professionals translate messy information into useful stories, forecasts, and recommendations that organizations can act on.',
-    personality: 'A strong fit for curious pattern-finders who enjoy structured investigation and explaining what the numbers mean to other people.',
-    responsibilities: ['Clean, combine, and validate data from multiple sources', 'Build dashboards, reports, and repeatable analyses', 'Translate business questions into measurable hypotheses', 'Present findings and recommend next steps'],
-    skills: ['SQL', 'Python', 'Excel', 'Tableau / Power BI', 'Statistics', 'Data storytelling'],
-    workStyle: 'A mix of focused analysis and collaborative interpretation. You may spend a morning in SQL and an afternoon presenting insights to a product or operations team.',
-    commonTitles: ['Data Analyst', 'BI Analyst', 'Analytics Consultant', 'Reporting Analyst'],
-    byuPreparation: ['Build a portfolio project that begins with a real business question—not just a dashboard.', 'Practice explaining one SQL or analytics project to both technical and nontechnical listeners.', 'Use IS coursework and student organizations to gain experience with databases, visualization, and client-facing recommendations.'],
-    accent: '#16b5a3',
-    behavioralQuestions: ['Tell me about a time data changed your initial point of view.', 'Describe a time you had to explain a complex finding simply.', 'How do you handle a request when the available data is incomplete?'],
-    technicalQuestions: ['How would you identify duplicate customers in a SQL table?', 'A conversion rate fell 12% this week. Walk through your investigation.', 'When would you choose a median instead of a mean?'],
-    interviewTopics: ['SQL', 'Data interpretation', 'Statistics', 'Business cases'],
-  },
   softwareEngineering: {
-    id: 'softwareEngineering', name: 'Software Engineering', shortName: 'Engineering', tagline: 'Build systems people can rely on.',
-    overview: 'Software engineers design, build, test, and improve the applications and systems that power modern organizations.',
-    personality: 'A strong fit for persistent builders who like breaking large problems into smaller parts, learning technical systems, and refining how things work.',
-    responsibilities: ['Turn product requirements into maintainable code', 'Debug failures and improve application reliability', 'Design APIs, databases, and system components', 'Review code and collaborate across a development team'],
-    skills: ['JavaScript / TypeScript', 'Python or Java', 'Git', 'APIs', 'Databases', 'Testing'],
-    workStyle: 'Long stretches of focused building are balanced by design discussions, code reviews, and pairing with teammates. Progress is iterative and feedback is frequent.',
-    commonTitles: ['Software Engineer', 'Application Developer', 'Full-stack Developer', 'Systems Developer'],
-    byuPreparation: ['Ship a small end-to-end application and be ready to discuss your architecture choices.', 'Practice debugging aloud; interviewers value your reasoning as much as the final answer.', 'Use team projects to demonstrate version control, testing, and communication—not only coding ability.'],
-    accent: '#f0ad4e',
-    behavioralQuestions: ['Tell me about a technical problem that took persistence to solve.', 'Describe a time feedback changed how you built something.', 'How have you handled disagreement about a technical approach?'],
-    technicalQuestions: ['Walk through how you would debug an API that suddenly became slow.', 'What tradeoffs would you consider when designing a database schema?', 'Explain how you would test a function that handles user permissions.'],
-    interviewTopics: ['Programming', 'Debugging', 'APIs', 'Databases'],
+    id: 'softwareEngineering',
+    name: 'Software / Application Developer',
+    tagline: 'A technical path for building software and applications.',
+    description: 'BYU identifies Programmer/Software Engineer and Mobile Application Developer as technically oriented Information Systems careers. The MISM program also offers a dedicated Development track.',
+    orientation: 'technical',
+    typicalWork: ['Programmer / Software Engineer', 'Mobile Application Developer'],
+    skills: ['Programming fundamentals', 'Database design and querying', 'Web development', 'Computing and networks'],
+    technologies: [],
+    traits: { technical: 9, analytical: 7, people: 4, building: 10 },
+    byuPreparation: ['MISM Development track', 'IS 201: Introduction to Management Information Systems'],
+    interviewTopics: ['Programming fundamentals', 'Databases', 'Web development', 'Computing and networks'],
+    sources: [atAGlance, 'https://marriott.byu.edu/infosys/mism/tracks/development/', is201],
+  },
+  businessSystemsAnalyst: {
+    id: 'businessSystemsAnalyst',
+    name: 'Business / Systems Analyst',
+    tagline: 'A business-oriented path connecting systems and organizational needs.',
+    description: 'BYU identifies Systems Analyst, IT Business Analyst, and Systems Designer as business-oriented Information Systems careers. It is presented as a general BSIS outcome rather than a dedicated MISM track.',
+    orientation: 'business',
+    typicalWork: ['Systems Analyst', 'IT Business Analyst', 'Systems Designer'],
+    skills: [], technologies: [],
+    traits: { technical: 6, analytical: 8, people: 8, building: 5 },
+    byuPreparation: ['BSIS Program Overview'],
+    interviewTopics: ['Information systems', 'Business orientation'],
+    sources: [atAGlance, programOverview],
+  },
+  dataAnalytics: {
+    id: 'dataAnalytics',
+    name: 'Data Analyst / Data Scientist',
+    tagline: 'A technical path focused on business analytics and intelligence.',
+    description: 'BYU lists Business Analytics as a technically oriented Information Systems career and offers a dedicated Business Analytics and Intelligence track in the MISM program.',
+    orientation: 'technical',
+    typicalWork: ['Business Analytics'],
+    skills: ['Data visualization and analysis', 'Database querying for business insights'],
+    technologies: [],
+    traits: { technical: 7, analytical: 10, people: 5, building: 5 },
+    byuPreparation: ['MISM Business Analytics and Intelligence track', 'IS 201: Introduction to Management Information Systems'],
+    interviewTopics: ['Business analytics', 'Data visualization and analysis', 'Database querying'],
+    sources: [atAGlance, 'https://marriott.byu.edu/infosys/mism/tracks/business-analytics-intelligence/', is201],
   },
   cybersecurity: {
-    id: 'cybersecurity', name: 'Cybersecurity', shortName: 'Security', tagline: 'Find risk before it becomes impact.',
-    overview: 'Cybersecurity professionals protect systems, information, and people by identifying threats, reducing risk, and responding when something goes wrong.',
-    personality: 'A strong fit for careful investigators who stay calm under pressure, notice anomalies, and enjoy thinking about how systems can fail or be misused.',
-    responsibilities: ['Monitor systems and investigate suspicious activity', 'Assess vulnerabilities and recommend controls', 'Respond to incidents and document what happened', 'Help teams build safer habits, systems, and processes'],
-    skills: ['Networking', 'Linux', 'Identity & access', 'Risk analysis', 'Scripting', 'Incident response'],
-    workStyle: 'Investigation-heavy work with structured procedures and occasional high-pressure incidents. Clear documentation and communication are essential.',
-    commonTitles: ['Security Analyst', 'SOC Analyst', 'Risk Analyst', 'Security Consultant'],
-    byuPreparation: ['Build a safe home lab or complete guided security exercises you can explain clearly.', 'Learn networking fundamentals and practice documenting a basic incident investigation.', 'Connect technical controls to business risk in class projects and case discussions.'],
-    accent: '#f36f5a',
-    behavioralQuestions: ['Tell me about a time you noticed a risk others had missed.', 'Describe how you remained effective during a high-pressure situation.', 'How would you persuade a busy team to adopt a safer process?'],
-    technicalQuestions: ['What steps would you take after detecting a suspicious login?', 'Explain the difference between authentication and authorization.', 'How would you prioritize several newly reported vulnerabilities?'],
-    interviewTopics: ['Networking', 'Incident response', 'Security concepts', 'Vulnerabilities'],
+    id: 'cybersecurity',
+    name: 'Cybersecurity Analyst',
+    tagline: 'A technical path centered on security and forensics.',
+    description: 'BYU identifies Security Analyst as a technically oriented Information Systems career and offers a dedicated Security and Forensics track in the MISM program.',
+    orientation: 'technical',
+    typicalWork: ['Security Analyst'],
+    skills: ['Data security fundamentals'], technologies: [],
+    traits: { technical: 9, analytical: 9, people: 4, building: 5 },
+    byuPreparation: ['MISM Security and Forensics track', 'IS 201: Introduction to Management Information Systems'],
+    interviewTopics: ['Data security fundamentals', 'Security and forensics'],
+    sources: [atAGlance, 'https://marriott.byu.edu/infosys/mism/tracks/security-forensics/', is201],
   },
-  technologyConsulting: {
-    id: 'technologyConsulting', name: 'Technology Consulting', shortName: 'Consulting', tagline: 'Connect people, process, and technology.',
-    overview: 'Technology consultants help organizations understand complex problems, choose practical solutions, and guide change from recommendation through implementation.',
-    personality: 'A strong fit for adaptable communicators who enjoy ambiguity, learn quickly, and can connect technical possibilities to business goals.',
-    responsibilities: ['Interview stakeholders and clarify business needs', 'Analyze processes, systems, and solution options', 'Structure recommendations and present to decision-makers', 'Coordinate implementation across technical and business teams'],
-    skills: ['Requirements gathering', 'Process mapping', 'Presentations', 'Project delivery', 'Data analysis', 'Facilitation'],
-    workStyle: 'Highly collaborative and varied. Expect meetings, workshops, analysis, presentations, and frequent context switching across clients or projects.',
-    commonTitles: ['Technology Consultant', 'Business Systems Analyst', 'Implementation Consultant', 'IT Advisory Associate'],
-    byuPreparation: ['Practice case interviews and concise, recommendation-first communication.', 'Use team projects to gather requirements, manage ambiguity, and present to a real stakeholder.', 'Develop enough technical depth to evaluate tradeoffs while keeping the business outcome in view.'],
-    accent: '#7f78d2',
-    behavioralQuestions: ['Tell me about a time you brought clarity to an ambiguous problem.', 'Describe a difficult stakeholder interaction and what you learned.', 'How do you earn trust when entering a new team or organization?'],
-    technicalQuestions: ['A client wants to replace a core system. How would you frame the decision?', 'How would you gather requirements from stakeholders who disagree?', 'Walk through how you would evaluate whether to build or buy software.'],
-    interviewTopics: ['Business cases', 'Stakeholder communication', 'Requirements', 'Recommendations'],
+  itProjectManager: {
+    id: 'itProjectManager',
+    name: 'IT Project Manager',
+    tagline: 'A business-oriented path for project and program leadership.',
+    description: 'BYU identifies Project Manager and Program Manager as business-oriented Information Systems careers. BYU does not currently list a dedicated MISM track for this path.',
+    orientation: 'business',
+    typicalWork: ['Project Manager', 'Program Manager'],
+    skills: [], technologies: [],
+    traits: { technical: 4, analytical: 6, people: 10, building: 5 },
+    byuPreparation: ['BSIS Program Overview'],
+    interviewTopics: ['Information systems', 'Business orientation'],
+    sources: [atAGlance, programOverview],
+  },
+  uxProductManager: {
+    id: 'uxProductManager',
+    name: 'UX Designer / Product Manager',
+    tagline: 'A business-oriented path into user experience and technical product work.',
+    description: 'BYU identifies User Experience Designer as a business-oriented Information Systems career. The MISM program offers a dedicated Technical Product Design and Management track.',
+    orientation: 'business',
+    typicalWork: ['User Experience Designer'],
+    skills: [], technologies: [],
+    traits: { technical: 5, analytical: 7, people: 9, building: 8 },
+    byuPreparation: ['MISM Technical Product Design and Management track'],
+    interviewTopics: ['User experience', 'Technical product design and management'],
+    sources: [atAGlance, 'https://marriott.byu.edu/infosys/mism/tracks/technical-product-design-and-management/'],
+  },
+  erpConsultant: {
+    id: 'erpConsultant',
+    name: 'ERP / Systems Consultant',
+    tagline: 'An emerging systems-consulting destination requiring further BYU verification.',
+    description: 'BYU does not currently list this path by name on its At a Glance chart or as a MISM track. The live Information Systems course catalog is the current official point of reference; specific ERP preparation should be confirmed with an IS advisor.',
+    orientation: 'business',
+    typicalWork: [], skills: [], technologies: [],
+    traits: { technical: 6, analytical: 7, people: 9, building: 6 },
+    byuPreparation: ['Information Systems course catalog'],
+    interviewTopics: ['Information systems consulting'],
+    sources: ['https://catalog.byu.edu/departments/1517/courses'],
+  },
+  cloudInfrastructure: {
+    id: 'cloudInfrastructure',
+    name: 'Cloud / Infrastructure Engineer',
+    tagline: 'A technical path into cloud infrastructure and network administration.',
+    description: 'BYU identifies Cloud Infrastructure and Network Administrator as technically oriented Information Systems careers. BYU does not currently list a dedicated MISM track for this path.',
+    orientation: 'technical',
+    typicalWork: ['Cloud Infrastructure', 'Network Administrator'],
+    skills: [], technologies: [],
+    traits: { technical: 9, analytical: 7, people: 4, building: 8 },
+    byuPreparation: ['BSIS Program Overview'],
+    interviewTopics: ['Cloud infrastructure', 'Network administration'],
+    sources: [atAGlance, programOverview],
   },
 };
-
