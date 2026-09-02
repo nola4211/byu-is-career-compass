@@ -16,8 +16,10 @@ Node.js 22.13.0 minimum. No real provider credentials were used.
 | Focused lint | `npx oxlint app/interview/page.tsx app/api/livekit-token/route.ts components/interview/live-interview.tsx lib/interview-session.ts` | Passed with no findings | 2026-09-02 |
 | Full lint | `npm run lint` | Failed on 22 pre-existing errors in `app/page.tsx`, `hooks/use-mobile.ts`, and `components/ui/*`; no changed integration file appeared | 2026-09-02 |
 | TypeScript | `npx tsc --noEmit` | Failed on two pre-existing `Button asChild` errors in `app/page.tsx`; no changed integration file appeared | 2026-09-02 |
+| Formatter | `npm run format` | Not run because the script performs a repository-wide rewrite and unrelated formatting was outside this change's scope | 2026-09-02 |
 | Production build | `npm run build` | Passed; routes `/`, `/interview`, and `/api/livekit-token` built | 2026-09-02 |
 | Local preview | `npm run dev`, then HTTP GET `/interview?career=dataAnalytics` | Passed; dev server started at `http://localhost:3000` and route returned 200 | 2026-09-02 |
+| Production server | `npm run start`, then HTTP GET `/interview?career=dataAnalytics` and valid token POST without credentials | Passed outside the restricted sandbox; server started at `http://127.0.0.1:8787`, page returned 200, and token route returned its expected 503 configuration error | 2026-09-02 |
 | Token happy path | POST standardized request with disposable local signing values | Passed; returned 201, configured LiveKit URL, randomized room/identity, 600-second token, fixed `career-interviewer` dispatch, normalized metadata, and microphone-only publication | 2026-09-02 |
 | Career allow-list | POST token request for each of the eight `CAREER_IDS` in technical mode | Passed; all eight returned 201 with disposable signing values | 2026-09-02 |
 | Token rejection | POST invalid career metadata; POST from untrusted origin | Passed; returned 400 and 403 respectively | 2026-09-02 |
