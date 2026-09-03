@@ -60,6 +60,22 @@ Record only decisions that constrain future work. Status values are **Proposed**
   The avatar remains a separate provider, cost, latency, and disclosure decision.
 - Evidence or related files: `docs/LIVE_INTERVIEW_PLAN.md`
 
+## D-005: Publish the static frontend with GitHub Pages
+
+- Date: 2026-09-02
+- Status: Accepted
+- Context: The project owner requested GitHub rather than OpenAI Sites as the
+  public host. The current application has no backend and can be exported.
+- Decision: Use Vinext static export, publish `dist/client` from `main` with
+  GitHub Actions, and serve the project at
+  `https://nola4211.github.io/byu-is-career-compass/`.
+- Alternatives considered: Keep OpenAI Sites as primary; migrate to another
+  server host; add LiveKit during the hosting migration.
+- Consequences: The current quiz and text interview remain available. A future
+  LiveKit token endpoint must run on a separate secure backend.
+- Evidence or related files: `next.config.ts`,
+  `.github/workflows/deploy-pages.yml`, `docs/LIVE_INTERVIEW_PLAN.md`
+
 ## Entry template
 
 ```text

@@ -9,8 +9,9 @@ testable completion condition, and direct evidence before it is marked done.
 
 | ID | Priority | Task | Owner | State | Dependencies | Acceptance criteria | Evidence or next check |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| DOC-001 | High | Publish the coordination pack in the GitHub repository | Codex | In review | Team review | Documentation-only branch and PR exist against `main` | Branch `docs/agent-coordination-livekit` |
-| QA-001 | High | Establish the application verification baseline | Unassigned | Ready | Writable source checkout and Node.js 22.13+ | `npm ci`, lint, build, and representative browser flows have recorded results | Use `docs/VERIFICATION.md` |
+| GH-001 | High | Move the frontend to GitHub Pages | Codex | In progress | Repository Pages access | Static export is deployed from `main` and the public URL passes smoke tests | Local checks pass; publication pending |
+| DOC-001 | High | Publish the coordination pack in the GitHub repository | Codex | Done | None | Documentation is incorporated with the hosting migration | Merged into `deploy/github-pages` |
+| QA-001 | High | Establish the application verification baseline | Codex | Done | Node.js 22.13+ | Install, lint, build, and representative browser flows have recorded results | `docs/VERIFICATION.md` |
 | LK-001 | High | Confirm LiveKit deployment inputs and privacy policy | Unassigned | Ready | Product owner and LiveKit owner | Agent name, project URL, authentication, recording, transcript retention, and deletion choices are documented without secrets | Record decisions; never commit keys |
 | LK-002 | High | Add a protected LiveKit token endpoint | Unassigned | Blocked | LK-001 and runtime compatibility check | Endpoint returns short-lived credentials, dispatches the selected agent, validates allow-listed metadata, and keeps secrets server-only | Add route tests and rejected-input checks |
 | LK-003 | High | Replace or extend text practice with a voice session UI | Unassigned | Blocked | LK-002 | Student can start/end, grant microphone access, see connection/listening/thinking/speaking/error states, and fall back to text | Test all eight career query values plus denied permission and disconnect |

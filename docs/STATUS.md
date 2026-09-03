@@ -2,53 +2,38 @@
 
 Snapshot: 2026-09-02
 
-Checked against: GitHub repository `nola4211/byu-is-career-compass`, main commit
-`7cc52e6e9aa6e89a00a08f823ecea68b4fd29327`, and the project-specific
-documentation change set in the Codex workspace
-
 ## State
 
-**The career-discovery and text interview experience exists. Live voice and
-avatar interviewing are planned but not implemented.**
+**The career-discovery and text interview experience is prepared for GitHub
+Pages. Live voice and avatar interviewing remain planned but unimplemented.**
 
-## Verified
+## Completed
 
-- The main route implements a timed five-answer career journey across eight
-  stable career IDs.
-- The interview route supports career selection, two question modes, typed
-  responses, and local rule-based feedback.
-- No LiveKit package, backend/API route, authentication, persistence, microphone
-  capture, transcript service, recording, or avatar integration exists in the
-  inspected repository tree.
-- The project uses React 19, TypeScript, Vinext, Vite, Tailwind CSS, OpenAI Sites,
-  and Cloudflare tooling.
-- `package.json` requires Node.js 22.13.0 or newer and declares `dev`, `build`,
-  `start`, `lint`, and `format` scripts.
-- `CAREERS.md` governs career-content sourcing and known evidence gaps.
-- The GitHub connection has push access, and the documentation is published on
-  `docs/agent-coordination-livekit` for review against `main`.
+- Merged the coordination and LiveKit planning documents into the focused
+  `deploy/github-pages` migration branch based on current `main`.
+- Replaced OpenAI Sites and Cloudflare runtime configuration with a Vinext
+  static export for `https://nola4211.github.io/byu-is-career-compass/`.
+- Added an automatic GitHub Pages workflow for pushes to `main`.
+- Added repository-path-safe navigation and a Pages artifact preparation step.
+- Documented that future LiveKit tokens require a separately hosted secure
+  HTTPS endpoint.
 
-## Completed in this documentation update
+## Verified locally
 
-- Replaced the placeholder Live Share notes with an audit of the real GitHub
-  project.
-- Documented current routes, data flow, build tooling, source-of-truth rules,
-  risks, and known unknowns.
-- Added a phased LiveKit voice and virtual-avatar integration plan.
-- Kept this change documentation-only; no application code was modified.
+- `npm ci`, `npm run lint`, and `npm run build` pass.
+- The build emits static home and interview routes plus `.nojekyll`.
+- Browser checks passed for quiz completion, direct career query selection,
+  interview feedback, asset loading, and a 390px-wide layout.
+- No committed secret or `chatgpt.site` reference was found.
 
-## Remaining gaps
+## Publication status
 
-- Application build, lint, and browser verification have not been run because
-  the source repository is not checked out in the writable workspace.
-- LiveKit project values, deployed agent name, product consent/retention choices,
-  and avatar-provider selection are not recorded in the repository.
+- Migration branch, pull request, merge, Pages configuration, workflow run, and
+  public URL verification are pending publication from this workspace.
+- The existing OpenAI Sites deployment remains available as rollback and is not
+  modified by this change.
 
-## Next actions
+## Next action
 
-1. Review and merge the documentation pull request.
-2. Run the baseline install, lint, build, and responsive browser checks.
-3. Confirm the deployed LiveKit agent name and production authentication policy.
-4. Implement the voice-only session slice before adding an avatar.
-5. Choose and test an avatar provider only after the voice flow is reliable.
-
+Publish the migration branch, merge it to `main`, enable GitHub Actions as the
+Pages source, and verify the live GitHub Pages URL.

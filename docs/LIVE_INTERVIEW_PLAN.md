@@ -41,7 +41,8 @@ Allow-list every client-controlled value on the server.
 ### Phase 1: Voice-only vertical slice
 
 1. Add the current LiveKit web client and React component dependencies.
-2. Add a server-only standardized token endpoint. It must validate caller
+2. Add a standardized token endpoint on a separately hosted HTTPS backend.
+   GitHub Pages cannot execute this endpoint. It must validate caller
    access and metadata, attach the selected agent dispatch configuration, return
    only short-lived connection details, and read credentials from server
    environment variables.
@@ -111,7 +112,7 @@ separate:
 
 | Area | Proposed responsibility |
 | --- | --- |
-| `app/api/token/route.ts` | Authenticated, server-only LiveKit token response and agent dispatch |
+| External backend service | Authenticated, server-only LiveKit token response and agent dispatch |
 | `app/interview/page.tsx` | Query parsing and page composition |
 | `components/interview/live-interview.tsx` | Session lifecycle and top-level state UI |
 | `components/interview/interview-stage.tsx` | Agent/avatar media, transcript, and controls |
@@ -124,8 +125,9 @@ acceptable if both repositories link to the same interface contract and owner.
 
 ## Required environment boundary
 
-Names should follow the current LiveKit SDK and hosting conventions selected
-during implementation. At minimum, the server/agent environments will need:
+The GitHub Pages frontend must never receive server credentials. Names should
+follow the current LiveKit SDK and external-backend conventions selected during
+implementation. At minimum, the server/agent environments will need:
 
 - `LIVEKIT_URL`
 - `LIVEKIT_API_KEY`

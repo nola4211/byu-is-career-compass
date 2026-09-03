@@ -2,8 +2,8 @@
 
 Last reviewed: 2026-09-02
 
-Checked against: `nola4211/byu-is-career-compass` at main commit
-`7cc52e6e9aa6e89a00a08f823ecea68b4fd29327`
+Checked against: the GitHub Pages migration branch based on main commit
+`ed43875a2a0a4ae3a88c9b37d9a7c34557192bd2`
 
 ## Product definition
 
@@ -25,7 +25,8 @@ talking-avatar video experience.
 | Authentication | None found |
 | Persistence | None found; current quiz and interview state are in React memory |
 | External application APIs | None found in the inspected source |
-| Deployment tooling | Vinext/Vite with OpenAI Sites and Cloudflare configuration |
+| Deployment tooling | Vinext static export published by GitHub Actions to GitHub Pages |
+| Public URL | `https://nola4211.github.io/byu-is-career-compass/` |
 
 ## Current user journeys
 
@@ -74,6 +75,10 @@ content.
   avatar provider/account IDs are not present in the repository.
 - Production ownership and budget limits for LiveKit, model inference, and an
   avatar provider are **Unknown**.
+
+GitHub Pages cannot run a server-side token route. Any future LiveKit work must
+use a separately hosted HTTPS token endpoint that keeps credentials outside the
+static site and browser bundle.
 
 Resolve these unknowns before describing the live feature as production-ready.
 See `LIVE_INTERVIEW_PLAN.md` for the proposed technical sequence.

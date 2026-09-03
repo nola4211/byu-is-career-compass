@@ -8,8 +8,8 @@ Checked against: `nola4211/byu-is-career-compass` at main commit
 ## Verified system map
 
 The repository is a TypeScript and React 19 application using the Next.js App
-Router programming model through Vinext. Vite builds the application for a
-Cloudflare-based OpenAI Sites runtime. There is no application backend route,
+Router programming model through Vinext. Vinext statically exports the routes
+for GitHub Pages, and GitHub Actions publishes `dist/client`. There is no application backend route,
 database binding, object-storage binding, authentication layer, or LiveKit SDK
 in the inspected tree.
 
@@ -23,8 +23,9 @@ in the inspected tree.
 | `data/questions.ts` | Discovery questions and per-answer score weights | Team-authored recommendation logic |
 | `components/ui/` | Reusable Shadcn/Base UI presentation components | Do not modify broadly for a page-only change |
 | `CAREERS.md` | Career schema, source policy, confirmed facts, and gaps | Read before any career-content change |
-| `vite.config.ts` | Vinext, OpenAI Sites, Tailwind, and Cloudflare Vite plugins | Uses `.openai/hosting.json`; optional D1/R2 bindings are null |
-| `.openai/hosting.json` | OpenAI Sites project link and optional storage bindings | `d1` and `r2` are currently null |
+| `vite.config.ts` | Vinext and Tailwind build configuration | Produces the static export selected by `next.config.ts` |
+| `next.config.ts` | Static-export and GitHub Pages asset-prefix configuration | Public assets use `/byu-is-career-compass` |
+| `.github/workflows/deploy-pages.yml` | Lint, build, artifact upload, and GitHub Pages deployment | Runs on `main` and manual dispatch |
 | `package.json` | Node requirement, dependencies, and scripts | Requires Node.js 22.13.0 or newer |
 
 ## Current data flows
@@ -56,7 +57,7 @@ career and scrolls the visible page. It does not itself call an external API.
 
 The live interview is not implemented. The proposed boundary is:
 
-1. A server-only token endpoint validates the request and creates short-lived
+1. A separately hosted server-only token endpoint validates the request and creates short-lived
    LiveKit connection credentials with agent dispatch information.
 2. The `/interview` client starts and ends a LiveKit session, publishes the
    student's microphone, and renders connection/agent state.
@@ -74,8 +75,8 @@ See `LIVE_INTERVIEW_PLAN.md` for phases and acceptance criteria.
 
 ## Architecture risks and unknowns
 
-- The current Vinext/OpenAI Sites runtime must be verified to support the chosen
-  server token-route implementation before coding it.
+- GitHub Pages cannot host the proposed token route; an external server runtime
+  must be selected before coding it.
 - There are no automated tests in the inspected tree.
 - No error-reporting, analytics, or consent flow is present.
 - LiveKit session retention, transcript handling, and recording defaults have

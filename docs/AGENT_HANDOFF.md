@@ -4,62 +4,29 @@ Updated: 2026-09-02
 
 ## Objective
 
-Publish this project-specific coordination pack, establish the application
-verification baseline, and then connect the existing `/interview` experience to
-the user's deployed LiveKit interviewer before adding an optional avatar.
+Move BYU IS Career Compass from OpenAI Sites to GitHub Pages while preserving
+the existing quiz and text interview and leaving LiveKit documentation-only.
 
-## Authorized scope completed
+## Completed
 
-- Audited the public GitHub repository and replaced generic Live Share
-  placeholders with verified project details.
-- Documented the current career-discovery and text-only interview flows.
-- Documented Vinext/OpenAI Sites/Cloudflare build and hosting boundaries.
-- Added a phased voice and avatar plan with privacy, secret, fallback, and
-  acceptance-criteria guardrails.
-- No application code, deployment, account, billing setting, or secret changed.
+- Prepared a static Vinext export and GitHub Pages workflow.
+- Removed OpenAI Sites and Cloudflare runtime dependencies and configuration.
+- Made navigation and exported assets work beneath the repository project path.
+- Merged and updated the LiveKit planning documentation to require an external
+  secure token endpoint in the future.
+- Passed install, lint, build, desktop interaction, direct route, and mobile
+  width checks; see `docs/VERIFICATION.md`.
 
-## Files in this documentation change set
+## Remaining publication steps
 
-- `AGENTS.md`
-- `docs/README.md`
-- `docs/PROJECT_CONTEXT.md`
-- `docs/STATUS.md`
-- `docs/TASKS.md`
-- `docs/ARCHITECTURE.md`
-- `docs/LIVE_INTERVIEW_PLAN.md`
-- `docs/WORKFLOW.md`
-- `docs/VERIFICATION.md`
-- `docs/DECISIONS.md`
-- `docs/AGENT_HANDOFF.md`
+1. Push `deploy/github-pages`.
+2. Open and merge its pull request into `main`.
+3. Configure GitHub Pages to use GitHub Actions.
+4. Wait for the workflow and verify the public URL.
 
-## Checks and results
+## Guardrails
 
-- GitHub `main` tree and task-relevant source files: inspected successfully at
-  commit `7cc52e6e9aa6e89a00a08f823ecea68b4fd29327`.
-- Application lint/build/preview: not run because the source is not checked out
-  in the writable workspace.
-- Documentation relative-link check: see the current result in
-  `docs/VERIFICATION.md`.
-- GitHub branch/PR publication: see the current result in `docs/STATUS.md` and
-  `docs/VERIFICATION.md`.
-
-## Unverified or blocked
-
-- LiveKit agent name, URL, production authentication, and session-data policy
-  are not recorded in the repository.
-- Avatar provider, account, budget, disclosure, and fallback behavior remain
-  undecided.
-
-## Best next action
-
-Review and merge the documentation-only pull request. After merge, claim
-`QA-001`, run the baseline checks, and then claim `LK-001` before writing LiveKit
-integration code.
-
-## Do not change without explicit agreement
-
-- The stable eight `CareerId` values and their source policy
-- Program-wide statistics into career-specific claims
-- Production deployment, billing, retention, or recording settings
-- Secrets or personally identifying student information
-
+- Do not put LiveKit or avatar credentials in the GitHub Pages site.
+- Keep the OpenAI Sites deployment untouched unless the owner separately asks
+  to decommission it after the GitHub URL is verified.
+- Do not change the eight stable `CareerId` values or career evidence policy.
