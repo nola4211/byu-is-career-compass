@@ -9,6 +9,8 @@ The LiveKit voice integration is implemented on `feat/livekit-interview`; a
 real voice session remains unavailable until its external token Worker is
 deployed with owner-provided credentials and connected to the Pages build.**
 
+Pull request #2 is updated against current `main` and reports mergeable.
+
 ## Production frontend
 
 - Pull request #3 was squash-merged to `main` as `d702da4`.
@@ -53,5 +55,5 @@ deployed with owner-provided credentials and connected to the Pages build.**
 
 ## Next action
 
-Update pull request #2, complete the owner-access configuration, and run the
+Complete the owner-access configuration, merge pull request #2, and run the
 first real voice session before marking LiveKit production-ready.
