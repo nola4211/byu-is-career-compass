@@ -10,7 +10,7 @@ an old handoff does not become an accidental requirement.
 | [`STATUS.md`](STATUS.md) | Current snapshot, blockers, and next actions | At the end of material work |
 | [`TASKS.md`](TASKS.md) | Priorities, owners, dependencies, and acceptance criteria | Task state or ownership changes |
 | [`ARCHITECTURE.md`](ARCHITECTURE.md) | Verified components, file map, and data flows | Structure or integration behavior changes |
-| [`LIVE_INTERVIEW_PLAN.md`](LIVE_INTERVIEW_PLAN.md) | Proposed LiveKit voice and avatar integration | The integration design or rollout changes |
+| [`LIVE_INTERVIEW_PLAN.md`](LIVE_INTERVIEW_PLAN.md) | LiveKit voice implementation and avatar rollout plan | The integration design or rollout changes |
 | [`WORKFLOW.md`](WORKFLOW.md) | How contributors inspect, change, verify, and hand off work | Development or release procedures change |
 | [`VERIFICATION.md`](VERIFICATION.md) | Commands, observed results, and verification gaps | Checks are discovered or run |
 | [`DECISIONS.md`](DECISIONS.md) | Durable decisions and rationale | A consequential choice is accepted or superseded |

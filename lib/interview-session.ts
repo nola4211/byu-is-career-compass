@@ -1,4 +1,4 @@
-import { CAREER_IDS, careers, type CareerId } from '@/data/careers';
+import { CAREER_IDS, careers, type CareerId } from '../data/careers';
 
 export const LIVEKIT_AGENT_NAME = 'career-interviewer';
 export const INTERVIEW_MODES = ['behavioral', 'technical'] as const;

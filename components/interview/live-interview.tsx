@@ -25,6 +25,7 @@ import {
 type LiveInterviewProps = {
   careerId: CareerId;
   mode: InterviewMode;
+  onUseWrittenPractice: () => void;
 };
 
 const agentStateLabel = {
@@ -178,11 +179,15 @@ function LiveInterviewStage({
   );
 }
 
-export function LiveInterview({ careerId, mode }: LiveInterviewProps) {
+function ConfiguredLiveInterview({
+  careerId,
+  mode,
+  tokenEndpoint,
+}: Omit<LiveInterviewProps, 'onUseWrittenPractice'> & { tokenEndpoint: string }) {
   const [studentName, setStudentName] = useState('Student');
   const [companyName, setCompanyName] = useState('Practice Company');
   const [acknowledged, setAcknowledged] = useState(false);
-  const tokenSource = useMemo(() => TokenSource.endpoint('/api/livekit-token'), []);
+  const tokenSource = useMemo(() => TokenSource.endpoint(tokenEndpoint), [tokenEndpoint]);
   const agentMetadata = useMemo(
     () => JSON.stringify(createInterviewMetadata({ careerId, mode, studentName, companyName })),
     [careerId, mode, studentName, companyName],
@@ -207,4 +212,30 @@ export function LiveInterview({ careerId, mode }: LiveInterviewProps) {
       />
     </SessionProvider>
   );
+}
+
+export function LiveInterview({ careerId, mode, onUseWrittenPractice }: LiveInterviewProps) {
+  const tokenEndpoint = import.meta.env.VITE_LIVEKIT_TOKEN_ENDPOINT?.trim();
+
+  if (!tokenEndpoint) {
+    return (
+      <div className="live-interview-card live-unavailable" data-agent-state="disconnected">
+        <div className="live-stage">
+          <div className="interviewer-presence" aria-hidden="true">
+            <span className="presence-ring" />
+            <span className="presence-core"><Sparkles /></span>
+          </div>
+          <div className="live-state"><span /><div><small>AI interviewer</small><strong>Connection setup pending</strong></div></div>
+        </div>
+        <div className="prejoin-panel unavailable-panel">
+          <p className="overline">Live voice practice</p>
+          <h3>The interviewer is almost connected.</h3>
+          <p>The secure token service still needs its public endpoint added to the site build. Written practice is ready now.</p>
+          <Button size="lg" onClick={onUseWrittenPractice}>Use written practice</Button>
+        </div>
+      </div>
+    );
+  }
+
+  return <ConfiguredLiveInterview careerId={careerId} mode={mode} tokenEndpoint={tokenEndpoint} />;
 }

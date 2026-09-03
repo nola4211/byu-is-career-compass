@@ -2,17 +2,17 @@
 
 Last reviewed: 2026-09-02
 
-Checked against: local branch `feat/livekit-interview`, based on documentation
-branch `docs/agent-coordination-livekit`
-
 ## Product definition
 
-**Verified:** BYU IS Career Compass helps students compare eight BYU-connected
-Information Systems career paths, receive a lightweight quiz match, and choose
-between a LiveKit-powered voice interview and written self-review practice.
+**Verified:** BYU IS Career Compass is a client-rendered web experience that
+helps students compare eight BYU-connected Information Systems career paths,
+receive a lightweight quiz match, and practice behavioral or career-specific
+interview answers.
 
-**Reported goal:** Complete a reliable spoken mock-interview pilot with the
-user's deployed LiveKit agent, then add an optional talking-avatar provider.
+**Implemented, pending deployment configuration:** The interview page supports
+a live spoken practice session with the `career-interviewer` LiveKit agent. A
+written self-review exercise remains available when voice is unavailable or the
+student prefers not to use a microphone.
 
 | Question | Current answer |
 | --- | --- |
@@ -20,67 +20,65 @@ user's deployed LiveKit agent, then add an optional talking-avatar provider.
 | Main entry point | `app/page.tsx` at `/` |
 | Interview entry point | `app/interview/page.tsx` at `/interview?career=<CareerId>` |
 | Supported career paths | Eight stable IDs defined in `data/careers.ts` |
-| Authentication | No student authentication; the token route validates origin and allow-listed metadata |
-| Persistence | None found; current quiz and interview state are in React memory |
-| External application APIs | Server-only LiveKit token generation and browser LiveKit room connection |
-| Deployment tooling | Vinext/Vite with OpenAI Sites and Cloudflare configuration |
+| Authentication | None found |
+| Application persistence | None; quiz and practice-page state remain in React memory |
+| Frontend hosting | Vinext static export published to GitHub Pages |
+| Public URL | `https://nola4211.github.io/byu-is-career-compass/` |
+| Live token service | Cloudflare Worker in `services/livekit-token-worker/`; deployment pending |
 
 ## Current user journeys
 
 ### Career discovery
 
-1. A student starts a five-answer quiz on `/`.
-2. Each prompt gives two choices and ten seconds to respond. Timed-out questions
-   move to the end without changing the score.
-3. Weights from `data/questions.ts` rank all eight career IDs.
-4. The student reviews the highest match and can compare all career summaries.
-5. The student opens `/interview` with the selected career in the query string.
+1. A student completes a five-answer quiz on `/`.
+2. Weights from `data/questions.ts` rank the eight career IDs.
+3. The student reviews the highest match and can compare all career summaries.
+4. The student opens interview practice with the selected career in the URL.
 
-The quiz is recommendation logic authored by the project team. It is not shown
-in the code or source notes as a validated assessment.
+The quiz is team-authored recommendation logic, not a validated assessment.
 
 ### Interview practice
 
-1. The interview page validates the requested career ID and defaults to
-   `dataAnalytics` if it is missing or invalid.
-2. The student chooses behavioral or career-specific mode and live or written
-   practice.
-3. Live practice asks for a display name, practice company, and explicit AI/data
-   acknowledgement before requesting microphone access.
-4. The server validates the stable career ID and mode, creates a short-lived
-   microphone-only LiveKit token, and dispatches `career-interviewer` with
-   normalized metadata.
-5. The student can see interviewer state, ephemeral transcript messages, mute,
-   end, and switch to written practice.
-6. Written practice retains the original three-question draft and local
-   heuristic self-review flow.
+1. The page allow-lists the requested career and defaults to `dataAnalytics`.
+2. The student chooses behavioral or career-specific questions and live or
+   written practice.
+3. Live practice shows an AI disclosure and requests microphone access only
+   after an explicit Start action.
+4. The browser requests a short-lived room token from the configured external
+   Worker. The Worker validates career and mode, derives display metadata, and
+   dispatches the fixed LiveKit agent.
+5. The student can see agent state and ephemeral transcript messages, mute, end
+   the session, or return to written practice.
+6. If the build has no public token endpoint, the live panel explains that
+   setup is pending and keeps written practice usable.
 
-**Verified limitation:** The implementation has been tested with disposable
-token-signing values only. A real LiveKit media session and the deployed agent's
-receipt of metadata remain unverified until hosting secrets are configured.
+Written responses use only local heuristics and remain labeled self-review.
+The frontend does not persist transcripts or recordings in application code.
+Provider-side retention and recording settings are still **Unknown** and must
+be confirmed before calling the feature production-ready.
 
 ## Content boundary
 
-`CAREERS.md` is the repository's source-of-truth policy for career claims. It
-requires BYU-specific facts to be sourced before they enter `data/careers.ts`.
-Program-wide placement statistics must remain program-wide. Empty arrays in a
-career object represent known evidence gaps rather than permission to invent
-content.
+`CAREERS.md` governs career claims. Add verified BYU sources there before
+changing related claims in `data/careers.ts`. Program-wide statistics must not
+be presented as individual-career outcomes.
+
+## Known external configuration
+
+- LiveKit URL: `wss://is-core-case-2026-zat9gox0.livekit.cloud`
+- Agent dispatch name: `career-interviewer`
+- Public token endpoint build variable: `VITE_LIVEKIT_TOKEN_ENDPOINT`
+- Server-only Worker secrets: `LIVEKIT_API_KEY` and `LIVEKIT_API_SECRET`
+
+Never commit provider credentials or expose them through a client environment
+variable. See `LIVE_INTERVIEW_PLAN.md` for rollout and avatar work.
 
 ## Product and compliance unknowns
 
 - Formal BYU brand approval or sponsorship is **Unknown**.
-- Required browser/device support and accessibility acceptance criteria are
-  **Unknown**.
-- Student authentication, provider-side transcript retention, analytics, age
-  requirements, and data-deletion policy for a live interview are **Unknown**.
-- The browser disclosure is implemented, but formal legal/product approval of
-  that wording is **Unknown**.
-- The LiveKit project URL and agent name are recorded; deployed-version readiness
-  and avatar provider/account IDs remain **Unknown**.
-- Production ownership and budget limits for LiveKit, model inference, and an
-  avatar provider are **Unknown**.
-
-Resolve these unknowns before describing the live feature as production-ready.
-See `LIVE_INTERVIEW_PLAN.md` for implemented and remaining integration phases.
+- Supported browser/device and accessibility acceptance criteria are **Unknown**.
+- LiveKit/model-provider transcript, audio, and analytics retention are **Unknown**.
+- Student authentication, deletion policy, session cost limits, and production
+  ownership are **Unknown**.
+- No avatar provider or budget is approved.
 

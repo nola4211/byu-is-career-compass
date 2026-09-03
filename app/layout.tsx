@@ -10,7 +10,8 @@ export const metadata: Metadata = {
   description: 'Discover Information Systems career paths and prepare for the interviews that lead there.',
 };
 
+export const dynamic = 'force-static';
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return <html lang="en"><body className={`${geistSans.variable} ${geistMono.variable}`}>{children}</body></html>;
 }
-

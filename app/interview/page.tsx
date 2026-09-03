@@ -1,7 +1,6 @@
 'use client';
 
-import { Suspense, useMemo, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Check, ChevronRight, Clock3, Keyboard, Lightbulb, MessageSquareText, Mic2, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -11,7 +10,10 @@ import { Textarea } from '@/components/ui/textarea';
 import { CAREER_IDS, careerPresentation, careers, type CareerId } from '@/data/careers';
 import type { InterviewMode } from '@/lib/interview-session';
 
+export const dynamic = 'force-static';
+
 type PracticeFormat = 'live' | 'written';
+const BASE_PATH = import.meta.env.PROD ? '/byu-is-career-compass' : '';
 
 const behavioralQuestions = [
   'Tell me about a time you solved a difficult problem.',
@@ -20,15 +22,19 @@ const behavioralQuestions = [
 ];
 
 function InterviewPractice() {
-  const params = useSearchParams();
-  const requested = params.get('career') as CareerId | null;
-  const initialCareer = requested && CAREER_IDS.includes(requested) ? requested : 'dataAnalytics';
-  const [careerId, setCareerId] = useState<CareerId>(initialCareer);
+  const [careerId, setCareerId] = useState<CareerId>('dataAnalytics');
   const [mode, setMode] = useState<InterviewMode>('behavioral');
   const [format, setFormat] = useState<PracticeFormat>('live');
   const [questionIndex, setQuestionIndex] = useState(0);
   const [response, setResponse] = useState('');
   const [reviewed, setReviewed] = useState(false);
+
+  useEffect(() => {
+    const requested = new URLSearchParams(window.location.search).get('career') as CareerId | null;
+    if (!requested || !CAREER_IDS.includes(requested)) return;
+    const timer = window.setTimeout(() => setCareerId(requested), 0);
+    return () => window.clearTimeout(timer);
+  }, []);
   const career = careers[careerId];
   const careerQuestions = [
     `What interests you about ${career.name}, and how have you explored that interest?`,
@@ -59,13 +65,15 @@ function InterviewPractice() {
 
   const changeCareer = (id: CareerId) => {
     setCareerId(id); setQuestionIndex(0); setResponse(''); setReviewed(false);
-    window.history.replaceState(null, '', `/interview?career=${id}`);
+    const url = new URL(window.location.href);
+    url.searchParams.set('career', id);
+    window.history.replaceState(null, '', `${url.pathname}${url.search}`);
   };
 
   return (
     <main className="interview-shell" style={{ '--career-accent': careerPresentation[careerId].accent } as React.CSSProperties}>
       <header className="interview-topbar">
-        <Link href="/" className="back-link"><ArrowLeft /> Career Compass</Link>
+        <Link href={`${BASE_PATH}/`} className="back-link"><ArrowLeft /> Career Compass</Link>
         <div className="session-status"><span /> AI practice · audio starts only when you choose</div>
       </header>
 
@@ -95,7 +103,7 @@ function InterviewPractice() {
           </div>
 
           {format === 'live' ? (
-            <LiveInterview key={`${careerId}-${mode}`} careerId={careerId} mode={mode} />
+            <LiveInterview key={`${careerId}-${mode}`} careerId={careerId} mode={mode} onUseWrittenPractice={() => setFormat('written')} />
           ) : (
             <>
               <div className="question-card">
@@ -126,6 +134,4 @@ function InterviewPractice() {
   );
 }
 
-export default function InterviewPage() {
-  return <Suspense fallback={<main className="interview-loading">Preparing your practice route…</main>}><InterviewPractice /></Suspense>;
-}
+export default InterviewPractice;

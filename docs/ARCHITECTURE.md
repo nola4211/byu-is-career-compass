@@ -2,98 +2,80 @@
 
 Last reviewed: 2026-09-02
 
-Checked against: local branch `feat/livekit-interview`, based on documentation
-branch `docs/agent-coordination-livekit`
+## System map
 
-## Verified system map
+The project has two deployment units:
 
-The repository is a TypeScript and React 19 application using the Next.js App
-Router programming model through Vinext. Vite builds the application for a
-Cloudflare-based OpenAI Sites runtime. The application now has one server route
-for LiveKit tokens and the LiveKit client/server SDKs. There is still no database
-binding, object-storage binding, or student authentication layer.
+1. A React 19/Vinext static frontend exported to `dist/client` and published by
+   GitHub Pages.
+2. A separate Cloudflare Worker that signs short-lived LiveKit tokens. Secrets
+   remain in the Worker environment and never enter the static bundle.
 
-| Path | Responsibility | Important dependencies or constraints |
+| Path | Responsibility | Constraint |
 | --- | --- | --- |
-| `app/layout.tsx` | Root HTML, Geist fonts, metadata, and global stylesheet | Applies to every route |
-| `app/page.tsx` | Career-discovery quiz, ranking, explorer, and navigation to interview prep | Client component; all state is in memory |
-| `app/interview/page.tsx` | Career/mode/format selection and written-practice fallback | Client component; reads `career` query parameter |
-| `components/interview/live-interview.tsx` | Live session lifecycle, microphone controls, agent state, transcript, and optional video track | Client component; starts media only after user action |
-| `app/api/livekit-token/route.ts` | Validated short-lived token generation and fixed agent dispatch | Server-only credentials; generated rooms; same-origin request boundary |
-| `lib/interview-session.ts` | Shared interview-mode and metadata allow-list/normalization | Preserves the eight stable `CareerId` values |
-| `app/globals.css` | Full site, journey, career, interview, responsive, and reduced-motion styling | Contains most product-specific presentation |
-| `data/careers.ts` | Career IDs, sourced content, presentation accents, and program profile | Governed by `CAREERS.md` |
-| `data/questions.ts` | Discovery questions and per-answer score weights | Team-authored recommendation logic |
-| `components/ui/` | Reusable Shadcn/Base UI presentation components | Do not modify broadly for a page-only change |
-| `CAREERS.md` | Career schema, source policy, confirmed facts, and gaps | Read before any career-content change |
-| `vite.config.ts` | Vinext, OpenAI Sites, Tailwind, and Cloudflare Vite plugins | Uses `.openai/hosting.json`; optional D1/R2 bindings are null |
-| `.openai/hosting.json` | OpenAI Sites project link and optional storage bindings | `d1` and `r2` are currently null |
-| `package.json` | Node requirement, dependencies, and scripts | Requires Node.js 22.13.0 or newer |
+| `app/page.tsx` | Career quiz, ranking, and interview navigation | Client state only |
+| `app/interview/page.tsx` | Career query validation and live/written composition | Static route; no server API |
+| `components/interview/live-interview.tsx` | LiveKit session, media, transcript, state, controls, fallback | Reads only the public endpoint URL |
+| `lib/interview-session.ts` | Stable ID/mode allow-lists and normalized metadata | Shared with Worker; no secrets |
+| `services/livekit-token-worker/src/index.ts` | Origin/input validation, token signing, room/identity creation, agent dispatch | Server-only secrets |
+| `wrangler.livekit.jsonc` | Worker build/deploy configuration and non-secret defaults | Secrets must be added separately |
+| `.github/workflows/deploy-pages.yml` | Lint, static build, and Pages deployment | Reads `VITE_LIVEKIT_TOKEN_ENDPOINT` repository variable |
+| `next.config.ts` | Static export and repository asset prefix | Prefix is `/byu-is-career-compass` in production |
+| `scripts/prepare-pages.mjs` | Normalizes the static artifact for GitHub Pages | Runs after `vinext build` |
+| `data/careers.ts` | Eight stable career IDs and presentation data | Governed by `CAREERS.md` |
 
-## Current data flows
+## Discovery flow
 
-### Discovery flow
-
-`data/questions.ts` -> React state in `app/page.tsx` -> weighted score per
-`CareerId` -> ranked result -> `data/careers.ts` presentation ->
+`data/questions.ts` -> in-memory React scoring -> ranked `CareerId` ->
 `/interview?career=<CareerId>`.
 
-Nothing in this flow is sent to a server or persisted by application code.
+No application server receives or persists discovery answers.
 
-### Written interview flow
+## Live interview flow
 
-URL `career` value -> allow-list validation against `CAREER_IDS` -> question list
-derived from `data/careers.ts` -> typed textarea response -> local `useMemo`
-heuristics -> feedback displayed in the page.
+1. The interview page allow-lists `careerId` and `mode` and creates display
+   metadata; arbitrary prompts, agent names, room names, and identities are not
+   accepted from the browser.
+2. LiveKit's standardized token client posts agent metadata to
+   `VITE_LIVEKIT_TOKEN_ENDPOINT`.
+3. The Worker enforces one configured browser origin and parses metadata with
+   `lib/interview-session.ts`.
+4. The Worker generates random room/participant identifiers and a ten-minute
+   token with room join, subscribe, data, and microphone-only publish grants.
+5. The token embeds dispatch for the fixed `career-interviewer` agent.
+6. The client joins, publishes microphone audio only after a student action,
+   renders agent audio/state/transcript, and displays an agent camera track if
+   one is later published.
 
-The written response remains in React state and is cleared when the user changes
-career, mode, or question. It is not sent to the LiveKit token route.
+The current frontend does not store transcripts or recordings. This does not
+establish what LiveKit or downstream model providers retain.
 
-### Live interview flow
+## Environment boundary
 
-`career` query value -> allow-list validation -> client prejoin acknowledgement
--> standardized request to `/api/livekit-token` -> server normalization ->
-ten-minute microphone-only participant token with fixed agent dispatch ->
-LiveKit room -> `career-interviewer` audio/state/transcript and optional video ->
-ephemeral React rendering.
+Public static-build value:
 
-The server ignores client-provided room names, participant identities, job-title
-claims, and agent names. It derives career display text from `data/careers.ts`.
-The web application does not write transcripts or recordings to persistence.
-Provider-side retention remains unverified.
+- `VITE_LIVEKIT_TOKEN_ENDPOINT`
 
-### Host tool integration
+Worker-only values:
 
-`app/page.tsx` conditionally registers an `open_career_exploration` tool when the
-host supplies `document.modelContext.registerTool`. The tool selects a supported
-career and scrolls the visible page. It does not itself call an external API.
+- `LIVEKIT_URL`
+- `LIVEKIT_API_KEY`
+- `LIVEKIT_API_SECRET`
+- `LIVEKIT_AGENT_NAME`
+- `LIVEKIT_ALLOWED_ORIGIN`
 
-## LiveKit boundary
+Only the endpoint and LiveKit WebSocket URL are public connection information.
+API credentials and future avatar/model keys must remain server-side.
 
-1. The browser can request only a supported career/mode session through the
-   same-origin token route.
-2. The server chooses the room, participant identity, ten-minute lifetime,
-   microphone-only grant, normalized metadata, and fixed agent dispatch.
-3. The browser publishes the student's microphone and renders LiveKit agent
-   state, audio, transcript messages, and any agent camera track.
-4. A future avatar worker may publish synchronized video to the same room; no
-   provider is selected or configured yet.
+## Known risks
 
-Keep `LIVEKIT_API_KEY`, `LIVEKIT_API_SECRET`, and any avatar-provider key on the
-server. Never include them in a client component, public environment variable,
-repository file, log, or handoff.
-
-See `LIVE_INTERVIEW_PLAN.md` for phases and acceptance criteria.
-
-## Architecture risks and unknowns
-
-- The Vinext/OpenAI Sites build and local runtime support the token route; the
-  hosted runtime with real credentials is not yet verified.
-- There are no automated tests in the inspected tree.
-- There is an explicit prejoin AI/data acknowledgement, but no error-reporting,
-  analytics, authentication, or durable rate limit.
-- LiveKit session retention, transcript handling, and recording defaults have
-  not been selected or verified for this product.
-- An avatar increases latency, cost, failure modes, and disclosure obligations;
-  voice-only must remain a usable fallback.
+- The static frontend and Worker must be deployed independently and configured
+  with matching origins.
+- No user authentication or per-student rate limit is implemented; the Worker
+  restricts origin, request shape, token lifetime, and token capabilities but
+  origin checks are not a substitute for authentication.
+- Real provider retention, recording behavior, reconnect behavior, device
+  support, cost, and accessibility remain to be verified.
+- Avatar video adds a provider, latency, cost, and failure boundary; voice and
+  written fallbacks must remain usable.
 

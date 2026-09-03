@@ -1,5 +1,5 @@
 {
-  "name": "sites-project",
+  "name": "byu-is-career-compass",
   "version": "0.1.0",
   "private": true,
   "engines": {
@@ -7,8 +7,10 @@
   },
   "scripts": {
     "dev": "vinext dev",
-    "build": "vinext build",
-    "start": "wrangler dev --config dist/server/wrangler.json",
+    "build": "vinext build && node scripts/prepare-pages.mjs",
+    "preview": "vite preview",
+    "livekit:dev": "wrangler dev --config wrangler.livekit.jsonc --local",
+    "livekit:deploy": "wrangler deploy --config wrangler.livekit.jsonc",
     "lint": "oxlint",
     "format": "oxfmt"
   },
@@ -37,9 +39,6 @@
     "vinext": "1.0.0-beta.5"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "1.37.1",
-    "@cloudflare/workers-types": "4.20260515.1",
-    "@openai/sites-vite-plugin": "0.2.0",
     "@tailwindcss/postcss": "4.2.1",
     "@types/node": "22.19.19",
     "@types/react": "19.2.14",

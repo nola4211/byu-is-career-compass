@@ -1,0 +1,4 @@
+# Copy this file to .dev.vars for local Worker testing. Never commit the copy.
+LIVEKIT_API_KEY=
+LIVEKIT_API_SECRET=
+LIVEKIT_ALLOWED_ORIGIN=http://localhost:3000
