@@ -3,13 +3,16 @@
 import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { BarChart3, BriefcaseBusiness, ChevronRight, CloudCog, Code2, Compass, LayoutTemplate, Network, RotateCcw, ShieldCheck, Sparkles } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { CAREER_IDS, careerPresentation, careers, programProfile, type CareerId } from '@/data/careers';
 import { discoveryQuestions } from '@/data/questions';
 
+export const dynamic = 'force-static';
+
 const TARGET_ANSWERS = 5;
 const QUESTION_SECONDS = 10;
+const BASE_PATH = import.meta.env.PROD ? '/byu-is-career-compass' : '';
 type Pick = { questionId: string; answerIndex: number; reason: string };
 type Stage = 'intro' | 'quiz' | 'result';
 
@@ -45,11 +48,10 @@ export default function Home() {
 
   useEffect(() => {
     if (stage !== 'quiz') return;
-    if (seconds <= 0) {
-      advanceWithoutScore();
-      return;
-    }
-    const timer = window.setTimeout(() => setSeconds((value) => value - 1), 1000);
+    const timer = window.setTimeout(() => {
+      if (seconds <= 0) advanceWithoutScore();
+      else setSeconds((value) => value - 1);
+    }, seconds <= 0 ? 0 : 1000);
     return () => window.clearTimeout(timer);
   }, [seconds, stage]);
 
@@ -140,7 +142,7 @@ export default function Home() {
           <span><strong>IS Career Compass</strong><small>BYU Marriott School</small></span>
         </button>
         <nav aria-label="Primary navigation">
-          <a href="#journey">Discover</a><a href="#careers">Explore careers</a><Link href="/interview">Interview prep</Link>
+          <a href="#journey">Discover</a><a href="#careers">Explore careers</a><Link href={`${BASE_PATH}/interview`}>Interview prep</Link>
         </nav>
       </header>
 
@@ -209,7 +211,7 @@ export default function Home() {
             <p className="result-tagline">{career.tagline}</p>
             <p className="why-match">You leaned toward work where {picks.slice(-3).map((pick) => pick.reason).join(', ')}.</p>
             <div className="result-actions">
-              <Button asChild size="lg" className="primary-cta"><Link href={`/interview?career=${selectedCareer}`}>Practice for this path <ChevronRight /></Link></Button>
+              <Link href={`${BASE_PATH}/interview?career=${selectedCareer}`} className={buttonVariants({ size: 'lg', className: 'primary-cta' })}>Practice for this path <ChevronRight /></Link>
               <Button variant="outline" size="lg" onClick={start} className="retake-button"><RotateCcw /> Retake</Button>
             </div>
           </div>
@@ -233,13 +235,13 @@ export default function Home() {
         )}
 
         <div className="career-layout">
-          <div className="career-tabs" role="list" aria-label="Career paths">
+          <nav className="career-tabs" aria-label="Career paths">
             {CAREER_IDS.map((id) => (
               <button key={id} onClick={() => setSelectedCareer(id)} className={selectedCareer === id ? 'active' : ''} style={{ '--career-accent': careerPresentation[id].accent } as React.CSSProperties}>
                 <span>{iconFor(id)}</span><div><strong>{careers[id].name}</strong><small>{careers[id].tagline}</small></div><ChevronRight />
               </button>
             ))}
-          </div>
+          </nav>
           <article className="career-detail" style={{ '--career-accent': careerPresentation[selectedCareer].accent } as React.CSSProperties}>
             <div className="detail-lead"><span className="career-icon" style={{ background: careerPresentation[selectedCareer].accent }}>{iconFor(selectedCareer)}</span><div><p className="overline">BYU career destination · {career.orientation} orientation</p><h3>{career.name}</h3></div></div>
             <p className="overview">{career.description}</p>
@@ -249,7 +251,7 @@ export default function Home() {
             </div>
             <div className="prep-box"><p className="overline">Prepare at BYU</p><ol>{career.byuPreparation.map((item, index) => <li key={item}><span>0{index + 1}</span>{item}</li>)}</ol></div>
             <div className="source-row"><span>Verified source{career.sources.length > 1 ? 's' : ''}</span>{career.sources.map((source, index) => <a key={source} href={source} target="_blank" rel="noreferrer">BYU source {index + 1}</a>)}</div>
-            <Button asChild size="lg" className="detail-cta"><Link href={`/interview?career=${selectedCareer}`}>Open {careerPresentation[selectedCareer].shortName} interview practice <ChevronRight /></Link></Button>
+            <Link href={`${BASE_PATH}/interview?career=${selectedCareer}`} className={buttonVariants({ size: 'lg', className: 'detail-cta' })}>Open {careerPresentation[selectedCareer].shortName} interview practice <ChevronRight /></Link>
           </article>
         </div>
         <div className="program-profile"><div><p className="overline">2025 BSIS placement profile</p><strong>{programProfile.placementWithinThreeMonths}%</strong><span>placed within three months</span></div><div><strong>${programProfile.medianSalary.toLocaleString()}</strong><span>median salary · program-wide</span></div><div><strong>{programProfile.graduates}</strong><span>BSIS graduates</span></div><a href={programProfile.source} target="_blank" rel="noreferrer">View BYU placement source <ChevronRight /></a></div>
