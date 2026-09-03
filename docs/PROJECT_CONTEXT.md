@@ -67,8 +67,8 @@ be presented as individual-career outcomes.
 ## Known external configuration
 
 - LiveKit URL: `wss://is-core-case-2026-zat9gox0.livekit.cloud`
-- Expected agent dispatch name: `career-interviewer`; the matching Agent
-  Builder configuration exists but is not deployed yet
+- Agent dispatch name: `career-interviewer`; Agent Builder version
+  `RzHQfERQN9jP` is deployed to production as agent `CA_RfBuCqhsQZYt`
 - Public token endpoint:
   `https://byu-is-career-compass-livekit-token.nola4211-career-compass.workers.dev`
 - Public token endpoint build variable: `VITE_LIVEKIT_TOKEN_ENDPOINT`

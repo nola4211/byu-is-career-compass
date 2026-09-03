@@ -11,8 +11,10 @@ secrets, while retaining written practice and preparing the UI for an avatar.
 
 - PR #3 was squash-merged to `main` as `d702da4`.
 - PR #2 was squash-merged to `main` as `e753a13`.
+- PR #5 was squash-merged to `main` as `90cb244`.
 - GitHub Pages deploys through GitHub Actions.
 - LiveKit-enabled workflow run `33713674323` succeeded.
+- Lifecycle-fix workflow run `33715049992` succeeded.
 - The current site and configured interview bundle are verified at
   `https://nola4211.github.io/byu-is-career-compass/`.
 
@@ -27,24 +29,29 @@ secrets, while retaining written practice and preparing the UI for an avatar.
 - Passed the local checks recorded in `docs/VERIFICATION.md`.
 - Deployed and production-smoke-tested the credentialed Worker at
   `https://byu-is-career-compass-livekit-token.nola4211-career-compass.workers.dev`.
+- Configured the interview prompt, greeting, and five metadata variables in the
+  matching Agent Builder.
+- Deployed `career-interviewer` version `RzHQfERQN9jP`; agent
+  `CA_RfBuCqhsQZYt` is registered with the expected explicit dispatch name and
+  reports `running` in production.
 
-## Current fix
+## Current validation gap
 
 - The first Chrome test fetched a token and began LiveKit signaling, but the
   room disconnected before establishment and no LiveKit session was recorded.
 - Browser logs and `useSession` behavior showed the cleanup effect ran whenever
   the changing session object re-rendered.
-- `fix/livekit-session-lifecycle` depends on the stable `session.end` callback
-  instead; lint and TypeScript pass, with production retesting still required.
-- The matching builder is named `career-interviewer`, but LiveKit Cloud shows
-  both Agent Builder records as `deploying` / `Not deployed yet`; neither has a
-  deployed agent name or version.
+- The stable-`session.end` fix is merged through PR #5 and the Pages deployment
+  succeeded. Reloading production no longer repeats the immediate cleanup
+  error.
+- A real microphone conversation has not yet confirmed agent join, dynamic
+  metadata delivery, speech, transcript, and normal session end.
 
 ## Next owner-access steps
 
-1. Merge and deploy the session-lifecycle fix.
-2. Deploy the existing `career-interviewer` Agent Builder configuration.
-3. Test a live session on desktop and mobile.
+1. Test a live session on desktop and inspect the corresponding LiveKit record.
+2. Verify dynamic student, company, role, career, and mode metadata.
+3. Test the accepted flow on mobile plus microphone denial and disconnect.
 
 ## Guardrails
 

@@ -23,10 +23,11 @@ Last updated: 2026-09-02
 | Production Worker HTTP checks | Send allowed preflight, foreign-origin, invalid-career, and valid token requests | Passed; returned 204, 403, 400, and 201 respectively; valid response contained a server URL and participant token |
 | LiveKit-enabled Pages deploy | Workflow run `33713674323`, HTTP request, and deployed asset inspection | Passed; workflow succeeded, interview route returned 200, and its JavaScript contains the Worker endpoint and fixed agent name |
 | First production browser attempt | Start a live interview in Chrome and inspect the page, console, and LiveKit Sessions | Did not pass; token fetch and signaling started, but the room disconnected before establishment and LiveKit recorded zero sessions |
-| Session lifecycle fix | Inspect `useSession` stability, narrow cleanup dependency to `session.end`, run `npm run lint` and `npx tsc --noEmit` | Passed locally; production redeploy and microphone test pending |
-| LiveKit agent deployment | Inspect Agents list and matching `career-interviewer` builder configuration | Pending; two Agent Builder records show `deploying` / `Not deployed yet`, with no deployed name or version |
+| Session lifecycle fix | Inspect `useSession` stability, narrow cleanup dependency to `session.end`, run `npm run lint` and `npx tsc --noEmit`, merge PR #5, observe Pages workflow `33715049992`, and reload production | Passed; fix is merged and deployed, and the refreshed page remains ready without repeating the immediate cleanup error |
+| LiveKit agent configuration | Inspect the matching Agent Builder configuration | Passed; instructions, greeting, five metadata variables, Deepgram STT, Gemma LLM, Cartesia TTS, and `career-interviewer` dispatch name are configured and saved |
+| LiveKit agent deployment | Deploy from Agent Builder and inspect the production agent record | Passed; build completed in 29.5 seconds, version `RzHQfERQN9jP` is in production, and agent `CA_RfBuCqhsQZYt` reports `running`, `career-interviewer`, and 100% uptime at the verification point |
 | Format check | `npx oxfmt --check .` | Did not pass; 95 existing files would be rewritten, so no repo-wide format mutation was made |
-| Real LiveKit session | Browser with deployed Worker and real credentials | Pending Pages variable, feature release, and microphone test |
+| Real LiveKit session | Browser with deployed Worker, Pages build, lifecycle fix, and active agent | Pending microphone conversation and session-log inspection |
 | Avatar session | Real provider/agent video track | Not implemented |
 
 ## Current GitHub Pages evidence from `main`
@@ -34,6 +35,7 @@ Last updated: 2026-09-02
 | Check | Exact command or action | Result |
 | --- | --- | --- |
 | Pages workflow | Observe `Deploy GitHub Pages` run `33702333157` | Passed after Pages was enabled and the failed deployment job was rerun |
+| Lifecycle-fix Pages workflow | Observe `Deploy GitHub Pages` run `33715049992` | Passed after PR #5 merged to `main` |
 | Production URL | Open home and Cybersecurity interview URLs | Passed; both returned HTTP 200 and the home page rendered in a browser |
 | Pre-integration browser baseline | Quiz, career query, written feedback, assets, and 390-by-844 layout | Passed before LiveKit branch merge |
 
