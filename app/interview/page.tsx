@@ -14,6 +14,7 @@ export const dynamic = 'force-static';
 
 type PracticeFormat = 'live' | 'written';
 const BASE_PATH = import.meta.env.PROD ? '/byu-is-career-compass' : '';
+const LIVE_INTERVIEW_CONFIGURED = Boolean(import.meta.env.VITE_LIVEKIT_TOKEN_ENDPOINT?.trim());
 
 const behavioralQuestions = [
   'Tell me about a time you solved a difficult problem.',
@@ -24,7 +25,9 @@ const behavioralQuestions = [
 function InterviewPractice() {
   const [careerId, setCareerId] = useState<CareerId>('dataAnalytics');
   const [mode, setMode] = useState<InterviewMode>('behavioral');
-  const [format, setFormat] = useState<PracticeFormat>('live');
+  const [format, setFormat] = useState<PracticeFormat>(
+    LIVE_INTERVIEW_CONFIGURED ? 'live' : 'written',
+  );
   const [questionIndex, setQuestionIndex] = useState(0);
   const [response, setResponse] = useState('');
   const [reviewed, setReviewed] = useState(false);
