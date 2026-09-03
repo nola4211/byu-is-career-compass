@@ -2,7 +2,7 @@
 
 Last updated: 2026-09-02
 
-## Feature-branch checks
+## LiveKit feature-branch checks
 
 | Check | Exact command or action | Result |
 | --- | --- | --- |
@@ -18,26 +18,28 @@ Last updated: 2026-09-02
 | Worker preflight/input/token tests | Local Worker plus HTTP requests | Passed; 204 preflight, 403 foreign origin, 400 invalid career, and 201 valid token |
 | Token claims | Decode disposable local token | Passed; 600 seconds, random room/identity, microphone-only publish, fixed `career-interviewer` dispatch, derived metadata |
 | Career allow-list | Request a disposable token for every `CAREER_IDS` value | Passed; all eight returned 201 |
+| Secret scan | Search tracked source and built artifact for disposable values/non-empty credentials | Passed; zero hits and `.dev.vars` removed |
 | Format check | `npx oxfmt --check .` | Did not pass; 95 existing files would be rewritten, so no repo-wide format mutation was made |
 | Real LiveKit session | Browser with deployed Worker and real credentials | Pending owner configuration |
 | Avatar session | Real provider/agent video track | Not implemented |
 
-## Verified on the GitHub Pages migration before this merge
+## Current GitHub Pages evidence from `main`
 
-The `main` migration recorded passing `npm ci`, lint, static export, artifact
-layout, quiz completion, direct career link, written self-review, repository-path
-assets, and a 390-by-844 mobile-width check. These results are historical
-evidence, not a claim that the merged LiveKit branch has passed them unchanged.
+| Check | Exact command or action | Result |
+| --- | --- | --- |
+| Pages workflow | Observe `Deploy GitHub Pages` run `33702333157` | Passed after Pages was enabled and the failed deployment job was rerun |
+| Production URL | Open home and Cybersecurity interview URLs | Passed; both returned HTTP 200 and the home page rendered in a browser |
+| Pre-integration browser baseline | Quiz, career query, written feedback, assets, and 390-by-844 layout | Passed before LiveKit branch merge |
 
 ## Notes
 
-- Dependency installation currently reports 10 audit findings. No automatic
-  force fix was applied because that could introduce unrelated breaking changes.
-- With the host's Node.js 24.16.0, Vinext completed the export but then exited 1
-  with a Windows libuv shutdown assertion. The exact build script passed under
-  Node.js 22.22.1, matching the GitHub Actions `node-version: 22` configuration.
+- Dependency installation reports 10 audit findings. No force fix was applied
+  because it could introduce unrelated breaking changes.
+- With the host's Node.js 24.16.0, Vinext completed the export but exited 1 with
+  a Windows libuv shutdown assertion. The exact script passed under Node.js
+  22.22.1, matching GitHub Actions `node-version: 22`.
 - The client build reports a chunk-size warning after adding LiveKit; it does not
   fail the build.
-- A configured production build must not contain API keys or test credentials.
 - A local fake-key token test verifies token shape and grants, not connection to
   LiveKit Cloud.
+
