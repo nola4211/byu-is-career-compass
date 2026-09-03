@@ -9,12 +9,11 @@ helps students compare eight BYU-connected Information Systems career paths,
 receive a lightweight quiz match, and practice behavioral or career-specific
 interview answers.
 
-**Implemented, pending frontend release:** The interview page supports a live
-spoken practice session with the `career-interviewer` LiveKit agent. The token
-Worker is deployed with owner-provided credentials; the Pages build variable
-and feature-branch release remain. A written self-review exercise remains
-available when voice is unavailable or the student prefers not to use a
-microphone.
+**Implemented and deployed, under live validation:** The interview page supports
+a live spoken practice session with the `career-interviewer` LiveKit agent. The
+token Worker is deployed with owner-provided credentials, and the Pages build
+contains its public endpoint. A written self-review exercise remains available
+when voice is unavailable or the student prefers not to use a microphone.
 
 | Question | Current answer |
 | --- | --- |
@@ -26,7 +25,7 @@ microphone.
 | Application persistence | None; quiz and practice-page state remain in React memory |
 | Frontend hosting | Vinext static export published to GitHub Pages |
 | Public URL | `https://nola4211.github.io/byu-is-career-compass/` |
-| Live token service | Deployed Cloudflare Worker in `services/livekit-token-worker/`; Pages build variable pending |
+| Live token service | Deployed Cloudflare Worker in `services/livekit-token-worker/`; public endpoint is embedded in the Pages build |
 
 ## Current user journeys
 
@@ -68,7 +67,8 @@ be presented as individual-career outcomes.
 ## Known external configuration
 
 - LiveKit URL: `wss://is-core-case-2026-zat9gox0.livekit.cloud`
-- Agent dispatch name: `career-interviewer`
+- Expected agent dispatch name: `career-interviewer`; the matching Agent
+  Builder configuration exists but is not deployed yet
 - Public token endpoint:
   `https://byu-is-career-compass-livekit-token.nola4211-career-compass.workers.dev`
 - Public token endpoint build variable: `VITE_LIVEKIT_TOKEN_ENDPOINT`

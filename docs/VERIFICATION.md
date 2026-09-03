@@ -21,6 +21,10 @@ Last updated: 2026-09-02
 | Secret scan | Search tracked source and built artifact for disposable values/non-empty credentials | Passed; zero hits and `.dev.vars` removed |
 | Production Worker deploy | `npm run livekit:deploy`, followed by owner-entered Wrangler secrets | Passed; Worker version `2c9318c2-ed99-4c34-bffb-d91a8f2e291d` published at the recorded `workers.dev` endpoint |
 | Production Worker HTTP checks | Send allowed preflight, foreign-origin, invalid-career, and valid token requests | Passed; returned 204, 403, 400, and 201 respectively; valid response contained a server URL and participant token |
+| LiveKit-enabled Pages deploy | Workflow run `33713674323`, HTTP request, and deployed asset inspection | Passed; workflow succeeded, interview route returned 200, and its JavaScript contains the Worker endpoint and fixed agent name |
+| First production browser attempt | Start a live interview in Chrome and inspect the page, console, and LiveKit Sessions | Did not pass; token fetch and signaling started, but the room disconnected before establishment and LiveKit recorded zero sessions |
+| Session lifecycle fix | Inspect `useSession` stability, narrow cleanup dependency to `session.end`, run `npm run lint` and `npx tsc --noEmit` | Passed locally; production redeploy and microphone test pending |
+| LiveKit agent deployment | Inspect Agents list and matching `career-interviewer` builder configuration | Pending; two Agent Builder records show `deploying` / `Not deployed yet`, with no deployed name or version |
 | Format check | `npx oxfmt --check .` | Did not pass; 95 existing files would be rewritten, so no repo-wide format mutation was made |
 | Real LiveKit session | Browser with deployed Worker and real credentials | Pending Pages variable, feature release, and microphone test |
 | Avatar session | Real provider/agent video track | Not implemented |
