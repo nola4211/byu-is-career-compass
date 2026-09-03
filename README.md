@@ -19,7 +19,7 @@ npm run dev
 
 ## LiveKit status
 
-The feature branch includes live voice interviewing plus the existing written
+The interview route supports live voice interviewing plus the existing written
 fallback. Because GitHub Pages is static, token signing runs as a separate
 Cloudflare Worker in `services/livekit-token-worker/`.
 

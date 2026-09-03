@@ -37,6 +37,25 @@ Still required for completion:
 - Confirm and document provider recording, transcript, analytics, retention,
   deletion, session limit, and cost policies.
 
+## Production activation
+
+These steps require the repository/Cloudflare owner. Run them from this project
+without pasting credentials into chat, GitHub, or a committed file:
+
+1. Authenticate the intended Cloudflare account with `npx wrangler login`.
+2. Run `npm run livekit:deploy` once to create the Worker and note its HTTPS URL.
+   Until both secrets are set, the endpoint intentionally returns HTTP 503.
+3. Run `npx wrangler secret put LIVEKIT_API_KEY --config wrangler.livekit.jsonc`
+   and enter the value at the hidden prompt.
+4. Run
+   `npx wrangler secret put LIVEKIT_API_SECRET --config wrangler.livekit.jsonc`
+   and enter the value at the hidden prompt. Cloudflare deploys the updated
+   Worker version when each secret is changed.
+5. In GitHub repository Settings -> Secrets and variables -> Actions ->
+   Variables, create `VITE_LIVEKIT_TOKEN_ENDPOINT` with the HTTPS Worker URL.
+6. Merge pull request #2. The push to `main` builds the static site with that
+   public endpoint. Observe the Pages workflow before testing a real session.
+
 ## Session contract
 
 The browser may request only:
@@ -94,4 +113,5 @@ browser tests.
 - [LiveKit token endpoints](https://docs.livekit.io/frontends/build/authentication/endpoint/)
 - [LiveKit authentication](https://docs.livekit.io/frontends/build/authentication/)
 - [LiveKit virtual avatars](https://docs.livekit.io/frontends/build/virtual-avatars/)
-
+- [Cloudflare Worker deployment commands](https://developers.cloudflare.com/workers/wrangler/commands/workers/)
+- [Cloudflare Worker secrets](https://developers.cloudflare.com/workers/configuration/secrets/)
