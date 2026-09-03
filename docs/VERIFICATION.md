@@ -14,8 +14,8 @@ Last updated: 2026-09-02
 | Repository-path assets | Serve artifact at `/byu-is-career-compass/` | Passed; CSS, scripts, and fonts loaded |
 | Mobile layout | Browser viewport 390 × 844 | Passed; document width remained 390px |
 | Secret/legacy URL scan | Search tracked source and built artifact | Passed; no secret-like value or `chatgpt.site` reference found |
-| GitHub workflow | Publish and observe `Deploy GitHub Pages` | Pending |
-| Production URL | Open `https://nola4211.github.io/byu-is-career-compass/` | Pending |
+| GitHub workflow | Observe `Deploy GitHub Pages` run `33702333157` | Passed after Pages was enabled and the failed deployment job was rerun |
+| Production URL | Open home and Cybersecurity interview URLs | Passed; both returned HTTP 200 and the home page rendered in a browser |
 
 ## Notes
 
