@@ -59,9 +59,11 @@ new `/interview` integration, then evaluate an optional avatar provider.
 
 ## Best next action
 
-Configure the server-only hosting variables from `.env.example`, confirm the
-`career-interviewer` deployment is ready, and run a real voice session. Inspect
-the token route and agent logs without copying secrets into issues or chat.
+Review GitHub pull request 2, restore access to the checked-in Sites project in
+the connected workspace, configure the server-only variables from
+`.env.example`, confirm the `career-interviewer` deployment is ready, and run a
+real voice session. Inspect the token route and agent logs without copying
+secrets into issues or chat.
 
 ## Do not change without explicit agreement
 
