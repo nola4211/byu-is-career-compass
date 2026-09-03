@@ -28,12 +28,14 @@ Pages. Live voice and avatar interviewing remain planned but unimplemented.**
 
 ## Publication status
 
-- Migration branch, pull request, merge, Pages configuration, workflow run, and
-  public URL verification are pending publication from this workspace.
+- Pull request #3 was squash-merged to `main` as commit `d702da4`.
+- GitHub Pages uses GitHub Actions, workflow run `33702333157` succeeded, and
+  `https://nola4211.github.io/byu-is-career-compass/` returned HTTP 200 and was
+  verified in a browser.
 - The existing OpenAI Sites deployment remains available as rollback and is not
   modified by this change.
 
 ## Next action
 
-Publish the migration branch, merge it to `main`, enable GitHub Actions as the
-Pages source, and verify the live GitHub Pages URL.
+Treat GitHub Pages as the primary frontend. Select a separate secure backend
+before implementing the planned LiveKit token endpoint.

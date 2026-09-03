@@ -17,12 +17,13 @@ the existing quiz and text interview and leaving LiveKit documentation-only.
 - Passed install, lint, build, desktop interaction, direct route, and mobile
   width checks; see `docs/VERIFICATION.md`.
 
-## Remaining publication steps
+## Publication result
 
-1. Push `deploy/github-pages`.
-2. Open and merge its pull request into `main`.
-3. Configure GitHub Pages to use GitHub Actions.
-4. Wait for the workflow and verify the public URL.
+- PR #3 was squash-merged to `main` as `d702da4`.
+- GitHub Pages is configured to deploy through GitHub Actions.
+- Workflow run `33702333157` succeeded.
+- The live site is verified at
+  `https://nola4211.github.io/byu-is-career-compass/`.
 
 ## Guardrails
 

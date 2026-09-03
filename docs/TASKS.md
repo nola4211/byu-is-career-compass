@@ -9,7 +9,7 @@ testable completion condition, and direct evidence before it is marked done.
 
 | ID | Priority | Task | Owner | State | Dependencies | Acceptance criteria | Evidence or next check |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| GH-001 | High | Move the frontend to GitHub Pages | Codex | In progress | Repository Pages access | Static export is deployed from `main` and the public URL passes smoke tests | Local checks pass; publication pending |
+| GH-001 | High | Move the frontend to GitHub Pages | Codex | Done | None | Static export is deployed from `main` and the public URL passes smoke tests | PR #3; workflow `33702333157`; live URL verified |
 | DOC-001 | High | Publish the coordination pack in the GitHub repository | Codex | Done | None | Documentation is incorporated with the hosting migration | Merged into `deploy/github-pages` |
 | QA-001 | High | Establish the application verification baseline | Codex | Done | Node.js 22.13+ | Install, lint, build, and representative browser flows have recorded results | `docs/VERIFICATION.md` |
 | LK-001 | High | Confirm LiveKit deployment inputs and privacy policy | Unassigned | Ready | Product owner and LiveKit owner | Agent name, project URL, authentication, recording, transcript retention, and deletion choices are documented without secrets | Record decisions; never commit keys |
