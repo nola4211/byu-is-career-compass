@@ -4,14 +4,10 @@ Snapshot: 2026-09-02
 
 ## State
 
-**The LiveKit integration and credentialed token Worker are deployed. The first
-browser test reached the token endpoint and LiveKit signaling, but the frontend
-ended the room during the connection-state render. The cause is fixed on
-`fix/livekit-session-lifecycle`; a successful microphone-to-agent session is
-not yet claimed. The matching `career-interviewer` Agent Builder configuration
-also still shows `deploying` / `Not deployed yet` in LiveKit Cloud.**
-
-Pull request #2 is updated against current `main` and reports mergeable.
+**The LiveKit frontend, credentialed token Worker, session-lifecycle fix, and
+matching `career-interviewer` Agent Builder deployment are live. LiveKit Cloud
+shows the agent running in production with the expected explicit dispatch
+name. A successful microphone-to-agent conversation is not yet claimed.**
 
 ## Production frontend
 
@@ -22,6 +18,9 @@ Pull request #2 is updated against current `main` and reports mergeable.
 - Pull request #2 was squash-merged to `main` as `e753a13`.
 - GitHub Pages workflow run `33713674323` succeeded with the configured public
   token endpoint embedded in the interview-page JavaScript.
+- Pull request #5 was squash-merged to `main` as `90cb244`.
+- GitHub Pages workflow run `33715049992` succeeded with the session-lifecycle
+  fix.
 
 ## Completed on `main`
 
@@ -38,6 +37,9 @@ Pull request #2 is updated against current `main` and reports mergeable.
   `VITE_LIVEKIT_TOKEN_ENDPOINT` repository variable.
 - Deployed the credentialed token Worker at
   `https://byu-is-career-compass-livekit-token.nola4211-career-compass.workers.dev`.
+- Deployed Agent Builder version `RzHQfERQN9jP` to production. LiveKit Cloud
+  reports agent ID `CA_RfBuCqhsQZYt`, dispatch name `career-interviewer`, status
+  `running`, and 100% uptime at the verification point.
 
 ## Verification status
 
@@ -52,20 +54,24 @@ Pull request #2 is updated against current `main` and reports mergeable.
 - The first production browser attempt requested a token and started LiveKit
   signaling, then disconnected before a room was established. Browser logs and
   the component source traced this to the cleanup effect depending on the
-  changing session object. The focused fix depends only on the stable `end`
-  callback; lint and TypeScript pass.
+  changing session object. The stable-`end` callback fix is merged and deployed;
+  the refreshed public page remains ready without repeating that error.
+- The Agent Builder prompt, greeting, five metadata variables, model pipeline,
+  production version, and exact explicit dispatch name were browser-verified.
 - Formatting check reports 95 existing files would change; no repo-wide format
   rewrite was made.
-- No real LiveKit session, avatar, or LiveKit-enabled Pages deployment is
-  claimed. See `docs/VERIFICATION.md` for exact evidence.
+- No successful real microphone conversation or avatar session is claimed. See
+  `docs/VERIFICATION.md` for exact evidence.
 
 ## Blockers requiring owner access
 
-1. Merge and deploy the session-lifecycle fix.
-2. Deploy the existing `career-interviewer` Agent Builder configuration.
-3. Repeat the real browser/device session.
+1. Run a real desktop microphone conversation and verify that the agent joins,
+   receives the session metadata, speaks, transcribes, and ends normally.
+2. Confirm provider retention, recording, deletion, and cost policies before
+   calling the feature production-ready.
+3. Repeat the accepted flow on mobile and cover denial/disconnect cases.
 
 ## Next action
 
-Release the lifecycle fix and run the first successful real voice session
-before marking LiveKit production-ready.
+Run the first successful real voice session and inspect its LiveKit session
+record before marking LiveKit production-ready.

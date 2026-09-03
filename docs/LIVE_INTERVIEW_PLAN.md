@@ -1,7 +1,8 @@
 # Live Interview and Avatar Plan
 
-Status: **Voice integration implemented in the feature branch; external
-configuration and end-to-end verification pending. Avatar remains proposed.**
+Status: **Voice integration, external token service, lifecycle fix, and named
+agent deployment are live; real conversation verification is pending. Avatar
+remains proposed.**
 
 Last reviewed: 2026-09-02
 
@@ -14,7 +15,7 @@ approved.
 
 ## Phase 1: Voice vertical slice
 
-Implemented in `feat/livekit-interview`:
+Implemented on `main`:
 
 - LiveKit React/web and server SDK dependencies.
 - Live/written practice selection on the existing interview route.
@@ -29,18 +30,14 @@ Implemented in `feat/livekit-interview`:
 
 Still required for completion:
 
-- Deploy the Worker with real LiveKit API credentials.
-- Add its URL to `VITE_LIVEKIT_TOKEN_ENDPOINT` in GitHub Actions.
-- Confirm the LiveKit agent deployment is active.
 - Test all eight careers, both modes, microphone denial, disconnect, normal end,
   and mobile behavior against the real service.
 - Confirm and document provider recording, transcript, analytics, retention,
   deletion, session limit, and cost policies.
 
-## Production activation
+## Production activation record
 
-These steps require the repository/Cloudflare owner. Run them from this project
-without pasting credentials into chat, GitHub, or a committed file:
+The owner completed these steps without committing or sharing credentials:
 
 1. Authenticate the intended Cloudflare account with `npx wrangler login`.
 2. Run `npm run livekit:deploy` once to create the Worker and note its HTTPS URL.
@@ -55,6 +52,9 @@ without pasting credentials into chat, GitHub, or a committed file:
    Variables, create `VITE_LIVEKIT_TOKEN_ENDPOINT` with the HTTPS Worker URL.
 6. Merge pull request #2. The push to `main` builds the static site with that
    public endpoint. Observe the Pages workflow before testing a real session.
+7. Merge the lifecycle fix in pull request #5 and verify Pages workflow
+   `33715049992`.
+8. Configure and deploy the matching `career-interviewer` Agent Builder agent.
 
 ## Session contract
 
