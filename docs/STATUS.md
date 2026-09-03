@@ -37,6 +37,8 @@ configured.**
 - The LiveKit project URL is
   `wss://is-core-case-2026-zat9gox0.livekit.cloud`; the configured agent name is
   `career-interviewer`.
+- The implementation is published for review in GitHub pull request 2 from
+  `feat/livekit-interview`, based on the latest observed `main` commit.
 
 ## Verification completed
 

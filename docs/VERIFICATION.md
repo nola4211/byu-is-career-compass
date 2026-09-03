@@ -31,6 +31,7 @@ Node.js 22.13.0 minimum. No real provider credentials were used.
 | Sites project access | Resolve the checked-in `.openai/hosting.json` project through Sites | Blocked; the connector returned `project_not_found` (404) in the current workspace, so no version or production deployment was created | 2026-09-02 |
 | Documentation links | Resolve relative Markdown links locally and verify the repository-only `CAREERS.md` target through GitHub | Passed; every proposed target was found | 2026-09-02 |
 | GitHub documentation publication | Create `docs/agent-coordination-livekit` from `main` and open PR 1 | Passed | 2026-09-02 |
+| GitHub implementation publication | Publish `feat/livekit-interview` from current `main` and open PR 2 | Passed; PR is open, mergeable, and contains 20 changed files with the exact validated local tree | 2026-09-02 |
 
 ## Expected UI regression checks
 
