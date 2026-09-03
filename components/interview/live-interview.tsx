@@ -69,6 +69,7 @@ function LiveInterviewStage({
   setAcknowledged: (value: boolean) => void;
 }) {
   const session = useSessionContext();
+  const endSession = session.end;
   const agent = useAgent();
   const { messages } = useSessionMessages();
   const [hasStarted, setHasStarted] = useState(false);
@@ -76,7 +77,7 @@ function LiveInterviewStage({
   const [isStarting, setIsStarting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => () => void session.end(), [session]);
+  useEffect(() => () => void endSession(), [endSession]);
 
   const startInterview = async () => {
     setError(null);
@@ -88,14 +89,14 @@ function LiveInterviewStage({
     } catch (startError) {
       setHasStarted(false);
       setError(friendlyError(startError));
-      await session.end();
+      await endSession();
     } finally {
       setIsStarting(false);
     }
   };
 
   const endInterview = async () => {
-    await session.end();
+    await endSession();
     setHasStarted(false);
     setIsMuted(false);
   };

@@ -4,11 +4,12 @@ Snapshot: 2026-09-02
 
 ## State
 
-**The career-discovery and written-practice frontend is live on GitHub Pages.
-The LiveKit voice integration is implemented on `feat/livekit-interview`, and
-its credentialed token Worker is deployed and responding correctly. A real
-voice session remains unavailable until the endpoint is connected to the Pages
-build and the feature branch is released.**
+**The LiveKit integration and credentialed token Worker are deployed. The first
+browser test reached the token endpoint and LiveKit signaling, but the frontend
+ended the room during the connection-state render. The cause is fixed on
+`fix/livekit-session-lifecycle`; a successful microphone-to-agent session is
+not yet claimed. The matching `career-interviewer` Agent Builder configuration
+also still shows `deploying` / `Not deployed yet` in LiveKit Cloud.**
 
 Pull request #2 is updated against current `main` and reports mergeable.
 
@@ -18,8 +19,11 @@ Pull request #2 is updated against current `main` and reports mergeable.
 - GitHub Pages workflow run `33702333157` succeeded.
 - `https://nola4211.github.io/byu-is-career-compass/` and its interview route
   were recorded as HTTP 200 and browser-verified.
+- Pull request #2 was squash-merged to `main` as `e753a13`.
+- GitHub Pages workflow run `33713674323` succeeded with the configured public
+  token endpoint embedded in the interview-page JavaScript.
 
-## Completed in the feature branch
+## Completed on `main`
 
 - Preserved the Vinext static export and GitHub Pages deployment architecture.
 - Added a live/written practice selector without removing written self-review.
@@ -45,6 +49,11 @@ Pull request #2 is updated against current `main` and reports mergeable.
 - The deployed Worker returned 204 for an allowed preflight, 403 for a foreign
   origin, 400 for an invalid career, and 201 with a server URL and participant
   token for a valid request.
+- The first production browser attempt requested a token and started LiveKit
+  signaling, then disconnected before a room was established. Browser logs and
+  the component source traced this to the cleanup effect depending on the
+  changing session object. The focused fix depends only on the stable `end`
+  callback; lint and TypeScript pass.
 - Formatting check reports 95 existing files would change; no repo-wide format
   rewrite was made.
 - No real LiveKit session, avatar, or LiveKit-enabled Pages deployment is
@@ -52,12 +61,11 @@ Pull request #2 is updated against current `main` and reports mergeable.
 
 ## Blockers requiring owner access
 
-1. Add the deployed Worker URL as the GitHub Actions repository variable
-   `VITE_LIVEKIT_TOKEN_ENDPOINT`.
-2. Confirm `career-interviewer` is active, then test a real browser/device
-   session after the feature branch is merged and Pages redeploys.
+1. Merge and deploy the session-lifecycle fix.
+2. Deploy the existing `career-interviewer` Agent Builder configuration.
+3. Repeat the real browser/device session.
 
 ## Next action
 
-Complete the owner-access configuration, merge pull request #2, and run the
-first real voice session before marking LiveKit production-ready.
+Release the lifecycle fix and run the first successful real voice session
+before marking LiveKit production-ready.
