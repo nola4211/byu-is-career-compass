@@ -42,4 +42,3 @@ Last updated: 2026-09-02
   fail the build.
 - A local fake-key token test verifies token shape and grants, not connection to
   LiveKit Cloud.
-

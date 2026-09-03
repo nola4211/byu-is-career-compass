@@ -55,4 +55,3 @@ deployed with owner-provided credentials and connected to the Pages build.**
 
 Update pull request #2, complete the owner-access configuration, and run the
 first real voice session before marking LiveKit production-ready.
-

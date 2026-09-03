@@ -18,4 +18,3 @@ Last updated: 2026-09-02
 Allowed states: `Ready`, `In progress`, `Blocked`, `In review`, and `Done`.
 
 Never place credentials or student data in this tracker.
-
