@@ -19,8 +19,10 @@ Last updated: 2026-09-02
 | Token claims | Decode disposable local token | Passed; 600 seconds, random room/identity, microphone-only publish, fixed `career-interviewer` dispatch, derived metadata |
 | Career allow-list | Request a disposable token for every `CAREER_IDS` value | Passed; all eight returned 201 |
 | Secret scan | Search tracked source and built artifact for disposable values/non-empty credentials | Passed; zero hits and `.dev.vars` removed |
+| Production Worker deploy | `npm run livekit:deploy`, followed by owner-entered Wrangler secrets | Passed; Worker version `2c9318c2-ed99-4c34-bffb-d91a8f2e291d` published at the recorded `workers.dev` endpoint |
+| Production Worker HTTP checks | Send allowed preflight, foreign-origin, invalid-career, and valid token requests | Passed; returned 204, 403, 400, and 201 respectively; valid response contained a server URL and participant token |
 | Format check | `npx oxfmt --check .` | Did not pass; 95 existing files would be rewritten, so no repo-wide format mutation was made |
-| Real LiveKit session | Browser with deployed Worker and real credentials | Pending owner configuration |
+| Real LiveKit session | Browser with deployed Worker and real credentials | Pending Pages variable, feature release, and microphone test |
 | Avatar session | Real provider/agent video track | Not implemented |
 
 ## Current GitHub Pages evidence from `main`

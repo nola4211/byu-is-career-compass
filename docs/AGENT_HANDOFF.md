@@ -24,17 +24,16 @@ secrets, while retaining written practice and preparing the UI for an avatar.
 - Added Worker examples/scripts and Pages endpoint-variable wiring.
 - Added an avatar video-track slot with a voice visualization fallback.
 - Passed the local checks recorded in `docs/VERIFICATION.md`.
+- Deployed and production-smoke-tested the credentialed Worker at
+  `https://byu-is-career-compass-livekit-token.nola4211-career-compass.workers.dev`.
 
 ## Next owner-access steps
 
-1. In the intended Cloudflare account, set Worker secrets
-   `LIVEKIT_API_KEY` and `LIVEKIT_API_SECRET`.
-2. Run `npm run livekit:deploy` and record the HTTPS Worker URL.
-3. Add that URL to the GitHub Actions repository variable
+1. Add the deployed Worker URL to the GitHub Actions repository variable
    `VITE_LIVEKIT_TOKEN_ENDPOINT`.
-4. Confirm the LiveKit deployment name is exactly `career-interviewer` and is
+2. Confirm the LiveKit deployment name is exactly `career-interviewer` and is
    active.
-5. Merge pull request #2, observe the Pages workflow, and test a live session on
+3. Merge pull request #2, observe the Pages workflow, and test a live session on
    desktop and mobile.
 
 ## Guardrails
@@ -45,4 +44,3 @@ secrets, while retaining written practice and preparing the UI for an avatar.
   provider configuration proves it.
 - Keep the eight `CareerId` values and `CAREERS.md` evidence policy stable.
 - Do not select or purchase an avatar provider without owner approval.
-

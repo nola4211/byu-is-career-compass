@@ -5,9 +5,10 @@ Snapshot: 2026-09-02
 ## State
 
 **The career-discovery and written-practice frontend is live on GitHub Pages.
-The LiveKit voice integration is implemented on `feat/livekit-interview`; a
-real voice session remains unavailable until its external token Worker is
-deployed with owner-provided credentials and connected to the Pages build.**
+The LiveKit voice integration is implemented on `feat/livekit-interview`, and
+its credentialed token Worker is deployed and responding correctly. A real
+voice session remains unavailable until the endpoint is connected to the Pages
+build and the feature branch is released.**
 
 Pull request #2 is updated against current `main` and reports mergeable.
 
@@ -31,6 +32,8 @@ Pull request #2 is updated against current `main` and reports mergeable.
 - Added an avatar video-track render path with a voice visualization fallback.
 - Added GitHub Actions support for the public
   `VITE_LIVEKIT_TOKEN_ENDPOINT` repository variable.
+- Deployed the credentialed token Worker at
+  `https://byu-is-career-compass-livekit-token.nola4211-career-compass.workers.dev`.
 
 ## Verification status
 
@@ -39,18 +42,19 @@ Pull request #2 is updated against current `main` and reports mergeable.
 - Disposable-key local tests passed for CORS, invalid input, a ten-minute
   microphone-only token, fixed agent dispatch, normalized metadata, and all
   eight career IDs.
+- The deployed Worker returned 204 for an allowed preflight, 403 for a foreign
+  origin, 400 for an invalid career, and 201 with a server URL and participant
+  token for a valid request.
 - Formatting check reports 95 existing files would change; no repo-wide format
   rewrite was made.
-- No real LiveKit session, avatar, Worker deployment, or LiveKit-enabled Pages
-  deployment is claimed. See `docs/VERIFICATION.md` for exact evidence.
+- No real LiveKit session, avatar, or LiveKit-enabled Pages deployment is
+  claimed. See `docs/VERIFICATION.md` for exact evidence.
 
 ## Blockers requiring owner access
 
-1. Add `LIVEKIT_API_KEY` and `LIVEKIT_API_SECRET` to the Worker environment.
-2. Authenticate the Cloudflare CLI/account and deploy the Worker.
-3. Add the resulting HTTPS URL as the GitHub Actions repository variable
+1. Add the deployed Worker URL as the GitHub Actions repository variable
    `VITE_LIVEKIT_TOKEN_ENDPOINT`.
-4. Confirm `career-interviewer` is active, then test a real browser/device
+2. Confirm `career-interviewer` is active, then test a real browser/device
    session after the feature branch is merged and Pages redeploys.
 
 ## Next action
