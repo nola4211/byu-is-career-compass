@@ -2,85 +2,80 @@
 
 Last reviewed: 2026-09-02
 
-Checked against: `nola4211/byu-is-career-compass` at main commit
-`7cc52e6e9aa6e89a00a08f823ecea68b4fd29327`
+## System map
 
-## Verified system map
+The project has two deployment units:
 
-The repository is a TypeScript and React 19 application using the Next.js App
-Router programming model through Vinext. Vinext statically exports the routes
-for GitHub Pages, and GitHub Actions publishes `dist/client`. There is no application backend route,
-database binding, object-storage binding, authentication layer, or LiveKit SDK
-in the inspected tree.
+1. A React 19/Vinext static frontend exported to `dist/client` and published by
+   GitHub Pages.
+2. A separate Cloudflare Worker that signs short-lived LiveKit tokens. Secrets
+   remain in the Worker environment and never enter the static bundle.
 
-| Path | Responsibility | Important dependencies or constraints |
+| Path | Responsibility | Constraint |
 | --- | --- | --- |
-| `app/layout.tsx` | Root HTML, Geist fonts, metadata, and global stylesheet | Applies to every route |
-| `app/page.tsx` | Career-discovery quiz, ranking, explorer, and navigation to interview prep | Client component; all state is in memory |
-| `app/interview/page.tsx` | Text-only interview questions and heuristic self-review | Client component; reads `career` query parameter |
-| `app/globals.css` | Full site, journey, career, interview, responsive, and reduced-motion styling | Contains most product-specific presentation |
-| `data/careers.ts` | Career IDs, sourced content, presentation accents, and program profile | Governed by `CAREERS.md` |
-| `data/questions.ts` | Discovery questions and per-answer score weights | Team-authored recommendation logic |
-| `components/ui/` | Reusable Shadcn/Base UI presentation components | Do not modify broadly for a page-only change |
-| `CAREERS.md` | Career schema, source policy, confirmed facts, and gaps | Read before any career-content change |
-| `vite.config.ts` | Vinext and Tailwind build configuration | Produces the static export selected by `next.config.ts` |
-| `next.config.ts` | Static-export and GitHub Pages asset-prefix configuration | Public assets use `/byu-is-career-compass` |
-| `.github/workflows/deploy-pages.yml` | Lint, build, artifact upload, and GitHub Pages deployment | Runs on `main` and manual dispatch |
-| `package.json` | Node requirement, dependencies, and scripts | Requires Node.js 22.13.0 or newer |
+| `app/page.tsx` | Career quiz, ranking, and interview navigation | Client state only |
+| `app/interview/page.tsx` | Career query validation and live/written composition | Static route; no server API |
+| `components/interview/live-interview.tsx` | LiveKit session, media, transcript, state, controls, fallback | Reads only the public endpoint URL |
+| `lib/interview-session.ts` | Stable ID/mode allow-lists and normalized metadata | Shared with Worker; no secrets |
+| `services/livekit-token-worker/src/index.ts` | Origin/input validation, token signing, room/identity creation, agent dispatch | Server-only secrets |
+| `wrangler.livekit.jsonc` | Worker build/deploy configuration and non-secret defaults | Secrets must be added separately |
+| `.github/workflows/deploy-pages.yml` | Lint, static build, and Pages deployment | Reads `VITE_LIVEKIT_TOKEN_ENDPOINT` repository variable |
+| `next.config.ts` | Static export and repository asset prefix | Prefix is `/byu-is-career-compass` in production |
+| `scripts/prepare-pages.mjs` | Normalizes the static artifact for GitHub Pages | Runs after `vinext build` |
+| `data/careers.ts` | Eight stable career IDs and presentation data | Governed by `CAREERS.md` |
 
-## Current data flows
+## Discovery flow
 
-### Discovery flow
-
-`data/questions.ts` -> React state in `app/page.tsx` -> weighted score per
-`CareerId` -> ranked result -> `data/careers.ts` presentation ->
+`data/questions.ts` -> in-memory React scoring -> ranked `CareerId` ->
 `/interview?career=<CareerId>`.
 
-Nothing in this flow is sent to a server or persisted by application code.
+No application server receives or persists discovery answers.
 
-### Interview flow
+## Live interview flow
 
-URL `career` value -> allow-list validation against `CAREER_IDS` -> question list
-derived from `data/careers.ts` -> typed textarea response -> local `useMemo`
-heuristics -> feedback displayed in the page.
+1. The interview page allow-lists `careerId` and `mode` and creates display
+   metadata; arbitrary prompts, agent names, room names, and identities are not
+   accepted from the browser.
+2. LiveKit's standardized token client posts agent metadata to
+   `VITE_LIVEKIT_TOKEN_ENDPOINT`.
+3. The Worker enforces one configured browser origin and parses metadata with
+   `lib/interview-session.ts`.
+4. The Worker generates random room/participant identifiers and a ten-minute
+   token with room join, subscribe, data, and microphone-only publish grants.
+5. The token embeds dispatch for the fixed `career-interviewer` agent.
+6. The client joins, publishes microphone audio only after a student action,
+   renders agent audio/state/transcript, and displays an agent camera track if
+   one is later published.
 
-The response remains in React state and is cleared when the user changes career,
-mode, or question. No transcript or recording code exists.
+The current frontend does not store transcripts or recordings. This does not
+establish what LiveKit or downstream model providers retain.
 
-### Host tool integration
+## Environment boundary
 
-`app/page.tsx` conditionally registers an `open_career_exploration` tool when the
-host supplies `document.modelContext.registerTool`. The tool selects a supported
-career and scrolls the visible page. It does not itself call an external API.
+Public static-build value:
 
-## Proposed LiveKit boundary
+- `VITE_LIVEKIT_TOKEN_ENDPOINT`
 
-The live interview is not implemented. The proposed boundary is:
+Worker-only values:
 
-1. A separately hosted server-only token endpoint validates the request and creates short-lived
-   LiveKit connection credentials with agent dispatch information.
-2. The `/interview` client starts and ends a LiveKit session, publishes the
-   student's microphone, and renders connection/agent state.
-3. The deployed agent receives only allow-listed session metadata such as the
-   stable career ID, display name, question mode, and optional difficulty.
-4. The agent publishes speech and transcript/state events back to the room.
-5. If enabled, an avatar worker publishes synchronized audio and video as a
-   separate room participant; the frontend renders the resulting video track.
+- `LIVEKIT_URL`
+- `LIVEKIT_API_KEY`
+- `LIVEKIT_API_SECRET`
+- `LIVEKIT_AGENT_NAME`
+- `LIVEKIT_ALLOWED_ORIGIN`
 
-Keep `LIVEKIT_API_KEY`, `LIVEKIT_API_SECRET`, and any avatar-provider key on the
-server. Never include them in a client component, public environment variable,
-repository file, log, or handoff.
+Only the endpoint and LiveKit WebSocket URL are public connection information.
+API credentials and future avatar/model keys must remain server-side.
 
-See `LIVE_INTERVIEW_PLAN.md` for phases and acceptance criteria.
+## Known risks
 
-## Architecture risks and unknowns
-
-- GitHub Pages cannot host the proposed token route; an external server runtime
-  must be selected before coding it.
-- There are no automated tests in the inspected tree.
-- No error-reporting, analytics, or consent flow is present.
-- LiveKit session retention, transcript handling, and recording defaults have
-  not been selected or verified for this product.
-- An avatar increases latency, cost, failure modes, and disclosure obligations;
-  voice-only must remain a usable fallback.
+- The static frontend and Worker must be deployed independently and configured
+  with matching origins.
+- No user authentication or per-student rate limit is implemented; the Worker
+  restricts origin, request shape, token lifetime, and token capabilities but
+  origin checks are not a substitute for authentication.
+- Real provider retention, recording behavior, reconnect behavior, device
+  support, cost, and accessibility remain to be verified.
+- Avatar video adds a provider, latency, cost, and failure boundary; voice and
+  written fallbacks must remain usable.
 

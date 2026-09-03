@@ -4,30 +4,43 @@ Updated: 2026-09-02
 
 ## Objective
 
-Move BYU IS Career Compass from OpenAI Sites to GitHub Pages while preserving
-the existing quiz and text interview and leaving LiveKit documentation-only.
+Complete the LiveKit voice interview on the GitHub Pages site without exposing
+secrets, while retaining written practice and preparing the UI for an avatar.
 
-## Completed
-
-- Prepared a static Vinext export and GitHub Pages workflow.
-- Removed OpenAI Sites and Cloudflare runtime dependencies and configuration.
-- Made navigation and exported assets work beneath the repository project path.
-- Merged and updated the LiveKit planning documentation to require an external
-  secure token endpoint in the future.
-- Passed install, lint, build, desktop interaction, direct route, and mobile
-  width checks; see `docs/VERIFICATION.md`.
-
-## Publication result
+## Current production result
 
 - PR #3 was squash-merged to `main` as `d702da4`.
-- GitHub Pages is configured to deploy through GitHub Actions.
+- GitHub Pages deploys through GitHub Actions.
 - Workflow run `33702333157` succeeded.
-- The live site is verified at
+- The current non-LiveKit site is verified at
   `https://nola4211.github.io/byu-is-career-compass/`.
+
+## Completed in `feat/livekit-interview`
+
+- Merged the current GitHub Pages/static-export architecture.
+- Integrated LiveKit session UI and written fallback into `/interview`.
+- Added shared career/mode metadata validation.
+- Added a separately deployable Cloudflare token Worker.
+- Added Worker examples/scripts and Pages endpoint-variable wiring.
+- Added an avatar video-track slot with a voice visualization fallback.
+- Passed the local checks recorded in `docs/VERIFICATION.md`.
+- Deployed and production-smoke-tested the credentialed Worker at
+  `https://byu-is-career-compass-livekit-token.nola4211-career-compass.workers.dev`.
+
+## Next owner-access steps
+
+1. Add the deployed Worker URL to the GitHub Actions repository variable
+   `VITE_LIVEKIT_TOKEN_ENDPOINT`.
+2. Confirm the LiveKit deployment name is exactly `career-interviewer` and is
+   active.
+3. Merge pull request #2, observe the Pages workflow, and test a live session on
+   desktop and mobile.
 
 ## Guardrails
 
-- Do not put LiveKit or avatar credentials in the GitHub Pages site.
-- Keep the OpenAI Sites deployment untouched unless the owner separately asks
-  to decommission it after the GitHub URL is verified.
-- Do not change the eight stable `CareerId` values or career evidence policy.
+- Never put provider secrets in GitHub Pages variables, source, logs, or pull
+  request text.
+- Do not claim recordings or transcripts are private or unretained until the
+  provider configuration proves it.
+- Keep the eight `CareerId` values and `CAREERS.md` evidence policy stable.
+- Do not select or purchase an avatar provider without owner approval.

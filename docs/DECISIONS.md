@@ -1,92 +1,62 @@
 # Decision Log
 
-Record only decisions that constrain future work. Status values are **Proposed**,
-**Accepted**, **Superseded**, or **Rejected**.
+Statuses are **Proposed**, **Accepted**, **Superseded**, or **Rejected**.
 
-## D-001: Use Markdown as the cross-contributor coordination layer
+## D-001: Use Markdown as the coordination layer
 
 - Date: 2026-09-02
 - Status: Accepted
-- Context: The user requested durable references so contributors and agents can
-  collaborate without rebuilding project context.
-- Decision: Use root `AGENTS.md` for mandatory rules and separate context,
-  status, tasks, architecture, integration planning, verification, decisions,
-  workflow, and handoff files under `docs/`.
-- Consequences: Contributors have a predictable entry point and must keep
-  time-sensitive status current.
-- Evidence or related files: `AGENTS.md`, `docs/README.md`
+- Decision: Use root `AGENTS.md` for mandatory rules and focused references in
+  `docs/` for context, status, tasks, architecture, verification, decisions,
+  workflow, and handoff.
 
 ## D-002: Treat CAREERS.md as the career-content source of truth
 
 - Date: 2026-09-02
 - Status: Accepted
-- Context: The repository contains career facts, program-wide statistics, quiz
-  constructs, and known evidence gaps that must not be conflated.
 - Decision: Add verified BYU sources to `CAREERS.md` before changing related
-  claims in `data/careers.ts`. Do not present program-wide outcomes as
-  career-specific.
-- Consequences: Some fields intentionally remain empty until research is
-  complete. Quiz traits and weights remain clearly team-authored.
-- Evidence or related files: `CAREERS.md`, `data/careers.ts`
+  claims in `data/careers.ts`. Keep program-wide outcomes separate from
+  individual career paths and label quiz scoring as team-authored logic.
 
-## D-003: Use the GitHub repository as the shared project record
+## D-003: Use GitHub as the shared project record
 
 - Date: 2026-09-02
 - Status: Accepted
-- Context: The earlier Live Share view and the Codex writable mirror did not
-  expose the same source. The user identified
-  `nola4211/byu-is-career-compass` as the repository used with collaborators.
-- Decision: Keep coordination documents beside the application in that
-  repository and exchange material changes through focused branches and pull
-  requests.
-- Consequences: A local or Live Share-only note is not a durable handoff until it
-  is represented in the repository. GitHub write access is required to publish.
-- Evidence or related files: User direction on 2026-09-02; `docs/STATUS.md`
+- Decision: Keep coordination documents beside the application in
+  `nola4211/byu-is-career-compass` and exchange material work through focused
+  branches and pull requests.
 
-## D-004: Deliver LiveKit in a voice-first sequence
+## D-004: Deliver LiveKit voice before an avatar
 
 - Date: 2026-09-02
-- Status: Proposed
-- Context: The user has configured an Agent Builder voice agent and wants to
-  connect it to the existing interview page, then add a talking avatar. The
-  current page is text-only, and Agent Builder does not implement virtual
-  avatars.
-- Decision: First add a protected token endpoint and reliable voice session UI.
-  Convert or extend the deployed agent with the Agents SDK for an avatar only
-  after the voice path passes failure-state and privacy checks.
-- Alternatives considered: Ship voice and avatar together; embed a separate
-  avatar outside the LiveKit room; retain only text practice.
-- Consequences: The project gets a testable milestone and voice-only fallback.
-  The avatar remains a separate provider, cost, latency, and disclosure decision.
-- Evidence or related files: `docs/LIVE_INTERVIEW_PLAN.md`
+- Status: Accepted
+- Decision: Keep written practice as a fallback, add a LiveKit voice session as
+  the first media milestone, and render video only when an agent/avatar track is
+  available. Select and deploy an avatar provider after voice passes real-device,
+  failure-state, privacy, latency, and cost checks.
+- Consequence: The interface is avatar-ready without coupling the initial voice
+  rollout to a new paid provider.
 
 ## D-005: Publish the static frontend with GitHub Pages
 
 - Date: 2026-09-02
 - Status: Accepted
-- Context: The project owner requested GitHub rather than OpenAI Sites as the
-  public host. The current application has no backend and can be exported.
 - Decision: Use Vinext static export, publish `dist/client` from `main` with
   GitHub Actions, and serve the project at
   `https://nola4211.github.io/byu-is-career-compass/`.
-- Alternatives considered: Keep OpenAI Sites as primary; migrate to another
-  server host; add LiveKit during the hosting migration.
-- Consequences: The current quiz and text interview remain available. A future
-  LiveKit token endpoint must run on a separate secure backend.
-- Evidence or related files: `next.config.ts`,
-  `.github/workflows/deploy-pages.yml`, `docs/LIVE_INTERVIEW_PLAN.md`
+- Consequence: Dynamic token signing must run outside GitHub Pages.
 
-## Entry template
+## D-006: Run token signing as a separate Cloudflare Worker
 
-```text
-## D-NNN: Short decision title
-
-- Date: YYYY-MM-DD
-- Status: Proposed | Accepted | Superseded | Rejected
-- Context:
-- Decision:
-- Alternatives considered:
-- Consequences:
-- Evidence or related files:
-```
+- Date: 2026-09-02
+- Status: Accepted
+- Context: GitHub Pages cannot protect `LIVEKIT_API_SECRET`, while the browser
+  requires short-lived room credentials and explicit agent dispatch.
+- Decision: Deploy `services/livekit-token-worker/src/index.ts` independently.
+  Inject only its public HTTPS URL into the Pages build and store LiveKit API
+  credentials as Worker secrets.
+- Alternatives considered: Reintroduce a dynamic application host; use a
+  long-lived token in the browser; leave voice documentation-only.
+- Consequences: Frontend and token service have separate deployments. The owner
+  must configure Cloudflare secrets and one GitHub Actions variable.
 

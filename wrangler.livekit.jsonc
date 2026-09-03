@@ -1,0 +1,13 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "byu-is-career-compass-livekit-token",
+  "main": "services/livekit-token-worker/src/index.ts",
+  "compatibility_date": "2026-05-22",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "vars": {
+    "LIVEKIT_URL": "wss://is-core-case-2026-zat9gox0.livekit.cloud",
+    "LIVEKIT_AGENT_NAME": "career-interviewer",
+    "LIVEKIT_ALLOWED_ORIGIN": "https://nola4211.github.io"
+  }
+}

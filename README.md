@@ -19,4 +19,24 @@ npm run dev
 
 ## LiveKit status
 
-Live voice interviewing is planned but not implemented. GitHub Pages is static, so a future LiveKit integration must use a separately hosted HTTPS token endpoint; LiveKit API credentials must never be included in this repository or the browser bundle.
+The interview route supports live voice interviewing plus the existing written
+fallback. Because GitHub Pages is static, token signing runs as a separate
+Cloudflare Worker in `services/livekit-token-worker/`.
+
+For local development, copy `.dev.vars.example` to `.dev.vars`, add disposable
+development credentials, and create an ignored `.env.local` containing:
+
+```dotenv
+VITE_LIVEKIT_TOKEN_ENDPOINT=http://localhost:8787
+```
+
+Then run these in separate terminals:
+
+```bash
+npm run livekit:dev
+npm run dev
+```
+
+The frontend reads the public Worker URL from
+`VITE_LIVEKIT_TOKEN_ENDPOINT`. Production credentials belong only in the
+Worker environment. See `docs/LIVE_INTERVIEW_PLAN.md` and `.env.example`.
