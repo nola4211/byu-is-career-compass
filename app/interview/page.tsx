@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import Link from 'next/link';
 import { ArrowLeft, Check, ChevronRight, Clock3, Keyboard, Lightbulb, MessageSquareText, Mic2, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { LiveInterview } from '@/components/interview/live-interview';
@@ -76,7 +75,7 @@ function InterviewPractice() {
   return (
     <main className="interview-shell" style={{ '--career-accent': careerPresentation[careerId].accent } as React.CSSProperties}>
       <header className="interview-topbar">
-        <Link href={`${BASE_PATH}/`} className="back-link"><ArrowLeft /> Career Compass</Link>
+        <a href={`${BASE_PATH}/`} className="back-link"><ArrowLeft /> Career Compass</a>
         <div className="session-status"><span /> AI practice · audio starts only when you choose</div>
       </header>
 

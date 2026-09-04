@@ -1,6 +1,6 @@
 # Task Tracker
 
-Last updated: 2026-09-02
+Last updated: 2026-09-03
 
 | ID | Priority | Task | Owner | State | Dependencies | Acceptance criteria | Evidence or next check |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -13,6 +13,7 @@ Last updated: 2026-09-02
 | LK-004 | High | Pass career-aware session metadata to the agent | Codex | In progress | Real microphone test | All eight IDs and both modes are validated; derived metadata reaches agent | Builder defines all five variables and the matching agent is running; verify received values in a real session |
 | AV-001 | Medium | Select and prototype a virtual-avatar provider | Unassigned | Blocked | Reliable voice flow, budget, disclosure, vendor review | Synchronized video works with timeout and voice-only fallback | Frontend video-track slot is ready |
 | QA-002 | Medium | Add automated product-flow coverage | Unassigned | Ready | Test framework decision | Career validation, scoring, question cycling, and LiveKit failure states have repeatable tests | No test framework currently found |
+| QA-003 | High | Restore first-click navigation to interview practice | Codex | In review | Pull request review and Pages deploy | Every home-page interview link and the interview-page return link navigate with one normal left-click | Production failure reproduced; local static build and browser click-through passed on `fix/interview-prep-navigation` |
 | DATA-001 | Medium | Resolve career-content gaps | Unassigned | Ready | Verified BYU sources | Facts enter `CAREERS.md` before `data/careers.ts` | Existing evidence rules remain in force |
 
 Allowed states: `Ready`, `In progress`, `Blocked`, `In review`, and `Done`.

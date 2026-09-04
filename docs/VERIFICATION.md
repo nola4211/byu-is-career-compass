@@ -1,6 +1,16 @@
 # Verification Reference
 
-Last updated: 2026-09-02
+Last updated: 2026-09-03
+
+## Interview-navigation fix checks
+
+| Check | Exact command or action | Result |
+| --- | --- | --- |
+| Production reproduction | Left-click the `Interview prep` link on the deployed home page, then inspect its URL and hit target | Reproduced; the anchor received focus but navigation was cancelled, while its correct `/byu-is-career-compass/interview` URL remained available to open in a new tab |
+| Lint | Run `node_modules/.bin/oxlint` after replacing Vinext `Link` components with native anchors | Passed with no output |
+| TypeScript | Run `node_modules/.bin/tsc --noEmit` | Passed with no output |
+| Static export | Run `node_modules/.bin/vinext build`, then `node scripts/prepare-pages.mjs` | Passed; `/` and `/interview` were prerendered and the Pages artifact was prepared |
+| Local browser navigation | Serve the prepared artifact at the repository base path, left-click `Open Analytics interview practice`, then left-click `Career Compass` | Passed; navigation reached `/byu-is-career-compass/interview/?career=dataAnalytics` on the first click and returned home on the first click |
 
 ## LiveKit feature-branch checks
 

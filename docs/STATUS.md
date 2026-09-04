@@ -1,6 +1,6 @@
 # Current Project Status
 
-Snapshot: 2026-09-02
+Snapshot: 2026-09-03
 
 ## State
 
@@ -8,6 +8,13 @@ Snapshot: 2026-09-02
 matching `career-interviewer` Agent Builder deployment are live. LiveKit Cloud
 shows the agent running in production with the expected explicit dispatch
 name. A successful microphone-to-agent conversation is not yet claimed.**
+
+**A focused navigation fix is in review on
+`fix/interview-prep-navigation`.** The deployed site reproduces a Vinext
+client-router failure where a normal left-click on an interview link is
+cancelled even though opening the same URL in a new tab works. The fix uses
+native anchors for static cross-route navigation. Lint, TypeScript, the static
+export, and a local browser click-through passed.
 
 ## Production frontend
 
@@ -73,5 +80,6 @@ name. A successful microphone-to-agent conversation is not yet claimed.**
 
 ## Next action
 
-Run the first successful real voice session and inspect its LiveKit session
-record before marking LiveKit production-ready.
+Merge and deploy the interview-navigation fix, then confirm the production
+Interview prep link opens on the first left-click. The separate LiveKit next
+action remains a successful real voice session with session-log inspection.
