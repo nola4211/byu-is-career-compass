@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import Link from 'next/link';
 import { BarChart3, BriefcaseBusiness, ChevronRight, CloudCog, Code2, Compass, LayoutTemplate, Network, RotateCcw, ShieldCheck, Sparkles } from 'lucide-react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -142,7 +141,7 @@ export default function Home() {
           <span><strong>IS Career Compass</strong><small>BYU Marriott School</small></span>
         </button>
         <nav aria-label="Primary navigation">
-          <a href="#journey">Discover</a><a href="#careers">Explore careers</a><Link href={`${BASE_PATH}/interview`}>Interview prep</Link>
+          <a href="#journey">Discover</a><a href="#careers">Explore careers</a><a href={`${BASE_PATH}/interview`}>Interview prep</a>
         </nav>
       </header>
 
@@ -211,7 +210,7 @@ export default function Home() {
             <p className="result-tagline">{career.tagline}</p>
             <p className="why-match">You leaned toward work where {picks.slice(-3).map((pick) => pick.reason).join(', ')}.</p>
             <div className="result-actions">
-              <Link href={`${BASE_PATH}/interview?career=${selectedCareer}`} className={buttonVariants({ size: 'lg', className: 'primary-cta' })}>Practice for this path <ChevronRight /></Link>
+              <a href={`${BASE_PATH}/interview?career=${selectedCareer}`} className={buttonVariants({ size: 'lg', className: 'primary-cta' })}>Practice for this path <ChevronRight /></a>
               <Button variant="outline" size="lg" onClick={start} className="retake-button"><RotateCcw /> Retake</Button>
             </div>
           </div>
@@ -251,7 +250,7 @@ export default function Home() {
             </div>
             <div className="prep-box"><p className="overline">Prepare at BYU</p><ol>{career.byuPreparation.map((item, index) => <li key={item}><span>0{index + 1}</span>{item}</li>)}</ol></div>
             <div className="source-row"><span>Verified source{career.sources.length > 1 ? 's' : ''}</span>{career.sources.map((source, index) => <a key={source} href={source} target="_blank" rel="noreferrer">BYU source {index + 1}</a>)}</div>
-            <Link href={`${BASE_PATH}/interview?career=${selectedCareer}`} className={buttonVariants({ size: 'lg', className: 'detail-cta' })}>Open {careerPresentation[selectedCareer].shortName} interview practice <ChevronRight /></Link>
+            <a href={`${BASE_PATH}/interview?career=${selectedCareer}`} className={buttonVariants({ size: 'lg', className: 'detail-cta' })}>Open {careerPresentation[selectedCareer].shortName} interview practice <ChevronRight /></a>
           </article>
         </div>
         <div className="program-profile"><div><p className="overline">2025 BSIS placement profile</p><strong>{programProfile.placementWithinThreeMonths}%</strong><span>placed within three months</span></div><div><strong>${programProfile.medianSalary.toLocaleString()}</strong><span>median salary · program-wide</span></div><div><strong>{programProfile.graduates}</strong><span>BSIS graduates</span></div><a href={programProfile.source} target="_blank" rel="noreferrer">View BYU placement source <ChevronRight /></a></div>
