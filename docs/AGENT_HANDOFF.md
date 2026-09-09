@@ -1,11 +1,12 @@
 # Agent Handoff
 
-Updated: 2026-09-02
+Updated: 2026-09-09
 
 ## Objective
 
 Complete the LiveKit voice interview on the GitHub Pages site without exposing
-secrets, while retaining written practice and preparing the UI for an avatar.
+secrets, while retaining written practice, simplifying the live session around
+an audio-reactive water presence, and preparing the UI for an avatar.
 
 ## Current production result
 
@@ -17,6 +18,8 @@ secrets, while retaining written practice and preparing the UI for an avatar.
 - Lifecycle-fix workflow run `33715049992` succeeded.
 - The current site and configured interview bundle are verified at
   `https://nola4211.github.io/byu-is-career-compass/`.
+- Pull request #9 contains the verified water-presence and opt-in transcript UI.
+  It is mergeable but is not yet merged or deployed.
 
 ## Completed and deployed
 
@@ -46,12 +49,16 @@ secrets, while retaining written practice and preparing the UI for an avatar.
   error.
 - A real microphone conversation has not yet confirmed agent join, dynamic
   metadata delivery, speech, transcript, and normal session end.
+- The PR #9 water motion is driven by the agent microphone track volume while
+  speaking and uses calmer fixed pacing while listening. Production visual,
+  microphone, mobile, and reduced-motion acceptance checks remain pending.
 
 ## Next owner-access steps
 
-1. Test a live session on desktop and inspect the corresponding LiveKit record.
-2. Verify dynamic student, company, role, career, and mode metadata.
-3. Test the accepted flow on mobile plus microphone denial and disconnect.
+1. Approve and squash-merge PR #9, then verify its Pages deployment.
+2. Test a live session on desktop and inspect the corresponding LiveKit record.
+3. Verify dynamic student, company, role, career, and mode metadata.
+4. Test the accepted flow on mobile plus microphone denial and disconnect.
 
 ## Guardrails
 

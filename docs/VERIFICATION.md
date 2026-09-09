@@ -1,6 +1,20 @@
 # Verification Reference
 
-Last updated: 2026-09-03
+Last updated: 2026-09-09
+
+## Focused water interview UI checks
+
+| Check | Exact command or action | Result |
+| --- | --- | --- |
+| Rebase integrity | Rebase PR #9 onto `origin/main` at `52a465d` and preserve the native-anchor interview return link | Passed; PR #9 reports mergeable with head `de3d647` |
+| Diff whitespace | `git diff --check` | Passed; only Windows LF-to-CRLF notices were emitted |
+| Lint | `npm run lint` | Passed |
+| TypeScript | `npx tsc --noEmit` | Passed |
+| Static export | Run Vinext build with Node.js 22.22.1 | Passed; three routes were prerendered, including `/interview` |
+| Pages artifact | Run `scripts/prepare-pages.mjs` with Node.js 22.22.1 | Passed |
+| Built feature markers | Search `dist/client` for `water-presence` and `Transcript` | Passed; the water CSS and interview JavaScript were present |
+| Real microphone behavior | Speak with the deployed agent and compare listening/speaking motion | Not run; PR #9 is not deployed and a real microphone session still requires owner testing |
+| Browser visual and responsive QA | Inspect active session, transcript drawer, and reduced-motion behavior in supported browsers | Not run in this change |
 
 ## Interview-navigation fix checks
 

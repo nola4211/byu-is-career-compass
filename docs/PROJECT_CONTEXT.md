@@ -1,6 +1,6 @@
 # Project Context
 
-Last reviewed: 2026-09-02
+Last reviewed: 2026-09-09
 
 ## Product definition
 
@@ -14,6 +14,11 @@ a live spoken practice session with the `career-interviewer` LiveKit agent. The
 token Worker is deployed with owner-provided credentials, and the Pages build
 contains its public endpoint. A written self-review exercise remains available
 when voice is unavailable or the student prefers not to use a microphone.
+
+**Implemented in PR #9, pending production merge:** Live practice uses a focused
+water presence that moves slowly while listening and reacts to the agent's
+speech volume while speaking. Transcript messages stay out of view until the
+student opens the side drawer.
 
 | Question | Current answer |
 | --- | --- |
@@ -48,8 +53,9 @@ The quiz is team-authored recommendation logic, not a validated assessment.
 4. The browser requests a short-lived room token from the configured external
    Worker. The Worker validates career and mode, derives display metadata, and
    dispatches the fixed LiveKit agent.
-5. The student can see agent state and ephemeral transcript messages, mute, end
-   the session, or return to written practice.
+5. The student sees a compact agent state and water presence, can open ephemeral
+   transcript messages on demand, mute, end the session, or return to written
+   practice.
 6. If the build has no public token endpoint, the live panel explains that
    setup is pending and keeps written practice usable.
 

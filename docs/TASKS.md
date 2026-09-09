@@ -1,6 +1,6 @@
 # Task Tracker
 
-Last updated: 2026-09-03
+Last updated: 2026-09-09
 
 | ID | Priority | Task | Owner | State | Dependencies | Acceptance criteria | Evidence or next check |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -9,11 +9,12 @@ Last updated: 2026-09-03
 | QA-001 | High | Re-run the application baseline after the merge | Codex | Done | Resolved lockfile | Install, lint, typecheck, build, Worker bundle, and route checks are recorded | Passed checks and environment caveat in `docs/VERIFICATION.md` |
 | LK-001 | High | Confirm production privacy and retention choices | Product owner | Ready | Provider settings | Recording, transcripts, analytics, disclosure, and deletion choices are documented | Do not promise privacy beyond verified behavior |
 | LK-002 | High | Deploy the protected LiveKit token endpoint | Repository owner | Done | Cloudflare access and LiveKit secrets | Worker is deployed, rejects invalid input/origins, and returns short-lived scoped tokens | Production endpoint returned 204/403/400/201 for preflight, foreign origin, invalid career, and valid token checks |
-| LK-003 | High | Integrate the live voice session UI | Codex | In progress | Real microphone test | Student can start/end, mute, see state/transcript/errors, and use written fallback | Lifecycle fix is merged and Pages-deployed; refreshed production page is ready, with a microphone conversation still pending |
+| LK-003 | High | Integrate the live voice session UI | Codex | In review | PR #9 merge and real microphone test | Student can start/end, mute, see state/errors, open the transcript on demand, and use written fallback | Audio-reactive water UI passes local checks in PR #9; production deploy and microphone conversation remain pending |
 | LK-004 | High | Pass career-aware session metadata to the agent | Codex | In progress | Real microphone test | All eight IDs and both modes are validated; derived metadata reaches agent | Builder defines all five variables and the matching agent is running; verify received values in a real session |
 | AV-001 | Medium | Select and prototype a virtual-avatar provider | Unassigned | Blocked | Reliable voice flow, budget, disclosure, vendor review | Synchronized video works with timeout and voice-only fallback | Frontend video-track slot is ready |
 | QA-002 | Medium | Add automated product-flow coverage | Unassigned | Ready | Test framework decision | Career validation, scoring, question cycling, and LiveKit failure states have repeatable tests | No test framework currently found |
 | QA-003 | High | Restore first-click navigation to interview practice | Codex | Done | None | Every home-page interview link and the interview-page return link navigate with one normal left-click | PR #7; Pages workflow `33823461636`; production first-click verified |
+| UX-001 | High | Simplify the live interview presentation | Codex | In review | PR #9 merge | Active voice practice emphasizes one water presence; listening is calm, agent speech is audio-reactive, and transcript is opt-in | PR #9 is mergeable; lint, TypeScript, Node 22 build, Pages preparation, and artifact inspection passed |
 | DATA-001 | Medium | Resolve career-content gaps | Unassigned | Ready | Verified BYU sources | Facts enter `CAREERS.md` before `data/careers.ts` | Existing evidence rules remain in force |
 
 Allowed states: `Ready`, `In progress`, `Blocked`, `In review`, and `Done`.
