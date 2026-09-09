@@ -15,10 +15,10 @@ token Worker is deployed with owner-provided credentials, and the Pages build
 contains its public endpoint. A written self-review exercise remains available
 when voice is unavailable or the student prefers not to use a microphone.
 
-**Implemented in PR #9, pending production merge:** Live practice uses a focused
-water presence that moves slowly while listening and reacts to the agent's
-speech volume while speaking. Transcript messages stay out of view until the
-student opens the side drawer.
+**Implemented and deployed in PR #9, under live validation:** Live practice
+uses a focused water presence that moves slowly while listening and reacts to
+the agent's speech volume while speaking. Transcript messages stay out of view
+until the student opens the side drawer.
 
 | Question | Current answer |
 | --- | --- |

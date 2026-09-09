@@ -18,8 +18,9 @@ an audio-reactive water presence, and preparing the UI for an avatar.
 - Lifecycle-fix workflow run `33715049992` succeeded.
 - The current site and configured interview bundle are verified at
   `https://nola4211.github.io/byu-is-career-compass/`.
-- Pull request #9 contains the verified water-presence and opt-in transcript UI.
-  It is mergeable but is not yet merged or deployed.
+- Pull request #9 was squash-merged as `f7ac294`; Pages workflow `34398273576`
+  succeeded, and the production interview route plus deployed feature assets
+  returned successfully.
 
 ## Completed and deployed
 
@@ -29,6 +30,8 @@ an audio-reactive water presence, and preparing the UI for an avatar.
 - Added a separately deployable Cloudflare token Worker.
 - Added Worker examples/scripts and Pages endpoint-variable wiring.
 - Added an avatar video-track slot with a voice visualization fallback.
+- Deployed the focused audio-reactive water presence and opt-in transcript
+  drawer while preserving the avatar video-track path.
 - Passed the local checks recorded in `docs/VERIFICATION.md`.
 - Deployed and production-smoke-tested the credentialed Worker at
   `https://byu-is-career-compass-livekit-token.nola4211-career-compass.workers.dev`.
@@ -55,10 +58,9 @@ an audio-reactive water presence, and preparing the UI for an avatar.
 
 ## Next owner-access steps
 
-1. Approve and squash-merge PR #9, then verify its Pages deployment.
-2. Test a live session on desktop and inspect the corresponding LiveKit record.
-3. Verify dynamic student, company, role, career, and mode metadata.
-4. Test the accepted flow on mobile plus microphone denial and disconnect.
+1. Test a live session on desktop and inspect the corresponding LiveKit record.
+2. Verify dynamic student, company, role, career, and mode metadata.
+3. Test the accepted flow on mobile plus microphone denial and disconnect.
 
 ## Guardrails
 
