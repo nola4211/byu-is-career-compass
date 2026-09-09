@@ -14,10 +14,10 @@ the Vinext client-router links with native anchors for static cross-route
 navigation. Lint, TypeScript, the static export, local browser click-through,
 Pages deployment, and a production left-click test passed.
 
-**A simpler live-interview presentation is ready in pull request #9 but is not
-yet deployed.** It centers the active session on an audio-reactive water
-presence, uses slow motion while listening and faster motion tied to agent
-speech volume, and keeps the transcript hidden until the student opens it.
+**The simpler live-interview presentation is deployed.** It centers the active
+session on an audio-reactive water presence, uses slow motion while listening
+and faster motion tied to agent speech volume, and keeps the transcript hidden
+until the student opens it.
 
 ## Production frontend
 
@@ -34,6 +34,10 @@ speech volume, and keeps the transcript hidden until the student opens it.
 - Pull request #7 was squash-merged to `main` as `fc6e17d`.
 - GitHub Pages workflow run `33823461636` succeeded, and the production
   `Interview prep` link reached `/interview` on the first normal left-click.
+- Pull request #9 was squash-merged to `main` as `f7ac294`.
+- GitHub Pages workflow run `34398273576` succeeded. The production interview
+  route returned HTTP 200 and its deployed assets contained the water UI and
+  transcript control.
 
 ## Completed on `main`
 
@@ -71,9 +75,10 @@ speech volume, and keeps the transcript hidden until the student opens it.
   the refreshed public page remains ready without repeating that error.
 - The Agent Builder prompt, greeting, five metadata variables, model pipeline,
   production version, and exact explicit dispatch name were browser-verified.
-- Pull request #9 is rebased onto the deployed first-click navigation fix and
-  is mergeable. Lint, TypeScript, the Node 22 production build, Pages artifact
-  preparation, artifact inspection, and `git diff --check` passed.
+- Pull request #9 was rebased onto the deployed first-click navigation fix,
+  merged, and Pages-deployed. Lint, TypeScript, the Node 22 production build,
+  Pages artifact preparation, artifact inspection, and `git diff --check`
+  passed.
 - The water UI has not been browser-visual-QA'd or exercised with a real
   microphone session in the current change.
 - Formatting check reports 95 existing files would change; no repo-wide format
@@ -91,6 +96,5 @@ speech volume, and keeps the transcript hidden until the student opens it.
 
 ## Next action
 
-Approve and merge pull request #9, verify its GitHub Pages workflow, then run
-the first successful real voice session and inspect its LiveKit session record
-before marking LiveKit production-ready.
+Run the first successful real voice session and inspect its LiveKit session
+record before marking LiveKit production-ready.
