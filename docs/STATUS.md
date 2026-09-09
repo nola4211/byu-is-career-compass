@@ -1,6 +1,6 @@
 # Current Project Status
 
-Snapshot: 2026-09-03
+Snapshot: 2026-09-09
 
 ## State
 
@@ -13,6 +13,11 @@ name. A successful microphone-to-agent conversation is not yet claimed.**
 the Vinext client-router links with native anchors for static cross-route
 navigation. Lint, TypeScript, the static export, local browser click-through,
 Pages deployment, and a production left-click test passed.
+
+**A simpler live-interview presentation is ready in pull request #9 but is not
+yet deployed.** It centers the active session on an audio-reactive water
+presence, uses slow motion while listening and faster motion tied to agent
+speech volume, and keeps the transcript hidden until the student opens it.
 
 ## Production frontend
 
@@ -66,6 +71,11 @@ Pages deployment, and a production left-click test passed.
   the refreshed public page remains ready without repeating that error.
 - The Agent Builder prompt, greeting, five metadata variables, model pipeline,
   production version, and exact explicit dispatch name were browser-verified.
+- Pull request #9 is rebased onto the deployed first-click navigation fix and
+  is mergeable. Lint, TypeScript, the Node 22 production build, Pages artifact
+  preparation, artifact inspection, and `git diff --check` passed.
+- The water UI has not been browser-visual-QA'd or exercised with a real
+  microphone session in the current change.
 - Formatting check reports 95 existing files would change; no repo-wide format
   rewrite was made.
 - No successful real microphone conversation or avatar session is claimed. See
@@ -81,5 +91,6 @@ Pages deployment, and a production left-click test passed.
 
 ## Next action
 
-Run the first successful real voice session and inspect its LiveKit session
-record before marking LiveKit production-ready.
+Approve and merge pull request #9, verify its GitHub Pages workflow, then run
+the first successful real voice session and inspect its LiveKit session record
+before marking LiveKit production-ready.

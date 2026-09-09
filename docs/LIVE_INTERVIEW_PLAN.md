@@ -2,9 +2,10 @@
 
 Status: **Voice integration, external token service, lifecycle fix, and named
 agent deployment are live; real conversation verification is pending. Avatar
-remains proposed.**
+remains proposed. A focused audio-reactive water UI is ready in PR #9 and
+awaits production merge.**
 
-Last reviewed: 2026-09-02
+Last reviewed: 2026-09-09
 
 ## Goal
 
@@ -27,6 +28,9 @@ Implemented on `main`:
   `career-interviewer`.
 - Configuration examples without secrets and a GitHub Actions variable for the
   public Worker endpoint.
+- A simplified active-session presentation with calm listening motion,
+  agent-speech-volume-reactive water motion, and an opt-in transcript drawer is
+  implemented and locally verified in PR #9.
 
 Still required for completion:
 
