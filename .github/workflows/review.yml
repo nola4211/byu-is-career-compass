@@ -1,0 +1,25 @@
+name: Review source changes
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    env:
+      WRANGLER_SEND_METRICS: 'false'
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: npm run lint
+      - run: npx --no-install tsc --noEmit
+      - run: npm test
+      - run: npm run build
+      - run: npx --no-install wrangler deploy --config wrangler.livekit.jsonc --dry-run --outdir .wrangler/review-bundle

@@ -60,3 +60,10 @@ Statuses are **Proposed**, **Accepted**, **Superseded**, or **Rejected**.
 - Consequences: Frontend and token service have separate deployments. The owner
   must configure Cloudflare secrets and one GitHub Actions variable.
 
+
+## D-007: Bound token input and retain an optional operational pause
+
+- Date: 2026-10-09
+- Status: Proposed for shared review
+- Decision: Stream-read at most 8,192 bytes before signing, validate the JSON structure, and use the Worker-only `LIVEKIT_INTERVIEWS_ENABLED=false` to pause new tokens. Keep unset compatible with current behavior.
+- Consequences: Malformed/oversized input gets a bounded response and operators have a new-token pause after an approved rollout. Existing sessions, authentication, throttling, quota accounting, retention, and costs still require separate controls. Use tested patch versions and scoped overrides while leaving wider tooling migrations for their own compatibility review.

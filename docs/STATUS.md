@@ -1,96 +1,31 @@
 # Current Project Status
 
-Snapshot: 2026-09-09
+Snapshot: 2026-10-09
 
-## State
+## Deployed frontend
 
-**The LiveKit frontend, credentialed token Worker, session-lifecycle fix, and
-matching `career-interviewer` Agent Builder deployment are live. LiveKit Cloud
-shows the agent running in production with the expected explicit dispatch
-name. A successful microphone-to-agent conversation is not yet claimed.**
+PR #9 merged on 2026-09-09 as `f7ac294941c4e56af44b4b949b935c6b543aabe2`.
+[Pages run 34398273576](https://github.com/nola4211/byu-is-career-compass/actions/runs/34398273576) passed at that revision.
+The [public site](https://nola4211.github.io/byu-is-career-compass/) currently shows the water presence and written fallback.
+Current browser review verified first-click interview navigation, the pre-join AI disclosure and disabled Start button before acknowledgment, written self-review with a fictional answer, and a phone-sized pre-join layout. Reviewed flows reported no console errors.
+No microphone session, provider dashboard, recording, or retention setting was accessed in this review. A successful real conversation is still unverified.
 
-**The first-click interview navigation fix is live.** Pull request #7 replaced
-the Vinext client-router links with native anchors for static cross-route
-navigation. Lint, TypeScript, the static export, local browser click-through,
-Pages deployment, and a production left-click test passed.
+## Prepared on the review branch
 
-**A simpler live-interview presentation is ready in pull request #9 but is not
-yet deployed.** It centers the active session on an audio-reactive water
-presence, uses slow motion while listening and faster motion tied to agent
-speech volume, and keeps the transcript hidden until the student opens it.
+- Bound token-request reading to 8,192 bytes and cancel oversized/failed streams; preserve UTF-8 across chunks.
+- Reject malformed JSON structures and incorrect media types without an uncaught exception.
+- Add the optional Worker-only `LIVEKIT_INTERVIEWS_ENABLED=false` pause for new tokens; unset preserves existing behavior. This does not end active rooms.
+- Use a friendly unavailable-service message in the frontend.
+- Patch React/React DOM/RSC to 19.2.8 and Vite to 8.0.16; scope tinypool 2.1.2 to oxfmt and pin proxy-addr 2.0.8/source-map-js 1.2.2.
+- Add 11 Worker regression tests using the actual source and real SDK with disposable local signing keys; add a PR workflow that checks without deployment.
 
-## Production frontend
+These changes are proposed for shared review. Production frontend, Worker, secrets, and provider settings have not been changed.
 
-- Pull request #3 was squash-merged to `main` as `d702da4`.
-- GitHub Pages workflow run `33702333157` succeeded.
-- `https://nola4211.github.io/byu-is-career-compass/` and its interview route
-  were recorded as HTTP 200 and browser-verified.
-- Pull request #2 was squash-merged to `main` as `e753a13`.
-- GitHub Pages workflow run `33713674323` succeeded with the configured public
-  token endpoint embedded in the interview-page JavaScript.
-- Pull request #5 was squash-merged to `main` as `90cb244`.
-- GitHub Pages workflow run `33715049992` succeeded with the session-lifecycle
-  fix.
-- Pull request #7 was squash-merged to `main` as `fc6e17d`.
-- GitHub Pages workflow run `33823461636` succeeded, and the production
-  `Interview prep` link reached `/interview` on the first normal left-click.
+## Verification
 
-## Completed on `main`
+On the isolated Windows copy with Node 24.16.0: lint, TypeScript, 11 tests, the three-route static build/Pages preparation, selected-file formatting, and Worker dry-run passed. The first sandboxed build was blocked while resolving installed dependencies; the isolated build passed with filesystem access.
+The initial dependency audit listed 28 affected packages (3 critical, 19 high, 5 moderate, 1 low). After targeted patches: 22 (0 critical, 16 high, 5 moderate, 1 low). Further tooling upgrades remain review work; a clean audit or production security clearance is not claimed. See [security review](SECURITY_REVIEW.md) and [verification](VERIFICATION.md).
 
-- Preserved the Vinext static export and GitHub Pages deployment architecture.
-- Added a live/written practice selector without removing written self-review.
-- Added LiveKit session lifecycle, explicit microphone start, mute/end controls,
-  agent-state UI, transcript display, error handling, and written fallback.
-- Added server-side metadata validation shared by the frontend and Worker.
-- Added a separately deployable Cloudflare Worker that creates ten-minute,
-  microphone-only LiveKit participant tokens and dispatches only the fixed
-  `career-interviewer` agent.
-- Added an avatar video-track render path with a voice visualization fallback.
-- Added GitHub Actions support for the public
-  `VITE_LIVEKIT_TOKEN_ENDPOINT` repository variable.
-- Deployed the credentialed token Worker at
-  `https://byu-is-career-compass-livekit-token.nola4211-career-compass.workers.dev`.
-- Deployed Agent Builder version `RzHQfERQN9jP` to production. LiveKit Cloud
-  reports agent ID `CA_RfBuCqhsQZYt`, dispatch name `career-interviewer`, status
-  `running`, and 100% uptime at the verification point.
+## Best next step
 
-## Verification status
-
-- Clean install, lint, TypeScript, Node 22 static export, artifact layout,
-  static HTTP routes, and Worker dry-run passed.
-- Disposable-key local tests passed for CORS, invalid input, a ten-minute
-  microphone-only token, fixed agent dispatch, normalized metadata, and all
-  eight career IDs.
-- The deployed Worker returned 204 for an allowed preflight, 403 for a foreign
-  origin, 400 for an invalid career, and 201 with a server URL and participant
-  token for a valid request.
-- The first production browser attempt requested a token and started LiveKit
-  signaling, then disconnected before a room was established. Browser logs and
-  the component source traced this to the cleanup effect depending on the
-  changing session object. The stable-`end` callback fix is merged and deployed;
-  the refreshed public page remains ready without repeating that error.
-- The Agent Builder prompt, greeting, five metadata variables, model pipeline,
-  production version, and exact explicit dispatch name were browser-verified.
-- Pull request #9 is rebased onto the deployed first-click navigation fix and
-  is mergeable. Lint, TypeScript, the Node 22 production build, Pages artifact
-  preparation, artifact inspection, and `git diff --check` passed.
-- The water UI has not been browser-visual-QA'd or exercised with a real
-  microphone session in the current change.
-- Formatting check reports 95 existing files would change; no repo-wide format
-  rewrite was made.
-- No successful real microphone conversation or avatar session is claimed. See
-  `docs/VERIFICATION.md` for exact evidence.
-
-## Blockers requiring owner access
-
-1. Run a real desktop microphone conversation and verify that the agent joins,
-   receives the session metadata, speaks, transcribes, and ends normally.
-2. Confirm provider retention, recording, deletion, and cost policies before
-   calling the feature production-ready.
-3. Repeat the accepted flow on mobile and cover denial/disconnect cases.
-
-## Next action
-
-Approve and merge pull request #9, verify its GitHub Pages workflow, then run
-the first successful real voice session and inspect its LiveKit session record
-before marking LiveKit production-ready.
+Review the source changes and PR checks. The service owner must plan the separate Worker/frontend rollout, implement admission/rate/cost controls, and confirm provider retention before promoting live voice practice. Use the shared-contribution case study and public written/pre-join experience in the portfolio meanwhile.

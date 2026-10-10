@@ -38,8 +38,11 @@ No application server receives or persists discovery answers.
    accepted from the browser.
 2. LiveKit's standardized token client posts agent metadata to
    `VITE_LIVEKIT_TOKEN_ENDPOINT`.
-3. The Worker enforces one configured browser origin and parses metadata with
-   `lib/interview-session.ts`.
+3. The Worker enforces one configured browser origin, reads at most 8,192 UTF-8
+   bytes, validates the JSON object shape, and parses metadata with
+   `lib/interview-session.ts`. The optional Worker-only
+   `LIVEKIT_INTERVIEWS_ENABLED=false` returns 503 before issuing a new token.
+   Unset preserves existing behavior; active rooms are unaffected.
 4. The Worker generates random room/participant identifiers and a ten-minute
    token with room join, subscribe, data, and microphone-only publish grants.
 5. The token embeds dispatch for the fixed `career-interviewer` agent.
@@ -59,6 +62,7 @@ Public static-build value:
 Worker-only values:
 
 - `LIVEKIT_URL`
+- `LIVEKIT_INTERVIEWS_ENABLED` (optional new-token pause)
 - `LIVEKIT_API_KEY`
 - `LIVEKIT_API_SECRET`
 - `LIVEKIT_AGENT_NAME`

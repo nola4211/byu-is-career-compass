@@ -2,3 +2,4 @@
 LIVEKIT_API_KEY=
 LIVEKIT_API_SECRET=
 LIVEKIT_ALLOWED_ORIGIN=http://localhost:3000
+# Optional server-only pause for new tokens: LIVEKIT_INTERVIEWS_ENABLED=false

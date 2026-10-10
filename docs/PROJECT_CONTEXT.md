@@ -1,6 +1,6 @@
 # Project Context
 
-Last reviewed: 2026-09-09
+Last reviewed: 2026-10-09
 
 ## Product definition
 
@@ -15,7 +15,7 @@ token Worker is deployed with owner-provided credentials, and the Pages build
 contains its public endpoint. A written self-review exercise remains available
 when voice is unavailable or the student prefers not to use a microphone.
 
-**Implemented in PR #9, pending production merge:** Live practice uses a focused
+**Merged and deployed through PR #9; pre-join browser review completed 2026-10-09:** Live practice uses a focused
 water presence that moves slowly while listening and reacts to the agent's
 speech volume while speaking. Transcript messages stay out of view until the
 student opens the side drawer.

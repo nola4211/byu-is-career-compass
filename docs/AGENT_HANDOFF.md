@@ -1,70 +1,13 @@
 # Agent Handoff
 
-Updated: 2026-09-09
+Updated: 2026-10-09
 
-## Objective
+The main frontend is `f7ac294941c4e56af44b4b949b935c6b543aabe2`; PR #9 is merged and Pages run 34398273576 passed. The water presence, first-click interview navigation, written fallback, and phone-sized pre-join UI were observed on the public site. Real microphone and provider-side behavior remain unverified.
 
-Complete the LiveKit voice interview on the GitHub Pages site without exposing
-secrets, while retaining written practice, simplifying the live session around
-an audio-reactive water presence, and preparing the UI for an avatar.
+The review branch prepares bounded request parsing, an optional pause for new voice tokens, scoped dependency patches, 11 regression tests, and a non-deploying PR workflow. Local lint, TypeScript, tests, static export/Pages preparation, selected-file formatting, and Worker dry-run passed. No service deployment, production credential, private session record, recording, or provider setting was used.
 
-## Current production result
+Remaining audit: 22 affected packages, no critical entries; see SECURITY_REVIEW.md. The Worker still lacks user authentication, rate limiting, admission quotas, and a server-enforced session duration. Its origin check and ten-minute token are not substitutes for those controls.
 
-- PR #3 was squash-merged to `main` as `d702da4`.
-- PR #2 was squash-merged to `main` as `e753a13`.
-- PR #5 was squash-merged to `main` as `90cb244`.
-- GitHub Pages deploys through GitHub Actions.
-- LiveKit-enabled workflow run `33713674323` succeeded.
-- Lifecycle-fix workflow run `33715049992` succeeded.
-- The current site and configured interview bundle are verified at
-  `https://nola4211.github.io/byu-is-career-compass/`.
-- Pull request #9 contains the verified water-presence and opt-in transcript UI.
-  It is mergeable but is not yet merged or deployed.
+Next contributor: review the PR checks and coordinate with the repository/service owner. Worker deployment is separate from a frontend merge. Confirm retention/deletion/cost settings, then use disposable metadata in a consented real microphone session and verify agent speech, metadata, transcription, mute/end, denial/disconnect, and provider session termination. Do not call voice production-ready before that evidence exists.
 
-## Completed and deployed
-
-- Merged the current GitHub Pages/static-export architecture.
-- Integrated LiveKit session UI and written fallback into `/interview`.
-- Added shared career/mode metadata validation.
-- Added a separately deployable Cloudflare token Worker.
-- Added Worker examples/scripts and Pages endpoint-variable wiring.
-- Added an avatar video-track slot with a voice visualization fallback.
-- Passed the local checks recorded in `docs/VERIFICATION.md`.
-- Deployed and production-smoke-tested the credentialed Worker at
-  `https://byu-is-career-compass-livekit-token.nola4211-career-compass.workers.dev`.
-- Configured the interview prompt, greeting, and five metadata variables in the
-  matching Agent Builder.
-- Deployed `career-interviewer` version `RzHQfERQN9jP`; agent
-  `CA_RfBuCqhsQZYt` is registered with the expected explicit dispatch name and
-  reports `running` in production.
-
-## Current validation gap
-
-- The first Chrome test fetched a token and began LiveKit signaling, but the
-  room disconnected before establishment and no LiveKit session was recorded.
-- Browser logs and `useSession` behavior showed the cleanup effect ran whenever
-  the changing session object re-rendered.
-- The stable-`session.end` fix is merged through PR #5 and the Pages deployment
-  succeeded. Reloading production no longer repeats the immediate cleanup
-  error.
-- A real microphone conversation has not yet confirmed agent join, dynamic
-  metadata delivery, speech, transcript, and normal session end.
-- The PR #9 water motion is driven by the agent microphone track volume while
-  speaking and uses calmer fixed pacing while listening. Production visual,
-  microphone, mobile, and reduced-motion acceptance checks remain pending.
-
-## Next owner-access steps
-
-1. Approve and squash-merge PR #9, then verify its Pages deployment.
-2. Test a live session on desktop and inspect the corresponding LiveKit record.
-3. Verify dynamic student, company, role, career, and mode metadata.
-4. Test the accepted flow on mobile plus microphone denial and disconnect.
-
-## Guardrails
-
-- Never put provider secrets in GitHub Pages variables, source, logs, or pull
-  request text.
-- Do not claim recordings or transcripts are private or unretained until the
-  provider configuration proves it.
-- Keep the eight `CareerId` values and `CAREERS.md` evidence policy stable.
-- Do not select or purchase an avatar provider without owner approval.
+Keep CAREERS.md and the eight career IDs unchanged. Use focused PRs, retain AI-assisted contribution boundaries, and never put provider secrets or student data in source, logs, screenshots, or review text.

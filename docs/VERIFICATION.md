@@ -1,6 +1,22 @@
 # Verification Reference
 
-Last updated: 2026-09-09
+Last updated: 2026-10-09
+
+## Current portfolio/security review (2026-10-09)
+
+| Check | Observed result and limit |
+| --- | --- |
+| Dependency install | Initial clean `npm ci --ignore-scripts`, then locked targeted-patch install passed in the isolated copy. PR workflow also checks a clean lock install. |
+| Lint and TypeScript | `npm run lint` and `node node_modules/typescript/bin/tsc --noEmit` passed. |
+| Worker regression tests | `npm test`: 11 passed. Actual Worker/metadata source and real SDK use disposable local signing keys; no live service is contacted. |
+| Selected-file formatting | oxfmt ran successfully on only the Worker and new test file, exercising the patched tinypool consumer. |
+| Static build | `npm run build` passed under Node 24.16.0, exporting three routes and preparing Pages. Initial sandboxed package resolution was blocked; the isolated build passed with filesystem access. |
+| Worker bundle | `node node_modules/wrangler/bin/wrangler.js deploy --config wrangler.livekit.jsonc --dry-run --outdir .wrangler/portfolio-dry-run` passed: 150.07 KiB / 30.91 KiB gzip. Metrics disabled; nothing deployed. |
+| Advisory report | Initial: 28 affected packages (3 critical). Patched: 22 (0 critical, 16 high, 5 moderate, 1 low). Remaining upgrades and exposure limits are in SECURITY_REVIEW.md. |
+| Public frontend | PR #9 is merged; Pages run 34398273576 passed at f7ac294. Current visitor browser verified first-click navigation, water pre-join disclosure, disabled Start before acknowledgment, fictional written self-review, and phone-sized layout; reviewed logs had no errors. |
+| Live acceptance | No microphone, active-agent speech, transcript, mute/end, denied-device path, provider logs, retention, billing control, or native-device check was performed. |
+
+The sections below preserve dated September evidence; they are historical observations, not current runtime claims.
 
 ## Focused water interview UI checks
 

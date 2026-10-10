@@ -98,7 +98,7 @@ function WaterPresence({
 const friendlyError = (error: unknown) => {
   const message = error instanceof Error ? error.message : String(error);
   if (message.includes('not configured') || message.includes('503')) {
-    return 'The live interview service still needs its secure LiveKit credentials.';
+    return 'Live interviews are temporarily unavailable. Please use written practice.';
   }
   if (
     message.toLowerCase().includes('permission') ||
