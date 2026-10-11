@@ -49,6 +49,7 @@ const worker = loadTs(
 const { CAREER_IDS } = loadTs(resolve(root, 'data/careers.ts'));
 const origin = 'https://nola4211.github.io';
 const fakeEnv = {
+  LIVEKIT_INTERVIEWS_ENABLED: 'true',
   LIVEKIT_API_KEY: 'disposable-test-key',
   LIVEKIT_API_SECRET: 'disposable-local-test-secret',
 };
@@ -239,6 +240,19 @@ test('operator pause rejects new tokens without returning credentials', async ()
   );
   assert.equal(response.headers.get('cache-control'), 'no-store');
   assert.equal(response.headers.get('access-control-allow-origin'), origin);
+});
+
+test('missing or mistyped opt-in never issues a token even with credentials', async () => {
+  for (const flag of [undefined, '', 'false', 'TRUE', '1', ' true ', true]) {
+    const response = await worker.fetch(request(), {
+      ...fakeEnv,
+      LIVEKIT_INTERVIEWS_ENABLED: flag,
+    });
+    assert.equal(response.status, 503);
+    const data = await response.json();
+    assert.equal(data.participant_token, undefined);
+    assert.equal(data.server_url, undefined);
+  }
 });
 
 test('missing credentials and unsupported metadata fail before token issuance', async () => {

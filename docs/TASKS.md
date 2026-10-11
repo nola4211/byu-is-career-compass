@@ -1,6 +1,6 @@
 # Task Tracker
 
-Last updated: 2026-10-09
+Last updated: 2026-10-10
 
 | ID | Priority | Task | Owner | State | Dependencies | Acceptance criteria | Evidence or next check |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -17,7 +17,8 @@ Last updated: 2026-10-09
 | UX-001 | High | Simplify the live interview presentation | Cameron Boyle with AI tools | In progress | Real microphone acceptance | Water presence and opt-in transcript respond correctly in a real session | PR #9 merged; pre-join UI observed; speaking/listening reaction and active transcript remain unverified |
 | DATA-001 | Medium | Resolve career-content gaps | Unassigned | Ready | Verified BYU sources | Facts enter `CAREERS.md` before `data/careers.ts` | Existing evidence rules remain in force |
 
-| SEC-001 | High | Bound token input and add operator pause | Codex review branch | In review | Owner review and separate Worker rollout | Malformed/oversized input fails before token signing; pause rejects new tokens | 11 local regression tests, TypeScript, lint, static build, and Worker dry-run passed |
+| SEC-001 | High | Bound token input and fail closed under zero-spending policy | Codex review branch | In review | Shared review and separate Cloudflare owner rollout | Written-first public UI, no paused session construction, exact server opt-in and disabled deploy configs | Updated 17 tests, lint and TypeScript passed; latest build/dry-run/browser/CI recorded in VERIFICATION.md |
+| COST-001 | High | Disable existing public token issuance and check active/alternate sessions | Cloudflare owner; Cameron for LiveKit | Ready | Provider access and separate rollout | No new token available and no existing/alternate billable agent dispatch | Reported account ownership only; no provider setting changed. Keep voice paused, no paid test |
 | SEC-002 | High | Add live-session admission, rate, duration, and cost controls | Service owner | Ready | Provider/account access and agreed policy | Unauthorized/excess requests rejected; active sessions terminate at a server boundary | Not implemented; origin and token expiry are insufficient |
 | DEP-001 | High | Review remaining tooling advisories | Shared contributors | In progress | Upgrade compatibility checks | Audited graph and representative build/Worker checks recorded | Targeted patches reduce 28 affected packages to 22 and remove critical entries; no general clearance |
 

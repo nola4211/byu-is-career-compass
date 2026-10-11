@@ -67,3 +67,10 @@ Statuses are **Proposed**, **Accepted**, **Superseded**, or **Rejected**.
 - Status: Proposed for shared review
 - Decision: Stream-read at most 8,192 bytes before signing, validate the JSON structure, and use the Worker-only `LIVEKIT_INTERVIEWS_ENABLED=false` to pause new tokens. Keep unset compatible with current behavior.
 - Consequences: Malformed/oversized input gets a bounded response and operators have a new-token pause after an approved rollout. Existing sessions, authentication, throttling, quota accounting, retention, and costs still require separate controls. Use tested patch versions and scoped overrides while leaving wider tooling migrations for their own compatibility review.
+
+## D-008: Written-first showcase and explicit live opt-in
+
+- Date: 2026-10-10
+- Context: Cameron requests no demo usage charges and reports separate LiveKit/Cloudflare account owners.
+- Decision: Open written practice by default. Require exact true flags in frontend and token service; public Pages and Worker deployment configs explicitly set false. This supersedes D-007's unset-means-enabled compatibility choice.
+- Consequences: The prepared showcase cannot start voice through normal UI or token signing when paused. A separate owner rollout is necessary to close the existing endpoint. Existing rooms, alternate dispatch and provider billing are not controlled by a frontend change. Future live testing needs a separate approved budget and privacy/admission controls.

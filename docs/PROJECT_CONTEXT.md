@@ -1,6 +1,6 @@
 # Project Context
 
-Last reviewed: 2026-10-09
+Last reviewed: 2026-10-10
 
 ## Product definition
 
@@ -31,6 +31,16 @@ student opens the side drawer.
 | Frontend hosting | Vinext static export published to GitHub Pages |
 | Public URL | `https://nola4211.github.io/byu-is-career-compass/` |
 | Live token service | Deployed Cloudflare Worker in `services/livekit-token-worker/`; public endpoint is embedded in the Pages build |
+
+## Proposed zero-spending release
+
+**Prepared, unmerged:** Cameron requests zero portfolio demo usage charges.
+This review branch opens written practice by default, disables live entry in
+public Pages builds, and requires an explicit true flag in the frontend and
+token Worker. Endpoint/credential presence is insufficient. Cameron reports
+owning LiveKit; a partner likely controls Cloudflare. The existing deployment
+described above has not been replaced or provider-verified. Shared review and a
+separate paused Worker rollout remain necessary. No paid session is authorized.
 
 ## Current user journeys
 

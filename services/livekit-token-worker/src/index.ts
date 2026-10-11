@@ -8,6 +8,7 @@ import {
   LIVEKIT_AGENT_NAME,
   parseInterviewMetadata,
 } from '../../../lib/interview-session';
+import { liveInterviewsEnabled } from '../../../lib/live-interview-policy';
 
 const DEFAULT_LIVEKIT_URL = 'wss://is-core-case-2026-zat9gox0.livekit.cloud';
 const DEFAULT_ALLOWED_ORIGIN = 'https://nola4211.github.io';
@@ -131,7 +132,7 @@ async function handleRequest(request: Request, env: Env) {
     );
   }
 
-  if (env.LIVEKIT_INTERVIEWS_ENABLED === 'false') {
+  if (!liveInterviewsEnabled(env.LIVEKIT_INTERVIEWS_ENABLED)) {
     return jsonResponse(
       { error: 'Live interviews are temporarily unavailable.' },
       503,

@@ -91,3 +91,23 @@ The sections below preserve dated September evidence; they are historical observ
   fail the build.
 - A local fake-key token test verifies token shape and grants, not connection to
   LiveKit Cloud.
+
+
+## Written-first and paused-provider review, 2026-10-10
+
+These observations concern the updated review source only. Main and the existing token Worker remain unchanged.
+
+| Check | Observed result |
+| --- | --- |
+| Actual-source tests | Passed: 12 Worker tests plus 5 frontend/component rendering tests, 17 total; disposable configuration and rejecting provider mocks only |
+| Lint and TypeScript | Passed locally with Node 24.16.0 |
+| Worker dry-run | Passed with local log path and metrics disabled; 150.22 KiB, 30.94 KiB gzip; explicit false enable flag; nothing deployed |
+| Local build command | Exported all three routes, then exited 1 with the Windows Node 24 libuv shutdown assertion; the command is not counted as passed |
+| Pages preparation | Passed as a separate invocation after the export; used only for the bounded local browser check |
+| Local browser | Written mode opened by default; live entry disabled; fictional answer produced self-review; next question cleared answer; career-specific mode and Cybersecurity selection reset to question 1 and matching prompt |
+| Responsive browser | At a requested 390 by 844 viewport, document client and scroll widths were both 375 px; live entry remained disabled; no page horizontal overflow |
+| Browser console | No captured error logs during the above workflow; local root favicon request returned 404 in the static helper log |
+| Clean PR CI | Pending for this updated source; the earlier eleven-test run is historical |
+| Provider and deployment acceptance | Not performed: no microphone, room, token POST, paid usage, credential, billing, retention or provider setting was accessed or changed |
+
+Screenshot evidence is retained privately as `outputs/career-compass-paused-demo.jpg` in the migration workspace. The static helper was stopped after verification. This check does not prove the existing public Worker is paused. Its owner must deploy the updated gate with false or disable issuance, and the LiveKit owner must check existing rooms and alternate dispatch paths.

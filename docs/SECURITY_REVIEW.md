@@ -4,9 +4,17 @@ Reviewed 2026-10-09. Changes are prepared for shared review; no production setti
 
 ## Implemented on this branch
 
-The Worker reads a maximum of 8,192 bytes, stops/cancels oversized streams, decodes split UTF-8 safely, and rejects invalid JSON shapes or media types. Previously a JSON `null` body could throw before a response, and the limit was applied to characters after reading the entire body. Eleven tests exercise actual source and real SDK token signing with disposable keys, including all eight careers and both modes. These are local request/grant checks, not a Cloudflare or live-agent acceptance test.
+The Worker reads a maximum of 8,192 bytes, stops/cancels oversized streams, decodes split UTF-8 safely, and rejects invalid JSON shapes or media types. Previously a JSON `null` body could throw before a response, and the limit was applied to characters after reading the entire body. Twelve Worker tests exercise actual source and real SDK token signing with disposable keys, including all eight careers, both modes, and fail-closed opt-in. Five frontend rendering tests verify the paused/default paths. These are local request/grant/UI-render checks, not a Cloudflare or live-agent acceptance test.
 
-`LIVEKIT_INTERVIEWS_ENABLED=false` pauses issuance of new tokens before credentials are used. Leave unset to preserve existing behavior. After an approved Worker rollout, the service owner can use this server-only variable as an operational pause. It does not terminate active rooms or impose a spending cap. The frontend presents an unavailable-service message and retains written practice.
+## Zero-spending portfolio policy (2026-10-10)
+
+Cameron requests no usage charges from portfolio demos. He reports controlling LiveKit; a partner likely controls Cloudflare. This is reported ownership, not a provider-dashboard verification.
+
+The frontend defaults to written practice. Public Pages builds set `VITE_LIVE_INTERVIEWS_ENABLED=false`; endpoint presence cannot enable the live button or construct a session. Direct rendering of the live component also checks the opt-in before any LiveKit session/token-client hook runs. Both frontend and Worker accept only the exact string `true`; missing, false, or mistyped flags deny voice. `wrangler.livekit.jsonc` explicitly sets `LIVEKIT_INTERVIEWS_ENABLED=false`.
+
+The separately deployed Worker returns 503 before reading the body or signing a token when its flag is not enabled. This supersedes the earlier optional-pause default. Seventeen tests cover the actual Worker plus server-rendered frontend/component paths with a configured disposable endpoint; paused paths make no session/token-client calls. No production or paid session is performed.
+
+**Rollout required:** Source changes and a frontend merge do not disable the already deployed Worker. The Cloudflare owner must deploy this paused configuration or disable the endpoint, and verify a disposable request receives no token. The LiveKit owner must separately check/terminate any existing sessions or other dispatch paths before claiming provider usage has stopped. No owner account setting has been changed. A new-token pause does not end active rooms or itself establish a global spending cap.
 
 ## Controls still required before recommending an unrestricted voice demo
 
@@ -32,4 +40,4 @@ Remaining findings include Wrangler/Miniflare transport and image tooling, Vinex
 
 ## Rollout boundary
 
-Review and merge through the shared repository's process after PR checks. A merge publishes the static frontend through the existing main-branch workflow; Worker deployment remains a separate owner-approved action. Confirm the variable/default policy before deploying the Worker, test the pause with disposable requests, then apply admission/retention/cost gates before broader promotion. Keep credentials out of source and CI artifacts.
+Review and merge through the shared repository's process after PR checks. A merge publishes the static frontend through the existing main-branch workflow; Worker deployment remains a separate owner-approved action. Deploy with the explicit false flag, verify new-token rejection without joining a room, and keep voice paused under the zero-spending policy. Future live promotion requires a separately approved budget plus admission/retention/duration controls. Keep credentials out of source and CI artifacts.

@@ -1,6 +1,6 @@
 # Architecture Reference
 
-Last reviewed: 2026-09-02
+Last reviewed: 2026-10-10 (review branch; source changes unmerged)
 
 ## System map
 
@@ -15,11 +15,12 @@ The project has two deployment units:
 | --- | --- | --- |
 | `app/page.tsx` | Career quiz, ranking, and interview navigation | Client state only |
 | `app/interview/page.tsx` | Career query validation and live/written composition | Static route; no server API |
-| `components/interview/live-interview.tsx` | LiveKit session, media, transcript, state, controls, fallback | Reads only the public endpoint URL |
+| `components/interview/live-interview.tsx` | LiveKit session, media, transcript, state, controls, fallback | Requires explicit frontend opt-in before session construction |
+| `lib/live-interview-policy.ts` | Exact-string opt-in and frontend endpoint gate | Shared fail-closed policy; no secrets |
 | `lib/interview-session.ts` | Stable ID/mode allow-lists and normalized metadata | Shared with Worker; no secrets |
 | `services/livekit-token-worker/src/index.ts` | Origin/input validation, token signing, room/identity creation, agent dispatch | Server-only secrets |
 | `wrangler.livekit.jsonc` | Worker build/deploy configuration and non-secret defaults | Secrets must be added separately |
-| `.github/workflows/deploy-pages.yml` | Lint, static build, and Pages deployment | Reads `VITE_LIVEKIT_TOKEN_ENDPOINT` repository variable |
+| `.github/workflows/deploy-pages.yml` | Lint, static build, and Pages deployment | Reads endpoint variable; explicitly disables public voice opt-in |
 | `next.config.ts` | Static export and repository asset prefix | Prefix is `/byu-is-career-compass` in production |
 | `scripts/prepare-pages.mjs` | Normalizes the static artifact for GitHub Pages | Runs after `vinext build` |
 | `data/careers.ts` | Eight stable career IDs and presentation data | Governed by `CAREERS.md` |
@@ -31,7 +32,14 @@ The project has two deployment units:
 
 No application server receives or persists discovery answers.
 
-## Live interview flow
+## Written-first public demo
+
+The interview route initially renders written self-review, even with an enabled
+voice endpoint. The live choice is disabled unless the explicit frontend opt-in
+and endpoint are both configured. The live component repeats that gate before
+constructing the LiveKit session. Written responses use local heuristics.
+
+## Live interview flow (only after explicit future opt-in)
 
 1. The interview page allow-lists `careerId` and `mode` and creates display
    metadata; arbitrary prompts, agent names, room names, and identities are not
@@ -40,9 +48,10 @@ No application server receives or persists discovery answers.
    `VITE_LIVEKIT_TOKEN_ENDPOINT`.
 3. The Worker enforces one configured browser origin, reads at most 8,192 UTF-8
    bytes, validates the JSON object shape, and parses metadata with
-   `lib/interview-session.ts`. The optional Worker-only
-   `LIVEKIT_INTERVIEWS_ENABLED=false` returns 503 before issuing a new token.
-   Unset preserves existing behavior; active rooms are unaffected.
+   `lib/interview-session.ts`. The Worker requires
+   `LIVEKIT_INTERVIEWS_ENABLED=true`; any other or missing value returns 503
+   before body parsing/token signing. Deployed config explicitly uses false.
+   Active rooms are unaffected. The existing service still needs owner rollout.
 4. The Worker generates random room/participant identifiers and a ten-minute
    token with room join, subscribe, data, and microphone-only publish grants.
 5. The token embeds dispatch for the fixed `career-interviewer` agent.
@@ -58,11 +67,12 @@ establish what LiveKit or downstream model providers retain.
 Public static-build value:
 
 - `VITE_LIVEKIT_TOKEN_ENDPOINT`
+- `VITE_LIVE_INTERVIEWS_ENABLED` (explicit opt-in; Pages workflow sets false)
 
 Worker-only values:
 
 - `LIVEKIT_URL`
-- `LIVEKIT_INTERVIEWS_ENABLED` (optional new-token pause)
+- `LIVEKIT_INTERVIEWS_ENABLED` (exact true required; config sets false)
 - `LIVEKIT_API_KEY`
 - `LIVEKIT_API_SECRET`
 - `LIVEKIT_AGENT_NAME`

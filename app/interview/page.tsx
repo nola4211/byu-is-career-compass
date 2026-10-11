@@ -23,13 +23,17 @@ import {
   type CareerId,
 } from '@/data/careers';
 import type { InterviewMode } from '@/lib/interview-session';
+import { enabledTokenEndpoint } from '@/lib/live-interview-policy';
 
 export const dynamic = 'force-static';
 
 type PracticeFormat = 'live' | 'written';
 const BASE_PATH = import.meta.env.PROD ? '/byu-is-career-compass' : '';
 const LIVE_INTERVIEW_CONFIGURED = Boolean(
-  import.meta.env.VITE_LIVEKIT_TOKEN_ENDPOINT?.trim(),
+  enabledTokenEndpoint(
+    import.meta.env.VITE_LIVE_INTERVIEWS_ENABLED,
+    import.meta.env.VITE_LIVEKIT_TOKEN_ENDPOINT,
+  ),
 );
 
 const behavioralQuestions = [
@@ -41,9 +45,7 @@ const behavioralQuestions = [
 function InterviewPractice() {
   const [careerId, setCareerId] = useState<CareerId>('dataAnalytics');
   const [mode, setMode] = useState<InterviewMode>('behavioral');
-  const [format, setFormat] = useState<PracticeFormat>(
-    LIVE_INTERVIEW_CONFIGURED ? 'live' : 'written',
-  );
+  const [format, setFormat] = useState<PracticeFormat>('written');
   const [questionIndex, setQuestionIndex] = useState(0);
   const [response, setResponse] = useState('');
   const [reviewed, setReviewed] = useState(false);
@@ -120,7 +122,7 @@ function InterviewPractice() {
           <ArrowLeft /> Career Compass
         </a>
         <div className="session-status">
-          <span /> AI voice practice
+          <span /> Interview practice
         </div>
       </header>
 
@@ -241,9 +243,16 @@ function InterviewPractice() {
                 className="practice-format-switch"
                 aria-label="Practice format"
               >
-                <button onClick={() => setFormat('live')}>
+                <button
+                  disabled={!LIVE_INTERVIEW_CONFIGURED}
+                  onClick={() => setFormat('live')}
+                >
                   <Mic2 /> Live conversation
-                  <span>Speak with the AI interviewer</span>
+                  <span>
+                    {LIVE_INTERVIEW_CONFIGURED
+                      ? 'Speak with the AI interviewer'
+                      : 'Paused — written practice is available'}
+                  </span>
                 </button>
                 <button className="active" onClick={() => setFormat('written')}>
                   <Keyboard /> Written practice
