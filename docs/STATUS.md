@@ -19,6 +19,8 @@ Cameron requests no demo usage charges and reports owning LiveKit; a partner lik
 
 ## Verification and next action
 
-The updated seventeen-test suite, lint and TypeScript passed locally with Node 24.16.0. Worker dry-run and bounded local written-practice browser checks passed. The Node 24 build exported all three routes but exited 1 with a Windows libuv assertion; separate Pages preparation passed. Exact-head clean Node 22 PR CI is pending. See VERIFICATION.md for the scope and limits. Prior branch baseline/clean CI passed eleven tests; do not use that run as evidence for the new changes.
+The seventeen-test suite, lint and TypeScript passed locally with Node 24.16.0. After the compatible tooling update, the complete Windows production build and Pages preparation pass; the prior shutdown assertion is superseded. Updated Worker dry-run and written-practice/phone browser checks pass. Paused-policy commit 325c5ed already passed clean Node 22 CI with 17 tests/full build; exact-head CI for the additional tooling changes is pending. See VERIFICATION.md.
 
-Dependency audit at the prior lockfile remains 22 affected packages (0 critical, 16 high, 5 moderate, 1 low); remaining tooling upgrades are open. The Cloudflare owner must separately deploy a paused Worker or disable token issuance and verify denial without creating a voice session. The LiveKit owner must check other dispatch paths and existing sessions. Keep voice paused; future live testing requires separate budget/privacy/admission approval.
+The complete npm audit is now six high propagated entries, all through the unpatched braces build chain, with zero critical/moderate/low. Source and stylesheet provenance are recorded in SECURITY_REVIEW.md and vendor/shadcn. An upstream fix remains open; build tooling is not the hosted visitor runtime. No general dependency clearance is claimed.
+
+The Cloudflare owner must separately deploy a paused Worker or disable token issuance and verify denial without creating a voice session. The LiveKit owner must check other dispatch paths and existing sessions. Keep voice paused; future live testing requires separate budget/privacy/admission approval.

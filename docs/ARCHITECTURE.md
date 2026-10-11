@@ -93,3 +93,7 @@ API credentials and future avatar/model keys must remain server-side.
 - Avatar video adds a provider, latency, cost, and failure boundary; voice and
   written fallbacks must remain usable.
 
+
+## Reviewed build-tool boundary (2026-10-10)
+
+The review branch uses Vinext 1.1.0 with RSC plugin 0.5.36 and Wrangler 4.149.0. `app/globals.css` imports the original shadcn stylesheet from `vendor/shadcn/tailwind.css`; its MIT notice and package/hash provenance are alongside it. The generator executable is not installed. This changes the build graph, not the application's role/session/data boundary. Pages remains a static artifact; the Worker deploy remains separate. Six propagated braces advisories remain in the trusted-source build chain and are documented in SECURITY_REVIEW.md.

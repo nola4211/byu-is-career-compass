@@ -74,3 +74,10 @@ Statuses are **Proposed**, **Accepted**, **Superseded**, or **Rejected**.
 - Context: Cameron requests no demo usage charges and reports separate LiveKit/Cloudflare account owners.
 - Decision: Open written practice by default. Require exact true flags in frontend and token service; public Pages and Worker deployment configs explicitly set false. This supersedes D-007's unset-means-enabled compatibility choice.
 - Consequences: The prepared showcase cannot start voice through normal UI or token signing when paused. A separate owner rollout is necessary to close the existing endpoint. Existing rooms, alternate dispatch and provider billing are not controlled by a frontend change. Future live testing needs a separate approved budget and privacy/admission controls.
+
+## D-009: Separate the stylesheet from component generation
+
+- Date: 2026-10-10
+- Status: Proposed for shared review
+- Decision: Retain the exact shadcn 4.18.0 stylesheet and MIT notice locally, while removing the unneeded generator executable from the installed application graph. Keep the actually imported @shadcn/react library. Upgrade Vinext/RSC/Wrangler compatibly and apply Satori's official same-series fflate patch.
+- Consequences: The original styling still builds while 265 generator-chain packages are removed. Local full build, 17 tests, types/lint, dry-run and browser checks pass. Six propagated audit entries remain through an unpatched build-only braces chain; monitor upstream and build trusted source. No production deployment or general security clearance follows from these checks.

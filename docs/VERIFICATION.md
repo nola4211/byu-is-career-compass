@@ -1,8 +1,18 @@
 # Verification Reference
 
-Last updated: 2026-10-09
+Last updated: 2026-10-10
 
-## Current portfolio/security review (2026-10-09)
+## Build tooling update (2026-10-10)
+
+The review branch upgrades Vinext to 1.1.0, its required RSC companion to 0.5.36, and Wrangler to 4.149.0. It removes the unused shadcn generator executable and its transitive toolchain while retaining the exact original stylesheet and MIT notice in `vendor/shadcn/`. `@shadcn/react`, which is actually imported by a component, remains installed. The Satori-only override selects the official same-series `fflate@0.7.5` patch instead of its exact vulnerable 0.7.3 pin. No forced framework downgrade or disabled peer checks are used.
+
+The refreshed complete npm audit is six high entries, zero critical/moderate/low. All six trace to the [unpatched braces pattern-walker issue](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm) through Vinext's CommonJS/dynamic-import/glob build chain. This is six propagated package entries, not six independent application bugs. The static Pages artifact does not execute that build chain or accept visitor-supplied build patterns. Build only trusted source/inputs and keep development tooling private. This is a bounded exposure assessment, not dependency clearance; track an upstream fix. The [fflate patch advisory](https://github.com/advisories/GHSA-px8p-9vwx-vf98) lists 0.7.5 as patched.
+
+Local Node 24.16.0 lint, TypeScript and all 17 actual-source tests passed. The complete production build and Pages preparation now exit successfully, replacing the prior Windows shutdown failure. It exports all three routes. The local updated static interview page was checked for written-first/disabled live entry, fictional self-review, next-question clearing, career-specific/Cybersecurity reset, and a 390×844 viewport with client/scroll widths both 375 px; captured errors/warnings were empty. Worker dry-run with metrics disabled passed at 150.22 KiB / 30.94 KiB gzip and explicit false flag, with nothing deployed. Large-chunk and ineffective-import build warnings remain; no native performance improvement is claimed.
+
+The prior paused-policy commit `325c5ed4c68d2cde3fe92c3d8a5387b5b921b064` passed clean 17-test/full-build Node 22 CI in run 38097021835. Clean exact-head CI for this additional tooling update is pending publication. No production frontend/Worker rollout, microphone, provider session, billing, credential or account setting changed.
+
+## Historical initial portfolio/security review (2026-10-09)
 
 | Check | Observed result and limit |
 | --- | --- |
@@ -107,7 +117,7 @@ These observations concern the updated review source only. Main and the existing
 | Local browser | Written mode opened by default; live entry disabled; fictional answer produced self-review; next question cleared answer; career-specific mode and Cybersecurity selection reset to question 1 and matching prompt |
 | Responsive browser | At a requested 390 by 844 viewport, document client and scroll widths were both 375 px; live entry remained disabled; no page horizontal overflow |
 | Browser console | No captured error logs during the above workflow; local root favicon request returned 404 in the static helper log |
-| Clean PR CI | Pending for this updated source; the earlier eleven-test run is historical |
+| Clean PR CI | Paused-policy commit 325c5ed passed clean 17-test/full-build Node 22 run 38097021835; the later tooling update has separate pending CI |
 | Provider and deployment acceptance | Not performed: no microphone, room, token POST, paid usage, credential, billing, retention or provider setting was accessed or changed |
 
 Screenshot evidence is retained privately as `outputs/career-compass-paused-demo.jpg` in the migration workspace. The static helper was stopped after verification. This check does not prove the existing public Worker is paused. Its owner must deploy the updated gate with false or disable issuance, and the LiveKit owner must check existing rooms and alternate dispatch paths.

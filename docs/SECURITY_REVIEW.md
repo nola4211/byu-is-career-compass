@@ -1,6 +1,6 @@
 # Voice service and dependency review
 
-Reviewed 2026-10-09. Changes are prepared for shared review; no production setting, credential, account, recording, or session record was accessed.
+Reviewed 2026-10-10. Changes are prepared for shared review; no production setting, credential, account, recording, or session record was accessed.
 
 ## Implemented on this branch
 
@@ -24,7 +24,7 @@ The separately deployed Worker returns 503 before reading the body or signing a 
 - Use authoritative quota/budget accounting when a hard limit is required. [Cloudflare's rate-limiting binding is local to each location and eventually consistent](https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/); it should not be represented as an exact global spending cap.
 - Perform a consented disposable microphone session covering agent join, metadata, speech, transcription, mute/end, denied permission, disconnect, and provider-side termination before claiming live acceptance.
 
-## Dependency findings
+## Dependency findings before the tooling update
 
 Initial locked graph: 28 affected packages, including three critical entries. Targeted changes reduce it to 22 affected packages: zero critical, 16 high, five moderate, one low. This count includes propagated dependency effects and is not 22 independent exploitable application defects.
 
@@ -36,7 +36,17 @@ Initial locked graph: 28 affected packages, including three critical entries. Ta
 | proxy-addr 2.0.8 | Address [mapped-IPv6 trust handling](https://github.com/advisories/GHSA-jqcg-44mw-7w3h). Locked build graph passed. |
 | source-map-js 1.2.2 | Address [indexed-map processing](https://github.com/advisories/GHSA-68fv-2mgg-jv7q). Static build passed. |
 
-Remaining findings include Wrangler/Miniflare transport and image tooling, Vinext/image-size/plugin tooling, and shadcn/MCP/parser/glob dependencies. Review compatible transitive fixes and Wrangler/Vinext upgrades separately; no forced downgrade or broad framework migration was applied. The static hosted frontend runs no development server, formatter, or image optimizer. The independently deployed Worker and developer tools have different exposure boundaries; deployed Worker behavior/settings were not refreshed in this review. A full source-history credential scan, penetration test, dependency clearance, or provider-side security certification is not claimed.
+That earlier 22-entry snapshot is superseded by the October 10 tooling review below. The remaining six entries now trace only to the unpatched braces build chain; no forced downgrade was applied. The static hosted frontend runs no development server, formatter, or image optimizer. The independently deployed Worker and developer tools have different exposure boundaries; deployed Worker behavior/settings were not refreshed in this review. A full source-history credential scan, penetration test, dependency clearance, or provider-side security certification is not claimed.
+
+## Build tooling update (2026-10-10)
+
+The review branch upgrades Vinext to 1.1.0, its required RSC companion to 0.5.36, and Wrangler to 4.149.0. It removes the unused shadcn generator executable and its transitive toolchain while retaining the exact original stylesheet and MIT notice in `vendor/shadcn/`. `@shadcn/react`, which is actually imported by a component, remains installed. The Satori-only override selects the official same-series `fflate@0.7.5` patch instead of its exact vulnerable 0.7.3 pin. No forced framework downgrade or disabled peer checks are used.
+
+The refreshed complete npm audit is six high entries, zero critical/moderate/low. All six trace to the [unpatched braces pattern-walker issue](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm) through Vinext's CommonJS/dynamic-import/glob build chain. This is six propagated package entries, not six independent application bugs. The static Pages artifact does not execute that build chain or accept visitor-supplied build patterns. Build only trusted source/inputs and keep development tooling private. This is a bounded exposure assessment, not dependency clearance; track an upstream fix. The [fflate patch advisory](https://github.com/advisories/GHSA-px8p-9vwx-vf98) lists 0.7.5 as patched.
+
+Local Node 24.16.0 lint, TypeScript and all 17 actual-source tests passed. The complete production build and Pages preparation now exit successfully, replacing the prior Windows shutdown failure. It exports all three routes. The local updated static interview page was checked for written-first/disabled live entry, fictional self-review, next-question clearing, career-specific/Cybersecurity reset, and a 390×844 viewport with client/scroll widths both 375 px; captured errors/warnings were empty. Worker dry-run with metrics disabled passed at 150.22 KiB / 30.94 KiB gzip and explicit false flag, with nothing deployed. Large-chunk and ineffective-import build warnings remain; no native performance improvement is claimed.
+
+The prior paused-policy commit `325c5ed4c68d2cde3fe92c3d8a5387b5b921b064` passed clean 17-test/full-build Node 22 CI in run 38097021835. Clean exact-head CI for this additional tooling update is pending publication. No production frontend/Worker rollout, microphone, provider session, billing, credential or account setting changed.
 
 ## Rollout boundary
 
