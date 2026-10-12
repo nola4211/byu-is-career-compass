@@ -19,24 +19,22 @@ npm run dev
 
 ## LiveKit status
 
-The interview route opens in written practice. This branch pauses public live
-voice entry to honor the portfolio's zero-spending policy. An endpoint or saved
-credential alone cannot enable voice: the frontend and separately deployed
-Cloudflare token Worker each require an exact `true` opt-in. The Pages workflow
-and Worker deployment configuration explicitly set their flags to `false`.
+The interview page opens the existing live prejoin screen when
+`VITE_LIVEKIT_TOKEN_ENDPOINT` is configured; otherwise it opens written practice.
+Voice starts only after the student acknowledges the AI/provider disclosure and
+selects Start. Written self-review remains available.
 
-These are proposed source changes, not confirmation that the existing public
-Worker has been disabled. Its Cloudflare owner must deploy the paused Worker
-or disable the existing endpoint. Cameron reports owning LiveKit; a partner
-likely controls Cloudflare. No paid voice test is authorized by the portfolio
-review. Existing rooms must be checked separately; a token pause does not end them.
+The security review preserves this behavior while bounding token requests and
+updating vulnerable dependencies. Cameron reports that no service for this
+project has a payment method or paid plan. A billing-related voice pause is not
+required, and the proposed enable flags have been removed. Real microphone and
+provider-retention acceptance are still unverified; see `docs/SECURITY_REVIEW.md`.
 
-For local development, copy `.dev.vars.example` to `.dev.vars`, add disposable
-development credentials, and create an ignored `.env.local` containing:
+For local development, copy `.dev.vars.example` to the ignored `.dev.vars`, add
+development credentials there, and create an ignored `.env.local` containing:
 
 ```dotenv
 VITE_LIVEKIT_TOKEN_ENDPOINT=http://localhost:8787
-VITE_LIVE_INTERVIEWS_ENABLED=false
 ```
 
 Then run these in separate terminals:
@@ -46,7 +44,6 @@ npm run livekit:dev
 npm run dev
 ```
 
-Keep both flags false for the showcase. Any future live testing requires an
-owner-approved budget, privacy and admission controls, and explicit opt-in in
-both environments. Production credentials belong only in the Worker environment.
-See `docs/SECURITY_REVIEW.md` and `.env.example`.
+Production credentials belong only in the Worker environment. A frontend merge
+publishes through Pages; deployment of the request-validation fixes to the
+separate Worker requires its Cloudflare owner. No shutdown deployment is needed.

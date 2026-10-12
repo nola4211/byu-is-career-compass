@@ -1,6 +1,31 @@
 # Verification Reference
 
-Last updated: 2026-10-10
+Last updated: 2026-10-12
+
+## Voice availability correction (2026-10-12)
+
+The corrected source passes 13 focused tests: ten actual-Worker tests with
+disposable signing keys and three actual-frontend rendering tests with harmless
+session doubles. Configured voice renders the existing prejoin screen without
+starting a session; missing endpoints retain written practice. All eight career
+IDs and both modes receive scoped ten-minute microphone-only tokens without a
+new opt-in flag. Local lint, TypeScript, the full configured-endpoint static
+build/Pages preparation and Worker dry-run pass on Node 24.16.0. The dry-run is
+149.88 KiB / 30.87 KiB gzip with metrics disabled; nothing is deployed.
+
+The refreshed October 12 audit has six high propagated entries through the
+unpatched braces build chain and zero critical/moderate/low. No general security
+clearance is claimed. Current GitHub CI must be observed after publication.
+
+The interview page, Worker configuration, Pages deployment workflow and example
+environment files match main; the live component differs only in unavailable
+error wording. Pause flags/helper are removed. No new browser, microphone,
+provider account or production acceptance is claimed in this correction.
+
+All remaining sections are dated historical checkpoints. Their billing pause
+requirements and enable flags are superseded by D-010 and must not be treated
+as current release requirements. Previous main/paused-draft browser checks do
+not prove active voice acceptance.
 
 ## Build tooling update (2026-10-10)
 
@@ -90,7 +115,7 @@ The sections below preserve dated September evidence; they are historical observ
 | Production URL | Open home and Cybersecurity interview URLs | Passed; both returned HTTP 200 and the home page rendered in a browser |
 | Pre-integration browser baseline | Quiz, career query, written feedback, assets, and 390-by-844 layout | Passed before LiveKit branch merge |
 
-## Notes
+## Historical September notes
 
 - Dependency installation reports 10 audit findings. No force fix was applied
   because it could introduce unrelated breaking changes.
@@ -120,4 +145,4 @@ These observations concern the updated review source only. Main and the existing
 | Clean PR CI | Paused-policy commit 325c5ed passed clean 17-test/full-build Node 22 run 38097021835; the later tooling update has separate pending CI |
 | Provider and deployment acceptance | Not performed: no microphone, room, token POST, paid usage, credential, billing, retention or provider setting was accessed or changed |
 
-Screenshot evidence is retained privately as `outputs/career-compass-paused-demo.jpg` in the migration workspace. The static helper was stopped after verification. This check does not prove the existing public Worker is paused. Its owner must deploy the updated gate with false or disable issuance, and the LiveKit owner must check existing rooms and alternate dispatch paths.
+Screenshot evidence is retained privately as `outputs/career-compass-paused-demo.jpg` in the migration workspace. The static helper was stopped after verification. This check does not prove the existing public Worker is paused. The pause proposal was withdrawn on October 12; no shutdown rollout is required. This historical check does not validate the revised source.

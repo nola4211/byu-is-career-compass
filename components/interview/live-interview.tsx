@@ -22,7 +22,6 @@ import {
   createInterviewMetadata,
   type InterviewMode,
 } from '@/lib/interview-session';
-import { enabledTokenEndpoint } from '@/lib/live-interview-policy';
 
 type LiveInterviewProps = {
   careerId: CareerId;
@@ -416,10 +415,7 @@ export function LiveInterview({
   mode,
   onUseWrittenPractice,
 }: LiveInterviewProps) {
-  const tokenEndpoint = enabledTokenEndpoint(
-    import.meta.env.VITE_LIVE_INTERVIEWS_ENABLED,
-    import.meta.env.VITE_LIVEKIT_TOKEN_ENDPOINT,
-  );
+  const tokenEndpoint = import.meta.env.VITE_LIVEKIT_TOKEN_ENDPOINT?.trim();
 
   if (!tokenEndpoint) {
     return (
@@ -436,10 +432,10 @@ export function LiveInterview({
         </div>
         <div className="prejoin-panel unavailable-panel">
           <p className="overline">Live voice practice</p>
-          <h3>Live conversation is paused.</h3>
+          <h3>The interviewer is almost connected.</h3>
           <p>
-            Written practice is available without a microphone or a live AI
-            session.
+            The secure token service still needs its public endpoint added to
+            the site build. Written practice is ready now.
           </p>
           <Button size="lg" onClick={onUseWrittenPractice}>
             Use written practice

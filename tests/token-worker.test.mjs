@@ -49,7 +49,6 @@ const worker = loadTs(
 const { CAREER_IDS } = loadTs(resolve(root, 'data/careers.ts'));
 const origin = 'https://nola4211.github.io';
 const fakeEnv = {
-  LIVEKIT_INTERVIEWS_ENABLED: 'true',
   LIVEKIT_API_KEY: 'disposable-test-key',
   LIVEKIT_API_SECRET: 'disposable-local-test-secret',
 };
@@ -227,34 +226,6 @@ test('origin and method checks preserve preflight behavior', async () => {
   assert.equal((await worker.fetch(get, fakeEnv)).status, 405);
 });
 
-test('operator pause rejects new tokens without returning credentials', async () => {
-  const response = await worker.fetch(request(), {
-    ...fakeEnv,
-    LIVEKIT_INTERVIEWS_ENABLED: 'false',
-  });
-  assert.equal(response.status, 503);
-  const text = await response.text();
-  assert.ok(
-    !text.includes(fakeEnv.LIVEKIT_API_KEY) &&
-      !text.includes(fakeEnv.LIVEKIT_API_SECRET),
-  );
-  assert.equal(response.headers.get('cache-control'), 'no-store');
-  assert.equal(response.headers.get('access-control-allow-origin'), origin);
-});
-
-test('missing or mistyped opt-in never issues a token even with credentials', async () => {
-  for (const flag of [undefined, '', 'false', 'TRUE', '1', ' true ', true]) {
-    const response = await worker.fetch(request(), {
-      ...fakeEnv,
-      LIVEKIT_INTERVIEWS_ENABLED: flag,
-    });
-    assert.equal(response.status, 503);
-    const data = await response.json();
-    assert.equal(data.participant_token, undefined);
-    assert.equal(data.server_url, undefined);
-  }
-});
-
 test('missing credentials and unsupported metadata fail before token issuance', async () => {
   assert.equal((await worker.fetch(request(), {})).status, 503);
   assert.equal(
@@ -277,7 +248,7 @@ test('missing credentials and unsupported metadata fail before token issuance', 
   );
 });
 
-test('all eight careers and both modes retain ten-minute microphone-only grants', async () => {
+test('configured credentials issue scoped tokens for all eight careers and both modes without an extra opt-in', async () => {
   assert.equal(CAREER_IDS.length, 8);
   for (const career of CAREER_IDS)
     for (const mode of ['behavioral', 'technical']) {

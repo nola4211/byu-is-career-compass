@@ -1,26 +1,40 @@
 # Current Project Status
 
-Snapshot: 2026-10-10. This is the review branch, not a deployed replacement.
+Snapshot: 2026-10-12. Prepared for PR #11; unmerged and not deployed.
 
-## Deployed frontend
+## Current scope
 
 Main remains `f7ac294941c4e56af44b4b949b935c6b543aabe2` from PR #9.
-[Pages run 34398273576](https://github.com/nola4211/byu-is-career-compass/actions/runs/34398273576) passed at that revision. Prior public browser review covered first-click interview navigation, voice pre-join disclosure/consent, written self-review and a phone-sized layout. Real voice acceptance is unverified.
+The review now preserves its live prejoin, disclosure/consent, water interface,
+transcript controls, mute/end and written fallback. The only interview-component
+change from main is clearer unavailable-service wording. The proposed pause
+flags and written-first override have been removed from code and deployment
+examples. Cameron reports no paid services/payment method; no billing shutdown
+is required.
 
-## Prepared on the review branch
+The Worker bounds input to 8,192 bytes and handles malformed JSON, media types,
+UTF-8 and streams. Dependency fixes and licensed stylesheet provenance remain.
 
-- Bound token bodies to 8,192 bytes; handle bad JSON/media types/UTF-8/streams.
-- Default to written practice; gate live entry and direct component mounting behind an exact frontend true opt-in. Pages explicitly sets false.
-- Require exact `LIVEKIT_INTERVIEWS_ENABLED=true` before body parsing or token signing. Missing/mistyped flags deny access; Worker config explicitly sets false.
-- Seventeen tests cover the real Worker and server-rendered frontend/component using disposable configuration and rejecting provider mocks. No paid service is contacted.
-- Retain prior scoped dependency patches, friendly unavailable handling and non-deploying PR verification.
+## Current verification
 
-Cameron requests no demo usage charges and reports owning LiveKit; a partner likely controls Cloudflare. These source changes do not close the existing public token endpoint or active rooms. No credentials, provider settings or session records have been accessed or changed.
+The corrected source passes 13 focused tests: ten actual-Worker tests with
+disposable signing keys and three actual-frontend rendering tests with harmless
+session doubles. Configured voice renders the existing prejoin screen without
+starting a session; missing endpoints retain written practice. All eight career
+IDs and both modes receive scoped ten-minute microphone-only tokens without a
+new opt-in flag. Local lint, TypeScript, the full configured-endpoint static
+build/Pages preparation and Worker dry-run pass on Node 24.16.0. The dry-run is
+149.88 KiB / 30.87 KiB gzip with metrics disabled; nothing is deployed.
 
-## Verification and next action
+The refreshed October 12 audit has six high propagated entries through the
+unpatched braces build chain and zero critical/moderate/low. No general security
+clearance is claimed. Current GitHub CI must be observed after publication.
 
-The seventeen-test suite, lint and TypeScript passed locally with Node 24.16.0. After the compatible tooling update, the complete Windows production build and Pages preparation pass; the prior shutdown assertion is superseded. Updated Worker dry-run and written-practice/phone browser checks pass. Paused-policy commit 325c5ed already passed clean Node 22 CI with 17 tests/full build; exact-head CI for the additional tooling changes is pending. See VERIFICATION.md.
+## Next action
 
-The complete npm audit is now six high propagated entries, all through the unpatched braces build chain, with zero critical/moderate/low. Source and stylesheet provenance are recorded in SECURITY_REVIEW.md and vendor/shadcn. An upstream fix remains open; build tooling is not the hosted visitor runtime. No general dependency clearance is claimed.
-
-The Cloudflare owner must separately deploy a paused Worker or disable token issuance and verify denial without creating a voice session. The LiveKit owner must check other dispatch paths and existing sessions. Keep voice paused; future live testing requires separate budget/privacy/admission approval.
+Review PR #11 through the shared repository process and reconcile the separate
+documentation PR #10. A merge deploys Pages; the Cloudflare owner separately
+ships the Worker validation fixes. Actual microphone/agent join, speech,
+transcript, mute/end, denied-device behavior and provider retention remain
+unverified. No credentials, provider settings or session records were accessed
+or changed by this correction.

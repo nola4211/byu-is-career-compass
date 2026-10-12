@@ -18,7 +18,6 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      VITE_LIVE_INTERVIEWS_ENABLED: 'false'
       VITE_LIVEKIT_TOKEN_ENDPOINT: ${{ vars.VITE_LIVEKIT_TOKEN_ENDPOINT }}
     environment:
       name: github-pages

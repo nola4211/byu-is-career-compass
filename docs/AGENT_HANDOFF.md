@@ -1,11 +1,30 @@
 # Agent Handoff
 
-Updated: 2026-10-10.
+Updated: 2026-10-12. PR #11 remains a draft; main is unchanged.
 
-Main remains `f7ac294941c4e56af44b4b949b935c6b543aabe2`; the security PR is unmerged. It now includes written-first practice, disabled public Pages voice entry, and exact true opt-in before Worker token issuance. Both deployment configs explicitly set false. The earlier unset-means-enabled policy is superseded.
+The billing-pause proposal is withdrawn following Cameron's clarification that
+this project uses no paid services or payment method. The draft restores main's
+configured voice prejoin and written fallback, removes both enable flags and
+their helper, and retains bounded Worker input plus dependency fixes. Preserve
+the water interface, disclosure/consent, transcript controls, mute/end, all eight
+career IDs, CAREERS.md and shared contributors' work.
 
-Cameron requests zero demo usage charges. He reports controlling LiveKit; a partner likely controls Cloudflare. No live session, credential change or provider setting is authorized/performed here. Prepare and review source without joining a room. A frontend merge does not disable the existing Worker. Its owner must deploy false or disable issuance and verify token denial; existing sessions and alternate dispatch paths require separate LiveKit owner checks.
+The corrected source passes 13 focused tests: ten actual-Worker tests with
+disposable signing keys and three actual-frontend rendering tests with harmless
+session doubles. Configured voice renders the existing prejoin screen without
+starting a session; missing endpoints retain written practice. All eight career
+IDs and both modes receive scoped ten-minute microphone-only tokens without a
+new opt-in flag. Local lint, TypeScript, the full configured-endpoint static
+build/Pages preparation and Worker dry-run pass on Node 24.16.0. The dry-run is
+149.88 KiB / 30.87 KiB gzip with metrics disabled; nothing is deployed.
 
-Seventeen actual-source tests, lint and TypeScript passed locally. The updated Vinext/RSC/Wrangler graph now passes the complete Windows production build and Pages preparation. Its original shadcn stylesheet is retained unchanged with the MIT notice; the generator executable is removed. Updated dry-run and written-practice/Cybersecurity/phone checks pass. npm audit is six high entries through one unpatched braces build chain, zero critical/moderate/low; monitor the upstream patch. Details are in VERIFICATION.md and SECURITY_REVIEW.md.
+The refreshed October 12 audit has six high propagated entries through the
+unpatched braces build chain and zero critical/moderate/low. No general security
+clearance is claimed. Current GitHub CI must be observed after publication.
 
-Paused-policy commit 325c5ed passed clean 17-test/full-build Node 22 CI; exact-head CI for this added tooling update is pending. Do not use the earlier eleven-test run as current evidence. Provider closure, future admission/retention/duration controls and shared review remain open. Preserve CAREERS.md and all eight IDs, shared contributions and unrelated work; coordinate PR #10 documentation before merge.
+Next: observe the revised PR's CI, obtain shared review and reconcile PR #10
+documentation before merge. Pages publication and Worker deployment are
+separate; the Cloudflare owner can deploy the validation fixes without pausing
+voice. No billing shutdown is required. Real voice and provider-retention
+acceptance remain open. This correction made no provider, credential or
+production change and does not certify the existing service.

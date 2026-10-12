@@ -1,28 +1,42 @@
 # Voice service and dependency review
 
-Reviewed 2026-10-10. Changes are prepared for shared review; no production setting, credential, account, recording, or session record was accessed.
+Reviewed 2026-10-12. Prepared for shared review; no provider credentials,
+settings or session records were accessed.
 
 ## Implemented on this branch
 
-The Worker reads a maximum of 8,192 bytes, stops/cancels oversized streams, decodes split UTF-8 safely, and rejects invalid JSON shapes or media types. Previously a JSON `null` body could throw before a response, and the limit was applied to characters after reading the entire body. Twelve Worker tests exercise actual source and real SDK token signing with disposable keys, including all eight careers, both modes, and fail-closed opt-in. Five frontend rendering tests verify the paused/default paths. These are local request/grant/UI-render checks, not a Cloudflare or live-agent acceptance test.
+The Worker reads at most 8,192 bytes, stops/cancels oversized streams, decodes
+split UTF-8 safely and rejects invalid JSON shapes/media types. Previously
+JSON null could throw and the limit used characters after reading all input.
+The existing career allow-list, derived metadata, random room/identity, fixed
+agent dispatch and scoped tokens remain. Main's voice UI is preserved apart
+from a clearer unavailable-service message.
 
-## Zero-spending portfolio policy (2026-10-10)
+The corrected source passes 13 focused tests: ten actual-Worker tests with
+disposable signing keys and three actual-frontend rendering tests with harmless
+session doubles. Configured voice renders the existing prejoin screen without
+starting a session; missing endpoints retain written practice. All eight career
+IDs and both modes receive scoped ten-minute microphone-only tokens without a
+new opt-in flag. Local lint, TypeScript, the full configured-endpoint static
+build/Pages preparation and Worker dry-run pass on Node 24.16.0. The dry-run is
+149.88 KiB / 30.87 KiB gzip with metrics disabled; nothing is deployed.
 
-Cameron requests no usage charges from portfolio demos. He reports controlling LiveKit; a partner likely controls Cloudflare. This is reported ownership, not a provider-dashboard verification.
+The refreshed October 12 audit has six high propagated entries through the
+unpatched braces build chain and zero critical/moderate/low. No general security
+clearance is claimed. Current GitHub CI must be observed after publication.
 
-The frontend defaults to written practice. Public Pages builds set `VITE_LIVE_INTERVIEWS_ENABLED=false`; endpoint presence cannot enable the live button or construct a session. Direct rendering of the live component also checks the opt-in before any LiveKit session/token-client hook runs. Both frontend and Worker accept only the exact string `true`; missing, false, or mistyped flags deny voice. `wrangler.livekit.jsonc` explicitly sets `LIVEKIT_INTERVIEWS_ENABLED=false`.
+## Billing clarification and remaining acceptance
 
-The separately deployed Worker returns 503 before reading the body or signing a token when its flag is not enabled. This supersedes the earlier optional-pause default. Seventeen tests cover the actual Worker plus server-rendered frontend/component paths with a configured disposable endpoint; paused paths make no session/token-client calls. No production or paid session is performed.
+**Reported:** Cameron has not purchased services or supplied payment details
+for this project. The proposed billing-related pause and extra enable flags are
+removed. No shutdown, card verification or paid plan is required by this review.
 
-**Rollout required:** Source changes and a frontend merge do not disable the already deployed Worker. The Cloudflare owner must deploy this paused configuration or disable the endpoint, and verify a disposable request receives no token. The LiveKit owner must separately check/terminate any existing sessions or other dispatch paths before claiming provider usage has stopped. No owner account setting has been changed. A new-token pause does not end active rooms or itself establish a global spending cap.
-
-## Controls still required before recommending an unrestricted voice demo
-
-- Verify service ownership, recording/transcript retention, deletion, and the exact providers receiving audio and metadata. Existing disclosure remains; do not promise no retention.
-- Add an authenticated or otherwise verified admission boundary, throttling, and per-user/concurrent/global session quotas. A matching Origin header is a browser policy signal, not proof of a permitted student.
-- Enforce session duration and termination on the service side, and test the resulting billing stop. [LiveKit token expiry governs entry rather than an ongoing session cutoff](https://docs.livekit.io/frontends/reference/tokens-grants/).
-- Use authoritative quota/budget accounting when a hard limit is required. [Cloudflare's rate-limiting binding is local to each location and eventually consistent](https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/); it should not be represented as an exact global spending cap.
-- Perform a consented disposable microphone session covering agent join, metadata, speech, transcription, mute/end, denied permission, disconnect, and provider-side termination before claiming live acceptance.
+Provider retention/deletion and actual voice behavior remain unverified. Use a
+consented fictional session to verify agent join, metadata, speech, transcript,
+mute/end and device-denial/disconnect behavior before claiming live acceptance.
+The Worker has no authentication or rate limit; an Origin header does not prove
+identity. Token expiry is an admission limit, not an ongoing-session cutoff.
+These are documented public-service limitations, not a billing shutdown gate.
 
 ## Dependency findings before the tooling update
 
@@ -44,10 +58,13 @@ The review branch upgrades Vinext to 1.1.0, its required RSC companion to 0.5.36
 
 The refreshed complete npm audit is six high entries, zero critical/moderate/low. All six trace to the [unpatched braces pattern-walker issue](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm) through Vinext's CommonJS/dynamic-import/glob build chain. This is six propagated package entries, not six independent application bugs. The static Pages artifact does not execute that build chain or accept visitor-supplied build patterns. Build only trusted source/inputs and keep development tooling private. This is a bounded exposure assessment, not dependency clearance; track an upstream fix. The [fflate patch advisory](https://github.com/advisories/GHSA-px8p-9vwx-vf98) lists 0.7.5 as patched.
 
-Local Node 24.16.0 lint, TypeScript and all 17 actual-source tests passed. The complete production build and Pages preparation now exit successfully, replacing the prior Windows shutdown failure. It exports all three routes. The local updated static interview page was checked for written-first/disabled live entry, fictional self-review, next-question clearing, career-specific/Cybersecurity reset, and a 390×844 viewport with client/scroll widths both 375 px; captured errors/warnings were empty. Worker dry-run with metrics disabled passed at 150.22 KiB / 30.94 KiB gzip and explicit false flag, with nothing deployed. Large-chunk and ineffective-import build warnings remain; no native performance improvement is claimed.
-
-The prior paused-policy commit `325c5ed4c68d2cde3fe92c3d8a5387b5b921b064` passed clean 17-test/full-build Node 22 CI in run 38097021835. Clean exact-head CI for this additional tooling update is pending publication. No production frontend/Worker rollout, microphone, provider session, billing, credential or account setting changed.
+The October 10 paused draft passed checks at its historical revision. Those
+results do not validate the corrected source; current checks are listed above
+and in VERIFICATION.md.
 
 ## Rollout boundary
 
-Review and merge through the shared repository's process after PR checks. A merge publishes the static frontend through the existing main-branch workflow; Worker deployment remains a separate owner-approved action. Deploy with the explicit false flag, verify new-token rejection without joining a room, and keep voice paused under the zero-spending policy. Future live promotion requires a separately approved budget plus admission/retention/duration controls. Keep credentials out of source and CI artifacts.
+Use shared review and PR checks before merging. A merge publishes the static
+frontend through the existing workflow. The Cloudflare owner separately
+deploys the request-validation fixes to the Worker. No paused configuration or
+token-denial rollout is required. Keep provider secrets out of source/artifacts.

@@ -6,7 +6,6 @@
   "compatibility_flags": ["nodejs_compat"],
   "workers_dev": true,
   "vars": {
-    "LIVEKIT_INTERVIEWS_ENABLED": "false",
     "LIVEKIT_URL": "wss://is-core-case-2026-zat9gox0.livekit.cloud",
     "LIVEKIT_AGENT_NAME": "career-interviewer",
     "LIVEKIT_ALLOWED_ORIGIN": "https://nola4211.github.io"
