@@ -2,8 +2,8 @@
 
 Status: **Voice integration, external token service, lifecycle fix, and named
 agent deployment are live; real conversation verification is pending. Avatar
-remains proposed. A focused audio-reactive water UI is ready in PR #9 and
-awaits production merge.**
+remains proposed. The focused water UI merged through PR #9 and Pages run
+34398273576 passed; real microphone behavior remains unverified.**
 
 Last reviewed: 2026-09-09
 

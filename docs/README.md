@@ -12,6 +12,7 @@ an old handoff does not become an accidental requirement.
 | [`ARCHITECTURE.md`](ARCHITECTURE.md) | Verified components, file map, and data flows | Structure or integration behavior changes |
 | [`LIVE_INTERVIEW_PLAN.md`](LIVE_INTERVIEW_PLAN.md) | LiveKit voice implementation and avatar rollout plan | The integration design or rollout changes |
 | [`WORKFLOW.md`](WORKFLOW.md) | How contributors inspect, change, verify, and hand off work | Development or release procedures change |
+| [`SECURITY_REVIEW.md`](SECURITY_REVIEW.md) | Voice-service controls, dependency findings, and rollout limits | Security or dependency evidence changes |
 | [`VERIFICATION.md`](VERIFICATION.md) | Commands, observed results, and verification gaps | Checks are discovered or run |
 | [`DECISIONS.md`](DECISIONS.md) | Durable decisions and rationale | A consequential choice is accepted or superseded |
 | [`AGENT_HANDOFF.md`](AGENT_HANDOFF.md) | Short continuation brief for unfinished work | Ownership changes or work pauses |

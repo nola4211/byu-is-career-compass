@@ -1,6 +1,57 @@
 # Verification Reference
 
-Last updated: 2026-09-09
+Last updated: 2026-10-12
+
+## Voice availability correction (2026-10-12)
+
+The corrected source passes 13 focused tests: ten actual-Worker tests with
+disposable signing keys and three actual-frontend rendering tests with harmless
+session doubles. Configured voice renders the existing prejoin screen without
+starting a session; missing endpoints retain written practice. All eight career
+IDs and both modes receive scoped ten-minute microphone-only tokens without a
+new opt-in flag. Local lint, TypeScript, the full configured-endpoint static
+build/Pages preparation and Worker dry-run pass on Node 24.16.0. The dry-run is
+149.88 KiB / 30.87 KiB gzip with metrics disabled; nothing is deployed.
+
+The refreshed October 12 audit has six high propagated entries through the
+unpatched braces build chain and zero critical/moderate/low. No general security
+clearance is claimed. Current GitHub CI must be observed after publication.
+
+The interview page, Worker configuration, Pages deployment workflow and example
+environment files match main; the live component differs only in unavailable
+error wording. Pause flags/helper are removed. No new browser, microphone,
+provider account or production acceptance is claimed in this correction.
+
+All remaining sections are dated historical checkpoints. Their billing pause
+requirements and enable flags are superseded by D-010 and must not be treated
+as current release requirements. Previous main/paused-draft browser checks do
+not prove active voice acceptance.
+
+## Build tooling update (2026-10-10)
+
+The review branch upgrades Vinext to 1.1.0, its required RSC companion to 0.5.36, and Wrangler to 4.149.0. It removes the unused shadcn generator executable and its transitive toolchain while retaining the exact original stylesheet and MIT notice in `vendor/shadcn/`. `@shadcn/react`, which is actually imported by a component, remains installed. The Satori-only override selects the official same-series `fflate@0.7.5` patch instead of its exact vulnerable 0.7.3 pin. No forced framework downgrade or disabled peer checks are used.
+
+The refreshed complete npm audit is six high entries, zero critical/moderate/low. All six trace to the [unpatched braces pattern-walker issue](https://github.com/advisories/GHSA-vfj7-8cjw-p6xm) through Vinext's CommonJS/dynamic-import/glob build chain. This is six propagated package entries, not six independent application bugs. The static Pages artifact does not execute that build chain or accept visitor-supplied build patterns. Build only trusted source/inputs and keep development tooling private. This is a bounded exposure assessment, not dependency clearance; track an upstream fix. The [fflate patch advisory](https://github.com/advisories/GHSA-px8p-9vwx-vf98) lists 0.7.5 as patched.
+
+Local Node 24.16.0 lint, TypeScript and all 17 actual-source tests passed. The complete production build and Pages preparation now exit successfully, replacing the prior Windows shutdown failure. It exports all three routes. The local updated static interview page was checked for written-first/disabled live entry, fictional self-review, next-question clearing, career-specific/Cybersecurity reset, and a 390×844 viewport with client/scroll widths both 375 px; captured errors/warnings were empty. Worker dry-run with metrics disabled passed at 150.22 KiB / 30.94 KiB gzip and explicit false flag, with nothing deployed. Large-chunk and ineffective-import build warnings remain; no native performance improvement is claimed.
+
+The prior paused-policy commit `325c5ed4c68d2cde3fe92c3d8a5387b5b921b064` passed clean 17-test/full-build Node 22 CI in run 38097021835. Clean exact-head CI for this additional tooling update is pending publication. No production frontend/Worker rollout, microphone, provider session, billing, credential or account setting changed.
+
+## Historical initial portfolio/security review (2026-10-09)
+
+| Check | Observed result and limit |
+| --- | --- |
+| Dependency install | Initial clean `npm ci --ignore-scripts`, then locked targeted-patch install passed in the isolated copy. PR workflow also checks a clean lock install. |
+| Lint and TypeScript | `npm run lint` and `node node_modules/typescript/bin/tsc --noEmit` passed. |
+| Worker regression tests | `npm test`: 11 passed. Actual Worker/metadata source and real SDK use disposable local signing keys; no live service is contacted. |
+| Selected-file formatting | oxfmt ran successfully on only the Worker and new test file, exercising the patched tinypool consumer. |
+| Static build | `npm run build` passed under Node 24.16.0, exporting three routes and preparing Pages. Initial sandboxed package resolution was blocked; the isolated build passed with filesystem access. |
+| Worker bundle | `node node_modules/wrangler/bin/wrangler.js deploy --config wrangler.livekit.jsonc --dry-run --outdir .wrangler/portfolio-dry-run` passed: 150.07 KiB / 30.91 KiB gzip. Metrics disabled; nothing deployed. |
+| Advisory report | Initial: 28 affected packages (3 critical). Patched: 22 (0 critical, 16 high, 5 moderate, 1 low). Remaining upgrades and exposure limits are in SECURITY_REVIEW.md. |
+| Public frontend | PR #9 is merged; Pages run 34398273576 passed at f7ac294. Current visitor browser verified first-click navigation, water pre-join disclosure, disabled Start before acknowledgment, fictional written self-review, and phone-sized layout; reviewed logs had no errors. |
+| Live acceptance | No microphone, active-agent speech, transcript, mute/end, denied-device path, provider logs, retention, billing control, or native-device check was performed. |
+
+The sections below preserve dated September evidence; they are historical observations, not current runtime claims.
 
 ## Focused water interview UI checks
 
@@ -64,7 +115,7 @@ Last updated: 2026-09-09
 | Production URL | Open home and Cybersecurity interview URLs | Passed; both returned HTTP 200 and the home page rendered in a browser |
 | Pre-integration browser baseline | Quiz, career query, written feedback, assets, and 390-by-844 layout | Passed before LiveKit branch merge |
 
-## Notes
+## Historical September notes
 
 - Dependency installation reports 10 audit findings. No force fix was applied
   because it could introduce unrelated breaking changes.
@@ -75,3 +126,23 @@ Last updated: 2026-09-09
   fail the build.
 - A local fake-key token test verifies token shape and grants, not connection to
   LiveKit Cloud.
+
+
+## Written-first and paused-provider review, 2026-10-10
+
+These observations concern the updated review source only. Main and the existing token Worker remain unchanged.
+
+| Check | Observed result |
+| --- | --- |
+| Actual-source tests | Passed: 12 Worker tests plus 5 frontend/component rendering tests, 17 total; disposable configuration and rejecting provider mocks only |
+| Lint and TypeScript | Passed locally with Node 24.16.0 |
+| Worker dry-run | Passed with local log path and metrics disabled; 150.22 KiB, 30.94 KiB gzip; explicit false enable flag; nothing deployed |
+| Local build command | Exported all three routes, then exited 1 with the Windows Node 24 libuv shutdown assertion; the command is not counted as passed |
+| Pages preparation | Passed as a separate invocation after the export; used only for the bounded local browser check |
+| Local browser | Written mode opened by default; live entry disabled; fictional answer produced self-review; next question cleared answer; career-specific mode and Cybersecurity selection reset to question 1 and matching prompt |
+| Responsive browser | At a requested 390 by 844 viewport, document client and scroll widths were both 375 px; live entry remained disabled; no page horizontal overflow |
+| Browser console | No captured error logs during the above workflow; local root favicon request returned 404 in the static helper log |
+| Clean PR CI | Paused-policy commit 325c5ed passed clean 17-test/full-build Node 22 run 38097021835; the later tooling update has separate pending CI |
+| Provider and deployment acceptance | Not performed: no microphone, room, token POST, paid usage, credential, billing, retention or provider setting was accessed or changed |
+
+Screenshot evidence is retained privately as `outputs/career-compass-paused-demo.jpg` in the migration workspace. The static helper was stopped after verification. This check does not prove the existing public Worker is paused. The pause proposal was withdrawn on October 12; no shutdown rollout is required. This historical check does not validate the revised source.

@@ -1,6 +1,6 @@
 # Architecture Reference
 
-Last reviewed: 2026-09-02
+Last reviewed: 2026-10-12 (review branch; source changes unmerged)
 
 ## System map
 
@@ -15,11 +15,11 @@ The project has two deployment units:
 | --- | --- | --- |
 | `app/page.tsx` | Career quiz, ranking, and interview navigation | Client state only |
 | `app/interview/page.tsx` | Career query validation and live/written composition | Static route; no server API |
-| `components/interview/live-interview.tsx` | LiveKit session, media, transcript, state, controls, fallback | Reads only the public endpoint URL |
+| `components/interview/live-interview.tsx` | LiveKit session, media, transcript, state, controls, fallback | Configured endpoint; explicit consent and Start before connection |
 | `lib/interview-session.ts` | Stable ID/mode allow-lists and normalized metadata | Shared with Worker; no secrets |
 | `services/livekit-token-worker/src/index.ts` | Origin/input validation, token signing, room/identity creation, agent dispatch | Server-only secrets |
 | `wrangler.livekit.jsonc` | Worker build/deploy configuration and non-secret defaults | Secrets must be added separately |
-| `.github/workflows/deploy-pages.yml` | Lint, static build, and Pages deployment | Reads `VITE_LIVEKIT_TOKEN_ENDPOINT` repository variable |
+| `.github/workflows/deploy-pages.yml` | Lint, static build, and Pages deployment | Reads the existing public endpoint variable |
 | `next.config.ts` | Static export and repository asset prefix | Prefix is `/byu-is-career-compass` in production |
 | `scripts/prepare-pages.mjs` | Normalizes the static artifact for GitHub Pages | Runs after `vinext build` |
 | `data/careers.ts` | Eight stable career IDs and presentation data | Governed by `CAREERS.md` |
@@ -31,6 +31,15 @@ The project has two deployment units:
 
 No application server receives or persists discovery answers.
 
+## Interview entry and written fallback
+
+A configured public token endpoint opens main's existing live prejoin screen.
+The AI/provider acknowledgment starts unchecked and Start is disabled until
+acknowledgment and both display fields are present. Rendering prejoin does not
+call `session.start`. With no endpoint, the page opens written self-review; the
+direct live component offers setup guidance and a written fallback. No extra
+frontend or Worker enable flag is required.
+
 ## Live interview flow
 
 1. The interview page allow-lists `careerId` and `mode` and creates display
@@ -38,8 +47,11 @@ No application server receives or persists discovery answers.
    accepted from the browser.
 2. LiveKit's standardized token client posts agent metadata to
    `VITE_LIVEKIT_TOKEN_ENDPOINT`.
-3. The Worker enforces one configured browser origin and parses metadata with
-   `lib/interview-session.ts`.
+3. The Worker enforces one configured browser origin, reads at most 8,192 UTF-8
+   bytes, validates the JSON object shape, and parses metadata with
+   `lib/interview-session.ts`. Valid requests use configured server credentials;
+   missing credentials return 503. The review's validation fixes require a
+   separate Worker deployment; no pause rollout is required.
 4. The Worker generates random room/participant identifiers and a ten-minute
    token with room join, subscribe, data, and microphone-only publish grants.
 5. The token embeds dispatch for the fixed `career-interviewer` agent.
@@ -79,3 +91,7 @@ API credentials and future avatar/model keys must remain server-side.
 - Avatar video adds a provider, latency, cost, and failure boundary; voice and
   written fallbacks must remain usable.
 
+
+## Reviewed build-tool boundary (2026-10-10)
+
+The review branch uses Vinext 1.1.0 with RSC plugin 0.5.36 and Wrangler 4.149.0. `app/globals.css` imports the original shadcn stylesheet from `vendor/shadcn/tailwind.css`; its MIT notice and package/hash provenance are alongside it. The generator executable is not installed. This changes the build graph, not the application's role/session/data boundary. Pages remains a static artifact; the Worker deploy remains separate. Six propagated braces advisories remain in the trusted-source build chain and are documented in SECURITY_REVIEW.md.

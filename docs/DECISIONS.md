@@ -60,3 +60,30 @@ Statuses are **Proposed**, **Accepted**, **Superseded**, or **Rejected**.
 - Consequences: Frontend and token service have separate deployments. The owner
   must configure Cloudflare secrets and one GitHub Actions variable.
 
+
+## D-007 / D-008: Historical pause proposals
+
+- Dates: 2026-10-09 / 2026-10-10
+- Status: Superseded by D-010
+- The optional Worker pause and later written-first/exact-opt-in proposal were
+  not merged. Their shutdown requirements no longer apply. The bounded-input
+  changes are retained independently.
+
+## D-009: Separate the stylesheet from component generation
+
+- Date: 2026-10-10
+- Status: Proposed for shared review
+- Decision: Retain the exact shadcn 4.18.0 stylesheet and MIT notice locally, while removing the unneeded generator executable from the installed application graph. Keep the actually imported @shadcn/react library. Upgrade Vinext/RSC/Wrangler compatibly and apply Satori's official same-series fflate patch.
+- Consequences: The original styling still builds while 265 generator-chain packages are removed. October 10 checks passed at the previous draft revision; current checks are recorded separately in VERIFICATION.md. Six propagated audit entries remain through an unpatched build-only braces chain; monitor upstream and build trusted source. No production deployment or general security clearance follows from these checks.
+
+## D-010: Preserve voice availability after billing clarification
+
+- Date: 2026-10-12
+- Status: Proposed for shared review; Cameron requested removal of billing pause
+- Context: Cameron reports no paid services or payment method for this project.
+- Decision: Restore main's configured live prejoin and written fallback, remove
+  the proposed enable flags/gates, and retain bounded request validation and
+  dependency fixes. Preserve consent before Start.
+- Consequences: No Cloudflare shutdown deployment is needed. Shipping Worker
+  validation remains a separate owner deployment. Real speech/device/privacy
+  acceptance and shared review are still independent of billing status.

@@ -1,6 +1,6 @@
 # Task Tracker
 
-Last updated: 2026-09-09
+Last updated: 2026-10-12
 
 | ID | Priority | Task | Owner | State | Dependencies | Acceptance criteria | Evidence or next check |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -8,15 +8,21 @@ Last updated: 2026-09-09
 | DOC-001 | High | Maintain the coordination pack | Codex | Done | None | Docs describe current architecture and handoff | Updated with LiveKit integration |
 | QA-001 | High | Re-run the application baseline after the merge | Codex | Done | Resolved lockfile | Install, lint, typecheck, build, Worker bundle, and route checks are recorded | Passed checks and environment caveat in `docs/VERIFICATION.md` |
 | LK-001 | High | Confirm production privacy and retention choices | Product owner | Ready | Provider settings | Recording, transcripts, analytics, disclosure, and deletion choices are documented | Do not promise privacy beyond verified behavior |
-| LK-002 | High | Deploy the protected LiveKit token endpoint | Repository owner | Done | Cloudflare access and LiveKit secrets | Worker is deployed, rejects invalid input/origins, and returns short-lived scoped tokens | Production endpoint returned 204/403/400/201 for preflight, foreign origin, invalid career, and valid token checks |
-| LK-003 | High | Integrate the live voice session UI | Codex | In review | PR #9 merge and real microphone test | Student can start/end, mute, see state/errors, open the transcript on demand, and use written fallback | Audio-reactive water UI passes local checks in PR #9; production deploy and microphone conversation remain pending |
+| LK-002 | High | Deploy the scoped LiveKit token endpoint | Repository owner | Done | Cloudflare access and LiveKit secrets | Worker is deployed, rejects invalid input/origins, and returns short-lived scoped tokens | Historical deployment evidence; current source has no authentication, rate limiting, or admission quota; security review remains open |
+| LK-003 | High | Integrate and accept the live voice session UI | Shared contributors | In progress | Real microphone test | Start/end, mute, state, transcript, fallback work in a real session | PR #9 merged; Pages 34398273576 passed; pre-join/written/phone-sized browser flows observed; microphone conversation remains unverified |
 | LK-004 | High | Pass career-aware session metadata to the agent | Codex | In progress | Real microphone test | All eight IDs and both modes are validated; derived metadata reaches agent | Builder defines all five variables and the matching agent is running; verify received values in a real session |
 | AV-001 | Medium | Select and prototype a virtual-avatar provider | Unassigned | Blocked | Reliable voice flow, budget, disclosure, vendor review | Synchronized video works with timeout and voice-only fallback | Frontend video-track slot is ready |
-| QA-002 | Medium | Add automated product-flow coverage | Unassigned | Ready | Test framework decision | Career validation, scoring, question cycling, and LiveKit failure states have repeatable tests | No test framework currently found |
+| QA-002 | Medium | Add automated product-flow coverage | Unassigned | Ready | Test framework decision | Career validation, scoring, question cycling, and LiveKit failure states have repeatable tests | Node test runner now covers Worker and frontend prejoin; broader discovery/scoring coverage remains open |
 | QA-003 | High | Restore first-click navigation to interview practice | Codex | Done | None | Every home-page interview link and the interview-page return link navigate with one normal left-click | PR #7; Pages workflow `33823461636`; production first-click verified |
-| UX-001 | High | Simplify the live interview presentation | Codex | In review | PR #9 merge | Active voice practice emphasizes one water presence; listening is calm, agent speech is audio-reactive, and transcript is opt-in | PR #9 is mergeable; lint, TypeScript, Node 22 build, Pages preparation, and artifact inspection passed |
+| UX-001 | High | Simplify the live interview presentation | Cameron Boyle with AI tools | In progress | Real microphone acceptance | Water presence and opt-in transcript respond correctly in a real session | PR #9 merged; pre-join UI observed; speaking/listening reaction and active transcript remain unverified |
 | DATA-001 | Medium | Resolve career-content gaps | Unassigned | Ready | Verified BYU sources | Facts enter `CAREERS.md` before `data/careers.ts` | Existing evidence rules remain in force |
+
+| SEC-001 | High | Bound token requests while preserving configured voice | Codex review branch | In review | Shared review; separate Worker deployment | Malformed/oversized requests handled; prejoin and scoped token behavior preserved without extra flags | 13 focused tests and local checks; current CI tracked in VERIFICATION.md |
+| SEC-002 | High | Review public voice admission, rate and duration controls | Service owner | Ready | Agreed public-use/privacy policy | Document abuse handling and provider retention; verify real session termination | Origin and token expiry are insufficient authentication/duration controls; billing pause is not required |
+| DEP-001 | High | Review remaining tooling advisories | Shared contributors | In review | Shared review and current CI | Audited graph and representative build/Worker checks recorded | Compatible upgrades and licensed stylesheet retained; October 12 audit six high propagated braces entries; upstream fix open |
 
 Allowed states: `Ready`, `In progress`, `Blocked`, `In review`, and `Done`.
 
 Never place credentials or student data in this tracker.
+
+The former COST-001 shutdown task is withdrawn as of 2026-10-12 after Cameron confirmed no paid services or payment method. It is not a release dependency.

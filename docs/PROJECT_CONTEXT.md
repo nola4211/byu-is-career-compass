@@ -1,6 +1,6 @@
 # Project Context
 
-Last reviewed: 2026-09-09
+Last reviewed: 2026-10-12
 
 ## Product definition
 
@@ -15,7 +15,7 @@ token Worker is deployed with owner-provided credentials, and the Pages build
 contains its public endpoint. A written self-review exercise remains available
 when voice is unavailable or the student prefers not to use a microphone.
 
-**Implemented in PR #9, pending production merge:** Live practice uses a focused
+**Merged and deployed through PR #9; pre-join browser review completed 2026-10-09:** Live practice uses a focused
 water presence that moves slowly while listening and reacts to the agent's
 speech volume while speaking. Transcript messages stay out of view until the
 student opens the side drawer.
@@ -31,6 +31,19 @@ student opens the side drawer.
 | Frontend hosting | Vinext static export published to GitHub Pages |
 | Public URL | `https://nola4211.github.io/byu-is-career-compass/` |
 | Live token service | Deployed Cloudflare Worker in `services/livekit-token-worker/`; public endpoint is embedded in the Pages build |
+
+## Portfolio review scope
+
+**Reported, 2026-10-12:** Cameron has not purchased services or supplied payment
+information for this project. The portfolio review no longer requires a
+billing-related voice pause or provider shutdown.
+
+**Prepared, unmerged:** Preserve main's configured voice prejoin and written
+fallback. Remove the proposed pause flags, retain bounded request validation
+and dependency patches, and keep secrets server-side. Cameron controls LiveKit;
+a partner controls Cloudflare. Shared review and a separate Worker deployment
+are needed to ship the validation fixes, not to disable voice. Actual speech,
+device behavior and provider retention remain unverified.
 
 ## Current user journeys
 
